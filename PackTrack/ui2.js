@@ -65,16 +65,13 @@ function setSubject(){
       var req = new XMLHttpRequest();
       req.open('GET', url, true);
       req.onreadystatechange = function (){
+        var pageContent = req.response;
+        document.getElementById('console').innerHTML = pageContent;
+        document.getElementById('console').style.display = 'none';
+        var text = document.querySelector('#console');
+        document.getElementById('text').innerHTML= text.textContent.replace(/[^\w\s]|_/g, "");
         
-        document.getElementById('console').innerHTML = req.responseText;
-         // scrape current website content
-    
-         var i;
-         for(i=0; i<document.getElementsByTagName('p').length; i++){
-           text = text.concat(document.getElementsByTagName('div')[i].textContent.replace(/[^\w\s]|_/g, ""));
-
-         }
-         document.getElementById('text').innerHTML = text;
+        
       }
       req.send();
     })
