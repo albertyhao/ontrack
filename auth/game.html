@@ -1,0 +1,107 @@
+<!-- <!DOCTYPE html>
+<html>
+	<head>
+		<title>Game</title>
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			body {
+				overflow: hidden;
+			}
+			canvas {
+				background: url('http://wisen.space/capture/load/5-XO21O-HWAmE_51AlMuoX4u.jpg') no-repeat center center fixed;
+				background-size: 100vw 100vh;
+			}
+
+			#chat {
+				position:fixed;
+				right: 2vw;
+				bottom: 2vh;
+				width:28vw;
+				height:80vh;
+        border-color: black;
+        border-width: 2px;
+			}
+
+			#chat button {
+				position:absolute;
+				right:2vw;
+				bottom:2vh;
+				width:1vw;
+				font-size:2vmax;
+				width:1em;
+				height:1em;
+				outline:none;
+				border:none;
+				cursor:pointer;
+				background-color:transparent;
+			}
+
+			#chat button:hover {
+				font-size:2.2vmax;
+			}
+			#chat ul > li {
+				list-style-type: none;
+			}
+			#chat input {
+				position:absolute;
+				right:5vw;
+				bottom:1.5vh;
+				width:20vw;
+				font-size:1.5vmax;
+				padding:0.5vmax;
+				color:white;
+				background-color:transparent;
+			}
+			#logout {
+				position: fixed;
+				top: 1em;
+				right: 1em;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas></canvas>
+		<div id='chat'>
+			<ul></ul>
+			<div>
+				<input type='text'>
+				<button>🚀</button>
+			</div>
+		</div>
+		<div>
+			<a id = 'logout' href = "/logout">Log Out</a>
+		</div>
+    <script src='/js/socket.io.js'></script>
+		<script>
+			var user = '{{USERNAME}}';
+      var socket = io({query: {user: user}});
+			var $button = document.querySelector('button');
+			var $input = document.querySelector('input');
+			document.body.addEventListener('keypress', sendMessage);
+
+			$button.addEventListener('click', sendMessage);
+			function sendMessage(e) {
+				if(e.key && e.key !== 'Enter') return;
+				if(document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'BUTTON') return;
+				if($input.value === '') return;
+				socket.emit('message', {userName: user, message: $input.value});
+				$input.value = '';
+			};
+			socket.on('new message', function(message) {
+
+				var $ul = document.querySelector('#chat ul');
+				var $li = document.createElement('li');
+				$li.innerHTML = `<strong>${message.userName}:</strong> ${message.message}`;
+				$ul.appendChild($li)
+
+			});
+			var $canvas = document.querySelector('canvas');
+			$canvas.width = window.screen.width;
+			$canvas.height = window.screen.height;
+		</script>
+		<script src='/js/game.js'></script>
+	</body>
+</html> -->

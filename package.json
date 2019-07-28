@@ -1,0 +1,40 @@
+{
+  "name": "ontrack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "async": "^2.6.1",
+    "body-parser": "^1.18.2",
+    "connect-mongodb-session": "^1.4.0",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-flash": "0.0.2",
+    "express-session": "^1.15.6",
+    "jspdf": "^1.4.1",
+    "mongodb": "^3.1.4",
+    "mongoose": "^5.6.2",
+    "npm": "^6.7.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "save": "^2.3.3",
+    "socket.io": "^2.1.1",
+    "stemmer": "^1.0.4",
+    "twilio": "^3.29.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/priyasrikumar/OnTrack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/priyasrikumar/OnTrack/issues"
+  },
+  "homepage": "https://github.com/priyasrikumar/OnTrack#readme"
+}

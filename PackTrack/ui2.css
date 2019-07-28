@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather:700');
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+body {
+  width: 300px;
+  height: 220px;
+}
+
+.column {
+  float: left;
+  width: 33.33%;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+h1 {
+  font-family: 'Merriweather', serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: black;
+}
+
+.packtrackicon {
+  height: 50px;
+  width: 50px;
+  text-align: center;
+}
+
+.column p {
+  font-family: 'Lato', sans-serif;
+  color: black;
+  font-size: 11px;
+  font-weight: 400;
+}
+

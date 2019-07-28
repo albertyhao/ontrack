@@ -1,0 +1,165 @@
+* {
+	overflow:hidden;
+	box-sizing: border-box;
+	margin:0;
+	padding:0;
+}
+
+body {
+	width:100vw;
+	height:100vh;
+}
+
+header {
+	height:5%;
+	width:100%;
+	background-color:#12389298;
+}
+
+main {
+	width:100%;
+	max-width:1024px;
+	height:90%;
+	margin:auto;
+	background-color:#ffb9b969;
+	position:relative;
+}
+
+nav {
+	width:100%;
+	height:7%;
+	border:solid 1px black;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+}
+
+nav > a {
+	height:100%;
+	border:solid 1px black;
+	grid-column: auto;
+	text-align: center;
+}
+
+#hamburger {
+	display:none;
+}
+
+section {
+	overflow-y:auto;
+}
+
+footer {
+	width:100%;
+	height:5%;
+	background-color:#0092FF87;
+}
+
+/* STYLINGS FOR PHONE */
+@media only screen
+	and (max-device-width : 600px)
+	and (max-device-height : 1000px) {
+		nav {
+			display:none;
+		}
+		#hamburger {
+			display:block;
+			position: absolute;
+			right: 10px;
+			top: 5px;
+
+		}
+	}
+
+#blacklist {
+	position: absolute;
+	float: left;
+	top: 8vh;
+	left: 0.8vw;
+	padding: 2px;
+	width: 48.3%;
+	height: 36vw;
+	border-radius: 15px;
+	box-shadow: inset 0px 0px 11px 0px #888888;
+}
+
+#blacklistinput {
+	float: left;
+}
+
+#whitelist {
+	position: absolute;
+	float: right;
+	top: 8vh;
+	right: 0.8vw;
+	padding: 2px;
+	width: 48.3%;
+	height: 36vw;
+	border-radius: 15px;
+	box-shadow: inset 0px 0px 11px 0px #888888;
+}
+
+#restrictions {
+   	display: inline-block;
+}
+
+.btn, .btn2 {
+    border: 4px solid #C72D1D;
+    padding: 5px 10px;
+    border-radius: 50px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    outline: none;
+    background: #fff;
+    color: #C72D1D;
+    font-size: 15px;
+}
+
+.btn:hover, .btn2:hover {
+    background: #C72D1D;
+    color: #fff;
+    border: 4px solid #C72D1D;
+    border-radius: 50px;
+}
+
+.btn:hover, .btn2:focus, .btn2:hover, .btn:focus {
+	background: #C72D1D;
+	color: #fff;
+}
+
+input[type=text] {
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #C72D1D;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+.dropdown {
+	text-align: center;
+	max-width: 100%;
+}
+
+.dropdown-content {
+	display: none;
+	z-index: 1;
+	position: relative;
+	text-align: center;
+	background-color: white;
+	align: center;
+	border-radius: 25px;
+	width: 100px;
+	margin: 0 auto;
+}
+
+.btn:hover .dropdown-content {
+	display: inline-block;
+	border-radius: 25px;
+	width: 100px;
+}
+
+.btn {
+	position: relative;
+	display: inline-block;
+}

@@ -1,0 +1,51 @@
+{
+  "manifest_version": 2,
+  "name": "PackTrack",
+  "short_name": "OnTrack",
+  "version": "1.1",
+  "web_accessible_resources": [
+    "script.js",
+    "biology.txt",
+    "history.txt"
+  ],
+  "description": "OnTrack's PackTrack",
+  "icons": {
+    "16": "packtrack16.png",
+    "48": "packtrack48.png",
+    "128": "packtrack128.png"
+  },
+  "author": "OnTrack",
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "clipboardWrite",
+    "webNavigation",
+    "activeTab",
+    "declarativeContent",
+    "storage",
+    "debugger",
+    "downloads",
+    "pageCapture",
+    "tabCapture",
+    "declarativeNetRequest",
+    "contentSettings"
+
+  ],
+  "content_scripts": [
+    {
+      "js": [
+        "contentscript.js",
+        "ui2.js"
+      ],
+      "matches": [
+        "*://*/*"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "browser_action": {
+    "default_icon": "packtrack16.png",
+    "default_popup": "ui2.html"
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}

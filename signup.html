@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/navbar.css" rel="stylesheet">
+  </head>
+  <body>
+    <!--
+    NAVBAR + icons
+    -->
+    <div class="sidenav" style="text-align:center">
+      <a href="/">
+        <img src="http://i65.tinypic.com/nzeryv.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
+        <p>Home</p>
+      </a>
+
+      <a href="/blacklist">
+        <img src="http://i64.tinypic.com/24zf0g8.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
+        <p>Blacklist</p>
+      </a>
+      <a href="/settings">
+        <img src="http://i65.tinypic.com/zx9unq.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
+        <p>Settings</p>
+      </a>
+    </div>
+
+    <center>
+      <div>
+          <div><label class='label'>First Name</label></div>
+          <div><input id='firstName' type='text' class='input'/></div>
+      </div>
+
+      <div>
+          <div><label class='label'>Last Name</label></div>
+          <div><input id='lastName' type='text' class='input'/></div>
+      </div>
+
+      <div>
+          <div><label class='label'>Username</label></div>
+          <div><input id='userName'  type='text' class='input'/></div>
+      </div>
+
+      <div>
+          <div><label class='label'>Email Address</label></div>
+          <div><input id='emailAddress' type='text' class='input'/></div>
+      </div>
+
+      <div>
+          <div><label class='label'>Password</label></div>
+          <div><input id='password' type='password' class='input'/></div>
+      </div>
+  		<div>
+  				<input id="submit" type="submit" class="button btn2" value="SIGN UP"/>
+      </div>
+    </center>
+
+    <script>
+      var submitApp = function(e) {
+        var formdata = {
+          firstName: document.querySelector('#firstName').value
+          , lastName: document.querySelector('#lastName').value
+          , userName: document.querySelector('#userName').value
+          , emailAddress: document.querySelector('#emailAddress').value
+          , password: document.querySelector('#password').value
+        }
+      }
+
+      document.querySelector('#submit').addEventListener('click', submitApp);
+    </script>
+  </body>
+</html>

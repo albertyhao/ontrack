@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/navbar.css" rel="stylesheet">
+    <link href="/blacklist.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <style>
+      body {
+        flex:1;
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        background-image: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+      }
+      th {
+        width: 20vw;
+      }
+     
+    </style>
+  </head>
+  <body>
+    <div class="sidenav" style="text-align:center; width:10%; float: leftl;">
+      <a href="/">
+        <img src="http://i65.tinypic.com/nzeryv.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
+        <p>Home</p>
+      </a>
+
+      <a href="/blacklist">
+        <img src="http://i64.tinypic.com/24zf0g8.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
+        <p>Blacklist</p>
+      </a>
+      <a href="/settings">
+        <img src="http://i65.tinypic.com/zx9unq.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
+        <p>Settings</p>
+      </a>
+    </div>
+    <div class="main">
+      <div class="header" style="height: 10vh; width: 100%;">
+        <h3 style="font-size: 1.2em; color: white; display: inline-block; margin-top: 5%;">My Blacklist</h3><button>Add</button><input type="text" placeholder="Site">
+        <img src="http://i66.tinypic.com/10ykqkk.png" style="width: 6em; height: 2em; float: right; display: inline-block;">
+        <hr style="width: 75%; padding-top: 0; border: 1.5px solid white; float: left;">
+      </div>
+      <br><br><br>
+      
+      <div class="table" style="width: 100%;">
+        <table>
+          <tr>
+            <th><div style="height: 150px; width: 150px; border-radius: 50%; background-color: white; box-shadow: 0px 0px 11px 0px #888888;"><img style="width: 100px; height: 100px; padding-top: 16%;" src="//logo.clearbit.com/youtube.com"></div><p style="margin-right: 45%;">Youtube</p></th>
+            <!-- <th><div style="height: 150px; width: 150px; border-radius: 50%; background-color: white; box-shadow: 0px 0px 11px 0px #888888;"></div></th>
+            <th><div style="height: 150px; width: 150px; border-radius: 50%; background-color: white; box-shadow: 0px 0px 11px 0px #888888;"></div></th>
+            <th><div style="height: 150px; width: 150px; border-radius: 50%; background-color: white; box-shadow: 0px 0px 11px 0px #888888;"></div></th> -->
+          </tr>
+        </table>
+      </div>
+      <!-- <center>
+        <p style="color: white; font-size: 2.25rem">Blacklist</font></p>
+        <hr width="75%">
+      </center>
+      <center>
+        <select>
+          <option value="blacklist">Add a new blacklist site</option>
+          <option value="whitelist">Whitelist a blocked site</option>
+        </select>
+      </center>
+      <center><font size="5">
+        <div class="vertical-center">
+          <table id="blacklistTable">
+            <tr style="color:white">
+              <th  style="color:white"> Enter a new site to blacklist: </font><br>
+                <input type ="text" id ="askForBlacklist" placeholder="Site URL" size="30px"></input>
+                <button id="addToBlacklist" class="button" style="font-size: .75rem">Add To Blacklist</button><br><br><br></th>
+            </tr>
+            <th style="color:white">
+              Currently Backlisted Sites:
+            </th>
+            <table align="center"></table>
+              <tr id="0" class="blacklistItem-set">
+                <td  class="blacklistItem-set"><p style="color:white"><br>netflix.com</p></td>
+              </tr>
+              <tr id="1">
+                <td class="blacklistItem-set"><p  style="color:white">fortnite.io </p></td>
+              </tr>
+              <tr id="2">
+                <td class="blacklistItem-set"><p  style="color:white">hulu.com</p></td>
+              </tr>
+            </table>
+          </table>
+        </div>
+      </font></center> -->
+    </div>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <!-- <script src="/blacklist.js"></script> -->
+    <script>
+      document.querySelector('button').addEventListener('click', newSite);
+      function newSite(){
+        var domain = document.querySelector('input').value;
+        var site = domain.split('.')[1];
+
+        if(document.querySelector('tr').childElementCount < 6){
+          var $list = document.querySelector('tr');
+          var tableElement = document.createElement("th");
+          tableElement.innerHTML = `<div style="height: 150px; width: 150px; border-radius: 50%; background-color: white; box-shadow: 0px 0px 11px 0px #888888;"><img style="width: 100px; height: 100px; padding-top: 16%;" src="//logo.clearbit.com/${site}.com"></div><p style="margin-right: 45%;">${site}</p>`;
+          $list.appendChild(tableElement);
+          } else {
+          var $list = document.querySelector('table');
+          var tableElement = document.createElement('tr');
+      
+        }
+       
+      }
+    </script>
+    
+  </body>
+</html>

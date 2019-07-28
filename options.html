@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<style>
+			* {
+				overflow:hidden;
+				box-sizing: border-box;
+				margin:0;
+				padding:0;
+				font-family: 'Roboto', sans-serif;
+			}
+			body {
+				width:100vw;
+				height:100vh;
+			}
+			header {
+				height:5%;
+				width:100%;
+				background-color:#12389298;
+			}
+			main {
+				width:100%;
+				max-width:1024px;
+				height:90%;
+				margin:auto;
+				background-color:white;
+				position:relative;
+			}
+			nav {
+				width:100%;
+				height:7%;
+				border:solid 1px black;
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+			}
+			nav > a {
+				height:100%;
+				border:solid 1px black;
+				grid-column: auto;
+				text-align: center;
+			}
+			#hamburger {
+				display:none;
+			}
+			section {
+				overflow-y:auto;
+			}
+			footer {
+				width:100%;
+				height:5%;
+				background-color:#0092FF87;
+			}
+			main > #options {
+			    height: 100%;
+			    width: 100%;
+			    border: 1px solid black;
+			}
+			/* STYLINGS FOR PHONE */
+		    @media only screen 
+		    	and (max-device-width : 600px)
+		    	and (max-device-height : 1000px) { 
+		    		nav {
+		    			display:none;
+		    		}
+		    		#hamburger {
+						display:block;
+						position: absolute;
+						right: 10px;
+						top: 5px;
+						
+					}
+		    	}
+
+            #options > table {
+                width:60%;
+                margin: auto;
+                margin-top: 10%;
+            }
+            
+            #options > table th {
+                text-align: left;
+                font-size: 30px;
+            }
+            #options > table td, #options > table th {
+                padding-bottom: 7%;
+            }
+            
+            .switch {
+              position: relative;
+              display: inline-block;
+              width: 60px;
+              height: 34px;
+            }
+            
+            .switch input { 
+              opacity: 0;
+              width: 0;
+              height: 0;
+            }
+            
+            .slider {
+              position: absolute;
+              cursor: pointer;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background-color: #C72D1D;
+              -webkit-transition: .4s;
+              transition: .4s;
+            }
+            
+            .slider:before {
+              position: absolute;
+              content: "";
+              height: 26px;
+              width: 26px;
+              left: 4px;
+              bottom: 4px;
+              background-color: white;
+              -webkit-transition: .4s;
+              transition: .4s;
+            }
+            
+            input:checked + .slider {
+              background-color: #2DC71D;
+            }
+            
+            input:focus + .slider {
+              box-shadow: 0 0 1px #2DC71D;
+            }
+            
+            input:checked + .slider:before {
+              -webkit-transform: translateX(26px);
+              -ms-transform: translateX(26px);
+              transform: translateX(26px);
+            }
+            
+            /* Rounded sliders */
+            .slider.round {
+              border-radius: 34px;
+            }
+            
+            .slider.round:before {
+              border-radius: 50%;
+            }
+            
+		</style>
+	</head>
+	<body>
+		<header></header>
+		<main>
+			<nav>
+				<a>Restrictions</a>
+				<a>Data</a>
+				<a>Schedules</a>
+				<a>Options</a>
+			</nav>
+			
+			<div id='hamburger'>
+				<svg height="32px" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z"/></svg>
+			</div>
+			
+			<section id='options'>
+			    
+			    <table>
+			        <tbody>
+			            <tr>
+			                <th>
+			                    Emotion detection:
+			                </th>
+			                <td>
+			                    <label class="switch">
+                                    <input id="emo" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+			                </td>
+			            </tr>
+			            <tr>
+			                <th>
+			                    Page Content:
+			                </th>
+			                <td class="switch">
+			                    <label class="switch">
+                                    <input id="pcont" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+			                </td>
+			            </tr>
+			           
+			            <tr>
+			                <th>
+			                    Lockdown:
+			                </th>
+			                <td>
+			                    <label class="switch">
+                                    <input id="lock" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+			                </td>
+			            </tr>
+			            <tr>
+			                <th>
+			                    All Restrictions:
+			                </th>
+			                <td>
+			                    <label class="switch">
+                                    <input id="all" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+			                </td>
+			            </tr>
+			    		<tr>
+			    			<td colspan='2'><div id='spacer' style='height: 5vh;'></div></td>
+			    		</tr>
+			             <tr>
+			                <th>
+			                    Whitelist Only:
+			                </th>
+			                <td>
+			                    <label class="switch">
+                                    <input id="white" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+			                </td>
+			            </tr>
+			            <tr>
+			                <th>
+			                    Blacklist Only:
+			                </th>
+			                <td>
+			                    <label class="switch">
+                                    <input id="black" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+			                </td>
+			            </tr>
+			        </tbody>
+			    </table>
+			    
+			    
+                
+			</section>
+			
+			
+			
+			
+			
+			<section id=''></section>
+			<section id=''></section>
+			<section id=''></section>
+		</main>
+		<footer></footer>
+		<script>
+		
+		    var emo = document.getElementById('emo');
+		    var pcont = document.getElementById('pcont');
+		    var white = document.getElementById('white');
+		    var black = document.getElementById('black');
+		    var lock = document.getElementById('lock');
+		    document.querySelectorAll('input').forEach(function(input){
+		        input.addEventListener('click', checkState);
+		    })
+		    
+		    function checkState(){
+		        if(this.id === 'all' && this.checked === true){
+		            emo.checked = true;
+		            pcont.checked = true;
+		            
+		            lock.checked = true;
+		            emo.disabled = true;
+		            pcont.disabled = true;
+		            
+		            lock.disabled = true;
+		            emo.nextElementSibling.style.backgroundColor = '#CCC';
+		            pcont.nextElementSibling.style.backgroundColor = '#CCC';
+		            
+		            lock.nextElementSibling.style.backgroundColor = '#CCC';
+		        }
+		        if(this.id === 'all' && this.checked === false){
+		            emo.disabled = false;
+		            pcont.disabled = false;
+		            white.disabled = false;
+		            black.disabled = false;
+		            lock.disabled = false;
+		            emo.nextElementSibling.style.backgroundColor = '';
+		            pcont.nextElementSibling.style.backgroundColor = '';
+		            white.nextElementSibling.style.backgroundColor = '';
+		            black.nextElementSibling.style.backgroundColor = '';
+		            lock.nextElementSibling.style.backgroundColor = '';
+		        }
+		        if(this.id === 'black' && this.checked === true){
+		        	white.checked = false;
+		        }
+		        if(this.id === 'white' && this.checked === true){
+		        	black.checked = false;
+		        }
+		       
+		    }
+		    
+		</script>
+	</body>
+</html>

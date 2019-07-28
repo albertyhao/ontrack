@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/navbar.css" rel="stylesheet">
+    <link href="/settings.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+      body {
+        flex:1;
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        background: linear-gradient(to right, #2ab2c0, #098d9a);
+      }
+      .btn-light {
+        background-color:transparent;
+        border: none;
+        color: white;
+        padding: 6px 15px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+      }
+      .btn-light:hover {
+        background-color: white;
+        color: #168794
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+    NAVBAR + icons
+    -->
+    <div class="sidenav" style="text-align:center; width:10vw">
+      <a href="/">
+        <img src="http://i65.tinypic.com/nzeryv.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
+        <p>Home</p>
+      </a>
+
+      <a href="/blacklist">
+        <img src="http://i64.tinypic.com/24zf0g8.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
+        <p>Blacklist</p>
+      </a>
+      <a href="/settings">
+        <img src="http://i65.tinypic.com/zx9unq.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
+        <p>Settings</p>
+      </a>
+    </div>
+    <center>
+      <div class="main">
+        <p style="color: white; font-size: 2.25rem">Settings</font></p>
+        <hr width="75%">
+        <div class="vertical-center">
+          <p style="color: white; font-size: 1.5rem">Account Management</p>
+            <form>
+            <p style="color: white; font-size: 1rem">Email: <input type="text" id="email" size = "25" placeholder="(e.g. JohnSmith@gmail.com)"><br></p>
+            <br>
+            <p style="color: white; font-size: 1rem">Old Password: <input type="password" id="oldpass"><br></p>
+            <p style="color: white; font-size: 1rem">New Password: <input type="password" id="newpass"><br></p>
+            <p style="color: white; font-size: 1rem">Confirm Password: <input type="password" id="confirmpass"><br></p>
+          </form>
+          <!-- <button class="button" style="font-size: .75rem">Submit</button> -->
+          <button type="button" class="btn btn-light">Submit</button>
+        </div>
+      </div>
+    </center>
+    <script type="text/javascript" src="settings.js"></script>
+  </body>
+</html>

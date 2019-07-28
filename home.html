@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OnTrack</title>
+    <link href="/navbar.css" rel="stylesheet">
+    <link href="/home.css" rel="stylesheet">
+    <style>
+    </style>
+  </head>
+  <body>
+
+    <!-- nav bar code -->
+
+    <div class="sidenav" style="text-align:center">
+      <a href="/">
+        <img src="http://i65.tinypic.com/nzeryv.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
+        <p>Home</p>
+      </a>
+
+      <a href="/blacklist">
+        <img src="http://i64.tinypic.com/24zf0g8.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
+        <p>Blacklist</p>
+      </a>
+      <a href="/settings">
+        <img src="http://i65.tinypic.com/zx9unq.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
+        <p>Settings</p>
+      </a>
+    </div>
+
+
+    <!-- timer code -->
+
+    <div class="container">
+
+      <!-- <div class="options">
+        <form name="customForm" id="custom">
+          <input type="text" name="minutes" class="option" placeholder="Enter Minutes...">
+        </form>
+      </div> -->
+      <div class="display">
+        <p style="color: white; font-size: 2rem">I Want to Study</p>
+        <select>
+          <option value="calculus">Calculus</option>
+          <option value="biology">Biology</option>
+          <option value="history">American History</option>
+        </select>
+        <button id="submit">Submit</button>
+        <!-- <h1 class="time_left">
+        
+        <form name="customForm" id="custom">
+          <input type="text" name="minutes" class="option" placeholder="Enter Minutes...">
+        </form>
+
+        <div>
+          <p class="end_time"></p>
+          <input type="text" class="subject" placeholder="Subject I'm Studying...">
+          <br>
+
+          <progress color="ef6c36" value="22" max="100"></progress> -->
+        </div>
+      </div>
+      <iframe></iframe>
+
+  </body>
+  <!-- <script src="/timer.js"></script> -->
+  <script type="text/javascript" src="./lib/jquery-3.3.1.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>
+
+    function sendData() {
+      document.querySelector('select').value;
+        }
+document.getElementById("submit").addEventListener("click", sendData);
+  
+      
+    // req.open('GET', '/home', true);
+    // req.send();
+
+    // function test() {
+    //   console.log('it works');
+    // }
+
+
+    //Opening indexeddb 
+    // var db;
+    
+    // const subjectData = {subject: document.querySelector('select').value};
+    
+
+    
+
+    // var req = window.indexedDB.open("UserSubjectDatabase", 3);
+    // req.onsuccess = function(event) {
+    // db = event.target.result;
+    // console.log("it worked");
+    // };
+    // req.onerror = function(event) {
+    // console.log("Why didn't you allow my web app to use IndexedDB?!");
+    // };
+    // req.onupgradeneeded = function(event) {
+    //   var db = event.target.result;
+
+    //   // Create an objectStore to hold information about our customers. We're
+    //   // going to use "ssn" as our key path because it's guaranteed to be
+    //   // unique - or at least that's what I was told during the kickoff meeting.
+    //   var objectStore = db.createObjectStore("subject", {keyPath: "subject"});
+    //   objectStore.createIndex("subject");
+    
+
+    //   // Use transaction oncomplete to make sure the objectStore creation is 
+    //   // finished before adding data into it.
+    //   objectStore.transaction.oncomplete = function(event) {
+    //     // Store values in the newly created objectStore.
+    //     var userSubjectData = db.transaction("subject", "readwrite").objectStore("subject");
+    //     subjectData.forEach(function(subject) {
+    //       userSubjectData.add(subject);
+          
+    //     });
+        
+    //   };
+      
+    //   var transaction = db.transaction(["subject"], "readwrite");
+    //   console.log("starts")
+    //   transaction.oncomplete = function(event) {
+    //         console.log("All done!");
+    //       };
+
+    // transaction.onerror = function(event) {
+    //         console.log('fuck you indexeddb');
+    //       };
+    // var objectStore = transaction.objectStore("subject");
+    // subjectData.forEach(function(subject) {
+    //   var req = objectStore.add(subject);
+    //   req.onsuccess = function(event) {
+    //     console.log('yay');
+    //   };
+    // });
+    // };
+    
+    
+  </script>
+  
+</html>

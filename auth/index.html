@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Avalon</title>
+		<style>
+			
+			#avatar img {
+				width: 200px;
+				height: 250px;
+			}
+			#form {
+				margin-left: 33vw;
+				width: 33vw;
+			}
+			#username, #password, #email {
+				display: block;
+				height: 5vh;
+			}
+			input {
+				width: 20vw;
+			}
+			button {
+			  background-color: #4CAF50;
+			  color: white;
+			  padding: 10px;
+			  margin: 8px 0;
+			  border: none;
+			  cursor: pointer;
+			  width: 15%;
+			  opacity: 0.9;
+			}
+			button:hover {
+			  opacity:1;
+			}
+			h1 {text-align: center; margin-top: 22vh;}
+			h1, label {color: white;}
+
+		</style>
+	</head>
+	<body>
+		<h1>Sign Up for Avalon</h1>
+		<div id="form">
+			<center>
+				<div id="username">
+				<label>Username</label>
+				<input type='text' name='userName'>
+				</div>
+
+				<div id="password">
+				<label>Password</label>
+				<input type='password' name='password'>
+				</div>
+				<div>
+					<label>Verify Password</label>
+					<input type='password' name='verifyPassword'>
+				</div>
+				<br>
+				
+				<button>Sign Up!</button>
+			</center>
+		</div>
+
+		<script>
+			var $inputs = document.querySelectorAll('input');
+			var $button = document.querySelector('button');
+
+			function storeData(){
+				var data = {};
+				for(var i = 0; i < $inputs.length; i++)	{
+					var $input = $inputs[i];
+					if($input.type === 'text' || $input.type === 'password') {
+						data[$input.name] = $input.value;
+					} else if ($input.type === 'file') {
+						data[$input.name] = imageData;
+					}
+				}
+				sendData(data);
+			}
+
+		
+			
+			
+
+			function verifyPassword() {
+
+			  var $passwords = document.querySelectorAll('input[type="password"]');
+			  var isSamePassword = $passwords[0].value === $passwords[1].value;
+			  if(!isSamePassword) {
+			  	alert("Please enter the same password!")
+			  }
+			  return isSamePassword;
+
+			  }
+			function sendData(data){
+
+				if(!verifyPassword()) {
+					return;
+				}
+				//Creating a new request to the server that contains the sendData
+				var req = new XMLHttpRequest();
+
+				//Opening up a connection with the server to 'POST' sendData
+				req.open('POST', '/form', true);
+
+				//Explain to the server that we are sending the data in json format
+				req.setRequestHeader('content-type', 'application/json');
+				// Alert the user to any errors from the server
+				function readyStateChange() {
+		      if(req.readyState !== 4) return;
+		      if(req.status !== 200) return;
+		      var data = JSON.parse(req.responseText);
+		       if(data.error) {
+		       return alert(data.error);
+		       }
+		      window.location.href = '/game';
+		    }
+		    req.onreadystatechange = readyStateChange;
+
+				//Sending the data in JSON format
+				req.send(JSON.stringify(data));
+			}
+
+			$button.addEventListener('click', storeData);
+		</script>
+	</body>
+</html>
