@@ -135,3 +135,10 @@ function setSubject(){
 
   }
 }
+
+chrome.storage.sync.set({subject: $subject}, function(){
+
+})
+chrome.storage.sync.get(['subject'], function(result) {
+
+}
