@@ -40,7 +40,7 @@ function setSubject(){
       });
 
       xhr.send();
-      text2 = result; // set "text2" as the result of the subject standard (result shouldn't be used outside of the function)
+      // text2 = result; // set "text2" as the result of the subject standard (result shouldn't be used outside of the function)
       // document.getElementById('console').innerHTML = text2;
     }
 
@@ -136,16 +136,17 @@ function setSubject(){
   }
 }
 
-// getting data
+
 chrome.storage.sync.get(['customerid'], function(result) {
-  if (!result) {
+  if (!result || Object.keys(result).length === 0) {
     result = ((new Date()*1) + Math.random())
-    result = (result + '').responce('.', 'a');
-    // saving data
+    result = (result + '').replace('.', 'a');
+    document.querySelector('#console').innerHTML = JSON.stringify(result);
     chrome.storage.sync.set({customerid: result}, function(){
       var xhr = new XMLHttpRequest();
       xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result}`, true);
       xhr.send(); 
     })
   }
+  document.querySelector('#console').innerHTML = JSON.stringify(result);
 })
