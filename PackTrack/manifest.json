@@ -4,7 +4,6 @@
   "short_name": "OnTrack",
   "version": "1.1",
   "web_accessible_resources": [
-    "script.js",
     "biology.txt",
     "history.txt"
   ],
@@ -31,16 +30,20 @@
     "contentSettings"
 
   ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
   "content_scripts": [
     {
-      "js": [
-        "contentscript.js",
-        "ui2.js"
-      ],
       "matches": [
-        "*://*/*"
+        "https://*.wisen.space/*.html"
       ],
-      "run_at": "document_end"
+      "run_at": "document_idle",
+      "js": [
+        "contentscript.js"
+        , "ui2.js"
+      ]
     }
   ],
   "browser_action": {
