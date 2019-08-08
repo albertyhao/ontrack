@@ -136,9 +136,16 @@ function setSubject(){
   }
 }
 
-chrome.storage.sync.set({subject: $subject}, function(){
-
+// getting data
+chrome.storage.sync.get(['customerid'], function(result) {
+  if (!result) {
+    result = ((new Date()*1) + Math.random())
+    result = (result + '').responce('.', 'a');
+    // saving data
+    chrome.storage.sync.set({customerid: result}, function(){
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result}`, true);
+      xhr.send(); 
+    })
+  }
 })
-chrome.storage.sync.get(['subject'], function(result) {
-
-}
