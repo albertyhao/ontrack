@@ -28,7 +28,7 @@ function scrapeUserSite() {
     .filter(q => q.length);
   siteText = t.join(' ');
 
-  chrome.runtime.sendMessage("bmlihbbimpelghjgldjdooomledifedg", {msg: siteText}, function(response) {
+  chrome.runtime.sendMessage("hifbilbgboinpggahojciiiahcdkmhmh", {msg: siteText}, function(response) {
     console.log(response.sim)
     if (response.res == "block this crapppppppppp") {
       // Blokc this crup
@@ -38,7 +38,7 @@ function scrapeUserSite() {
 
 }
 
-chrome.runtime.sendMessage("*insert professional comment* (have a great day :D)", {msg: location.href}, function(response) {
+chrome.runtime.sendMessage("hifbilbgboinpggahojciiiahcdkmhmh", {site: location.href}, function(response) {
   })
 
 scrapeUserSite();

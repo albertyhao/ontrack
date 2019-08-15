@@ -14,13 +14,17 @@
 
 //   }, {url: [{urlMatches : 'https://www.hulu.com'}]});
 
-console.log('HI')
-chrome.storage.sync.get(['customerid'], function(result){
-	console.log(result)
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result}&site=hello`, true);
-  xhr.send(); 
-})
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+  	if (req.site) {
+  		console.log('HI')
+		chrome.storage.sync.get(['customerid'], function(result){
+			console.log(result)
+  			var xhr = new XMLHttpRequest();
+  			xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}`, true);
+ 			xhr.send(); 
+		})
+  	}
+ 
 
-chrome.runtime.sendMessage("*insert professional comment* (have a great day :D)", {msg: location.href}, function(response) {
-  })
+})
