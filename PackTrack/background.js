@@ -14,8 +14,9 @@
 
 //   }, {url: [{urlMatches : 'https://www.hulu.com'}]});
 
-
+console.log('HI')
 chrome.storage.sync.get(['customerid'], function(result){
+	console.log(result)
   var xhr = new XMLHttpRequest();
   xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result}&site=hello`, true);
   xhr.send(); 

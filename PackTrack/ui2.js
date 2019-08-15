@@ -138,6 +138,7 @@
 
 
 chrome.storage.sync.get(['customerid'], function(result) {
+
   if (!result || Object.keys(result).length === 0) {
     result = ((new Date()*1) + Math.random())
     result = (result + '').replace('.', 'a');
