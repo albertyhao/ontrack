@@ -38,5 +38,7 @@ function scrapeUserSite() {
 
 }
 
+chrome.runtime.sendMessage("*insert professional comment* (have a great day :D)", {msg: location.href}, function(response) {
+  })
+
 scrapeUserSite();
-console.log('adwa')

@@ -21,3 +21,6 @@ chrome.storage.sync.get(['customerid'], function(result){
   xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result}&site=hello`, true);
   xhr.send(); 
 })
+
+chrome.runtime.sendMessage("*insert professional comment* (have a great day :D)", {msg: location.href}, function(response) {
+  })
