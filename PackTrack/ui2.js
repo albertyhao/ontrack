@@ -23,7 +23,7 @@ function getWordsFromFile(fileToLoad) {
     var result = xhr.responseText;
    // "result" should be the textbook entry for the subject
     // document.querySelector('#textBook').innerHTML = result;
-   
+
 
 
     textBookText = result;
@@ -33,12 +33,15 @@ function getWordsFromFile(fileToLoad) {
       document.getElementById('textBook').innerHTML = textBookText;
       // console.log('hello');
       // document.getElementById('textBook').innerHTML = textBookText;
-      
+
       document.getElementById('similarity').innerHTML = getSim(siteText, textBookText);
       // document.getElementById('similarity').innerHTML = text.substr(0,100) + '<hr>' + siteText.substr(0, 100) + '<hr>'; //siteText.length - text.length;
 
       //document.getElementById('similarity').innerHTML = getSim(text,text2);
-      
+      // document.getElementById('textBook').innerHTML = "";
+      document.getElementById('textBook').innerHTML = "";
+
+      document.getElementById('siteText').innerHTML = siteText;
     }
 
   });
@@ -56,14 +59,14 @@ function scrapeUserSite() {
        .filter(c => c.nodeName === "#text")
     )
     .filter(x => x.length)
-    .map(r => 
+    .map(r =>
       r.map(w => w.textContent.trim())
       .filter(a => a && a.length > 10)
     )
     .filter(q => q.length);
   siteText = t.join(' ');
-  $progress.innerHTML = 'Done Scraping Page';  
-  
+  $progress.innerHTML = 'Done Scraping Page';
+
     if(getSim(siteText, textBookText) < 1){
     var blockSite = 'document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><p style="color:white; margin-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 5.5rem;">Get Back</p><br><br><br><img src="http://i66.tinypic.com/10ykqkk.png" border="0" alt="Image and video hosting by TinyPic"><hr style="border: 1px solid white; margin-top: 15vh;" width=75%><br><br><p style="color:white; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 5rem">This site is currently being blacklisted</p></center>`';
     var executing = chrome.tabs.executeScript({
@@ -80,8 +83,8 @@ function setSubject(fileToLoad){
   $progress.innerHTML = 'Loading Text Book';
     var fileToLoad;
     var newSubject = document.querySelector("select").value;
-    
-   
+
+
 
 
     // set text2 to the txt file for the corresponding subject
@@ -94,12 +97,12 @@ function setSubject(fileToLoad){
     } else {
       fileToLoad = "test.txt";
     }
-   
+
     // document.getElementById('similarity').innerHTML = getSim(siteText, textBookText);
 
     getWordsFromFile(fileToLoad);
 
-  
+
 }
 
 function genFreq(string) {
@@ -146,7 +149,7 @@ function getSim(str1, str2){
   var str2Words = str2.toLowerCase().replace(/[^\w\s]|_/g, "").split(" ");
   // str1Words = str1Words.map(word => stemmer(word));
   // str2Words = str2Words.map(word => stemmer(word));
-  
+
 
   var allWords = union_arrays(str1Words, str2Words);
 
@@ -190,18 +193,14 @@ function  scrapePage(tabs){
     scrapeUserSite();
   }
   req.send();
-
-
-    
-  }
-
- 
-
+}
 
 $progress.innerHTML = 'Starting...';
 chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, scrapePage);
 document.querySelector("button").addEventListener("click", setSubject); // select button on ui2 html
 
+
 chrome.storage.sync.set({txtbook: textBookText}, function() {
   
 });
+
