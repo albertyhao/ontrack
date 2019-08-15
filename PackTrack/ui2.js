@@ -1,3 +1,16 @@
+chrome.storage.sync.get(['customerid'], function(result) {
+  if (!result || Object.keys(result).length === 0) {
+    result = ((new Date()*1) + Math.random())
+    result = (result + '').replace('.', 'a');
+    document.querySelector('#console').innerHTML = JSON.stringify(result);
+    chrome.storage.sync.set({customerid: result}, function(){
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result}`, true);
+      xhr.send();
+    })
+  }
+  document.querySelector('#console').innerHTML = JSON.stringify(result);
+})
 var siteText;
 var textBookText;
 
@@ -196,25 +209,12 @@ function  scrapePage(tabs){
 }
 
 
-chrome.storage.sync.get(['customerid'], function(result) {
-  if (!result || Object.keys(result).length === 0) {
-    result = ((new Date()*1) + Math.random())
-    result = (result + '').replace('.', 'a');
-    document.querySelector('#console').innerHTML = JSON.stringify(result);
-    chrome.storage.sync.set({customerid: result}, function(){
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result}`, true);
-      xhr.send(); 
-    })
-  }
-  document.querySelector('#console').innerHTML = JSON.stringify(result);
-})
+
 $progress.innerHTML = 'Starting...';
 chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, scrapePage);
 document.querySelector("button").addEventListener("click", setSubject); // select button on ui2 html
 
 
 chrome.storage.sync.set({txtbook: textBookText}, function() {
-  
-});
 
+});
