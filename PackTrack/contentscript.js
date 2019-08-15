@@ -21,15 +21,15 @@ function scrapeUserSite() {
        .filter(c => c.nodeName === "#text")
     )
     .filter(x => x.length)
-    .map(r => 
+    .map(r =>
       r.map(w => w.textContent.trim())
       .filter(a => a && a.length > 10)
     )
     .filter(q => q.length);
   siteText = t.join(' ');
 
-  chrome.runtime.sendMessage("jgdbmelgdmmliccihahcklmnpnmochih", {msg: siteText}, function(response) {
-    console.log('awiealwhduawhdjlaw')
+  chrome.runtime.sendMessage("bmlihbbimpelghjgldjdooomledifedg", {msg: siteText}, function(response) {
+    console.log(response.sim)
     if (response.res == "block this crapppppppppp") {
       // Blokc this crup
       document.write('')

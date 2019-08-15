@@ -1,7 +1,7 @@
 // chrome.storage.sync.get(['customerid'], function(){
 //   var xhr = new XMLHttpRequest();
 //   xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result}&site=${location.href}`, true);
-//   xhr.send(); 
+//   xhr.send();
 // })
 var stopWords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd", 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's", 'her', 'hers', 'herself', 'it', "it's", 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', "that'll", 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', "don't", 'should', "should've", 'now', 'd', 'll', 'm', 'o', 're', 've', 'y', 'ain', 'aren', "aren't", 'couldn', "couldn't", 'didn', "didn't", 'doesn', "doesn't", 'hadn', "hadn't", 'hasn', "hasn't", 'haven', "haven't", 'isn', "isn't", 'ma', 'mightn', "mightn't", 'mustn', "mustn't", 'needn', "needn't", 'shan', "shan't", 'shouldn', "shouldn't", 'wasn', "wasn't", 'weren', "weren't", 'won', "won't", 'wouldn', "wouldn't"]
 var textBookText;
@@ -15,20 +15,20 @@ function getWordsFromFile(fileToLoad) {
   var xhr = new XMLHttpRequest();
   // document.getElementById('console').innerHTML = text2;
 
-  xhr.open("GET",   chrome.extension.getURL(fileToLoad), true);
+  xhr.open("GET", chrome.extension.getURL(fileToLoad), true);
   // document.getElementById('console').innerHTML = "2";
 
 
   xhr.addEventListener("load", function() {
-   
+
     var result = xhr.responseText;
    // "result" should be the textbook entry for the subject
     // document.querySelector('#textBook').innerHTML = result;
-   
+
 
 
     textBookText = result;
- 
+
 
   });
 
@@ -46,9 +46,9 @@ chrome.runtime.onMessage.addListener(
                 var sim = getSim(req.msg, textBookText)
 
                 if (sim < 0.5) {
-                  sendResponse({res: "block this crapppppppppp"})
+                  sendResponse({res: "block this crapppppppppp", sim: sim})
                 } else {
-                  sendResponse({res: "Ontrakc"})
+                  sendResponse({res: "Ontrakc", sim: sim})
                 }
 
       // sendResponse({farewell: "goodbye"});
@@ -116,7 +116,7 @@ function getSim(str1, str2){
   var str2Words = str2.toLowerCase().replace(/[^\w\s]|_/g, "").split(" ");
   // str1Words = str1Words.map(word => stemmer(word));
   // str2Words = str2Words.map(word => stemmer(word));
-  
+
 
   var allWords = union_arrays(str1Words, str2Words);
 
