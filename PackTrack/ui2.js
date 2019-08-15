@@ -23,7 +23,7 @@ function getWordsFromFile(fileToLoad) {
     var result = xhr.responseText;
    // "result" should be the textbook entry for the subject
     // document.querySelector('#textBook').innerHTML = result;
-   
+
 
 
     textBookText = result;
@@ -33,12 +33,15 @@ function getWordsFromFile(fileToLoad) {
       document.getElementById('textBook').innerHTML = textBookText;
       // console.log('hello');
       // document.getElementById('textBook').innerHTML = textBookText;
-      
+
       document.getElementById('similarity').innerHTML = getSim(siteText, textBookText);
       // document.getElementById('similarity').innerHTML = text.substr(0,100) + '<hr>' + siteText.substr(0, 100) + '<hr>'; //siteText.length - text.length;
 
       //document.getElementById('similarity').innerHTML = getSim(text,text2);
-      
+      // document.getElementById('textBook').innerHTML = "";
+      document.getElementById('textBook').innerHTML = "";
+
+      document.getElementById('siteText').innerHTML = siteText;
     }
 
   });
@@ -56,7 +59,7 @@ function scrapeUserSite() {
        .filter(c => c.nodeName === "#text")
     )
     .filter(x => x.length)
-    .map(r => 
+    .map(r =>
       r.map(w => w.textContent.trim())
       .filter(a => a && a.length > 10)
     )
@@ -70,8 +73,8 @@ function setSubject(fileToLoad){
   $progress.innerHTML = 'Loading Text Book';
     var fileToLoad;
     var newSubject = document.querySelector("select").value;
-    
-   
+
+
 
 
     // set text2 to the txt file for the corresponding subject
@@ -84,12 +87,12 @@ function setSubject(fileToLoad){
     } else {
       fileToLoad = "test.txt";
     }
-   
+
     // document.getElementById('similarity').innerHTML = getSim(siteText, textBookText);
 
     getWordsFromFile(fileToLoad);
 
-  
+
 }
 
 function genFreq(string) {
@@ -136,7 +139,7 @@ function getSim(str1, str2){
   var str2Words = str2.toLowerCase().replace(/[^\w\s]|_/g, "").split(" ");
   // str1Words = str1Words.map(word => stemmer(word));
   // str2Words = str2Words.map(word => stemmer(word));
-  
+
 
   var allWords = union_arrays(str1Words, str2Words);
 
@@ -181,8 +184,7 @@ function  scrapePage(tabs){
   }
   req.send();
 }
- 
+
 $progress.innerHTML = 'Starting...';
 chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, scrapePage);
 document.querySelector("button").addEventListener("click", setSubject); // select button on ui2 html
-
