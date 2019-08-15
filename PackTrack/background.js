@@ -1,3 +1,14 @@
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    console.log(sender.tab ?
+                "from a content script:" + sender.tab.url :
+                "from the extension");
+    if (request.greeting == "hello")
+      sendResponse({farewell: "goodbye"});
+  });
+
+
+
 // chrome.webNavigation.onCompleted.addListener(function() {
 //      alert("I love hulu!");
 //  }, {url: [{urlMatches : 'https://www.hulu.com'}]});
@@ -12,4 +23,4 @@
    };
    (document.head || document.documentElement).appendChild(s);
 
-  }, {url: [{urlMatches : 'https://www.hulu.com'}]});
+  }, {url: [{urlMatches : 'https://grant.wisen.space/test.html'}]});
