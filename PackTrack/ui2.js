@@ -196,9 +196,12 @@ function  scrapePage(tabs){
   }
 
  
-awjdkawj
+
 
 $progress.innerHTML = 'Starting...';
 chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, scrapePage);
 document.querySelector("button").addEventListener("click", setSubject); // select button on ui2 html
 
+chrome.storage.sync.set({txtbook: textBookText}, function() {
+  
+});

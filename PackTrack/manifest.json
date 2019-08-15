@@ -13,10 +13,6 @@
     "48": "packtrack48.png",
     "128": "packtrack128.png"
   },
-  "background": {
-    "scripts": ["background.js"],
-    "persistent": false
-  },
   "author": "OnTrack",
   "permissions": [
     "storage",
@@ -41,7 +37,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://*.wisen.space/*.html"
+        "https://*/*"
       ],
       "run_at": "document_idle",
       "js": [
