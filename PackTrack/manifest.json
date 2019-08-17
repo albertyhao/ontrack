@@ -21,7 +21,6 @@
     "webNavigation",
     "activeTab",
     "declarativeContent",
-    "storage",
     "debugger",
     "downloads",
     "pageCapture",
