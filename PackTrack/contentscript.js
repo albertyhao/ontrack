@@ -41,7 +41,7 @@ function scrapeUserSite() {
         // Blokc this crup
         document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";
         document.body.style.height = "821px";
-        document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><p style="color:white; margin-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 5.5rem;">Get Back</p><br><br><br><img src="http://i66.tinypic.com/10ykqkk.png" border="0" alt="Image and video hosting by TinyPic"><hr style="border: 1px solid white; margin-top: 15vh;" width=75%><br><br><p style="color:white; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 5rem">This site is currently being blacklisted</p></center>`;
+        document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><br><img src="http://i66.tinypic.com/10ykqkk.png" border="0" alt="Image and video hosting by TinyPic"><br><br></center>`;
       }
     })
   })
