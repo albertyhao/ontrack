@@ -21,7 +21,7 @@ function scrapeUserSite() {
        .filter(c => c.nodeName === "#text")
     )
     .filter(x => x.length)
-    .map(r => 
+    .map(r =>
       r.map(w => w.textContent.trim())
       .filter(a => a && a.length > 10)
     )

@@ -1,5 +1,7 @@
 // var siteText;
 // var textBookText;
+// var siteText;
+// var textBookText;
 
 // var url;
 
@@ -196,6 +198,21 @@
 // }
 
 
+
+
+// $progress.innerHTML = 'Starting...';
+// chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, scrapePage);
+// document.querySelector("button").addEventListener("click", setSubject); // select button on ui2 html
+
+// chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, scrapePage);
+// document.querySelector("button").addEventListener("click", setSubject); // select button on ui2 html
+
+
+// chrome.storage.sync.set({txtbook: textBookText}, function() {
+  
+// });
+
+
 chrome.storage.sync.get(['customerid'], function(result) {
   if (!result || Object.keys(result).length === 0) {
     result = ((new Date()*1) + Math.random())
@@ -210,16 +227,6 @@ chrome.storage.sync.get(['customerid'], function(result) {
   // document.querySelector('#console').innerHTML = JSON.stringify(result);
 })
 
-// chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, scrapePage);
-// document.querySelector("button").addEventListener("click", setSubject); // select button on ui2 html
-
-
-// chrome.storage.sync.set({txtbook: textBookText}, function() {
-  
-// });
-
-
-
 document.querySelector('#whitelistSite').addEventListener('click', saveWhitelist);
 
 function saveWhitelist(){
@@ -233,3 +240,4 @@ function saveWhitelist(){
   
 }
 
+});
