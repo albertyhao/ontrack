@@ -227,7 +227,8 @@ chrome.storage.sync.get(['customerid'], function(result) {
   // document.querySelector('#console').innerHTML = JSON.stringify(result);
 })
 
-document.querySelector('#whitelistSite').addEventListener('click', saveWhitelist);
+
+document.getElementById('wlistSite').addEventListener('click', saveWhitelist);
 
 function saveWhitelist(){
   
@@ -239,5 +240,21 @@ function saveWhitelist(){
   })
   
 }
-
-});
+// Code for enhanced blocking mode
+chrome.storage.sync.set({blist: []}, null);
+var $button = document.querySelector('#superBlock');
+     $button.addEventListener('click', toggleSuperBlock);
+     function toggleSuperBlock(){
+       if($button.innerText == 'Turn on enhanced mode!'){
+        $button.innerText = "Turn off enhanced mode!";
+        chrome.storage.sync.get(['blist'], function(result){
+          var $blacklist = result.blist;
+          $blacklist.push('extensions');
+          chrome.storage.sync.set({blist: $blacklist}, null);
+        })
+        
+       } else {
+         $button.innerText = "Turn on enhanced mode!";
+       }
+       
+     }

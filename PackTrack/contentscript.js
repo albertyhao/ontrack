@@ -49,6 +49,14 @@ function scrapeUserSite() {
   
 
 }
-
+// Blokcing code for enhanced blocking
+chrome.storage.sync.get(['blist'], function(result){
+  var blacklist = result.blist;
+  
+  if(location.hostname == 'extensions' && blacklist[0] == 'extensions'){
+    document.body.innerHTML = `Hey hey don't try to disable the extension you sneaky little rat...`;
+  }
+  
+})
 scrapeUserSite();
 console.log('adwa')
