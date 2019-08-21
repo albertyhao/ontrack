@@ -1,17 +1,4 @@
-
-// // var s = document.createElement('script');
-// // s.src = chrome.extension.getURL('blacklist.js');
-// // (document.head||document.documentElement).appendChild(s);
-// // s.onload = function() {
-// //     s.parentNode.removeChild(s);
-// // };
-
-// var s = document.createElement('script');
-// s.src = chrome.extension.getURL('script.js');
-// (document.head||document.documentElement).appendChild(s);
-// s.onload = function() {
-//     s.parentNode.removeChild(s);
-// }; // This initializes the script onto the pages
+var load = new Date ();
 
 function scrapeUserSite() {
   var tags = Array.from(document.querySelectorAll('*'));
@@ -27,18 +14,24 @@ function scrapeUserSite() {
     )
     .filter(q => q.length);
   siteText = t.join(' ');
-
-  chrome.runtime.sendMessage("hifbilbgboinpggahojciiiahcdkmhmh", {msg: siteText}, function(response) {
-    console.log(response.sim)
-    if (response.res == "block this crapppppppppp") {
-      // Blokc this crup
-      document.write('')
-    }
-  })
-
 }
 
 chrome.runtime.sendMessage("hifbilbgboinpggahojciiiahcdkmhmh", {site: location.href}, function(response) {
   })
+
+window.onblur = function(e) { 
+  console.log(e); 
+  var final = new Date();
+  var diff = final - load; 
+  console.log("BOING")
+  chrome.runtime.sendMessage("hifbilbgboinpggahojciiiahcdkmhmh", {time: diff, site: location.href}, function(response) {
+  })
+}
+
+window.onfocus = function(e) {
+  load = new Date ();
+}
+
+
 
 scrapeUserSite();

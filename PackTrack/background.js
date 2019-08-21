@@ -16,15 +16,22 @@
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
-  	if (req.site) {
+  	if (req.time) {
+  		console.log('BOINK')
+		chrome.storage.sync.get(['customerid'], function(result){
+			console.log(result)
+  			var xhr = new XMLHttpRequest();
+  			xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&time=${encodeURIComponent(req.time)}`);
+ 			xhr.send(); 
+		})
+	}
+  	else if (req.site) {
   		console.log('HI')
 		chrome.storage.sync.get(['customerid'], function(result){
 			console.log(result)
   			var xhr = new XMLHttpRequest();
-  			xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}`, true);
+  			xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}`);
  			xhr.send(); 
 		})
   	}
- 
-
 })
