@@ -1,3 +1,4 @@
+
 var load = new Date ();
 
 function scrapeUserSite() {
@@ -35,3 +36,32 @@ window.onfocus = function(e) {
 
 
 scrapeUserSite();
+
+  // var whitelist = document.querySelector('#whitelist').innerText;
+  // chrome.storage.sync.set({wlist: whitelist});
+
+chrome.storage.sync.get(['wlist'], function(result){
+  var whitelist = result.wlist;
+  console.log(whitelist);
+
+  chrome.runtime.sendMessage(chrome.runtime.id, {msg: siteText}, function(response) {
+    console.log('awiealwhduawhdjlaw')
+    if (response.res == "block this crapppppppppp" && whitelist.every(function(site){return site !== location.hostname})) {
+      // Blokc this crup
+       document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";
+      document.body.style.height = "821px";
+      document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><br><img src="http://i66.tinypic.com/10ykqkk.png" border="0" alt="Image and video hosting by TinyPic"><br><br></center>`;
+    }
+  })
+})
+// Blokcing code for enhanced blocking
+chrome.storage.sync.get(['blist'], function(result){
+  var blacklist = result.blist;
+  
+  if(location.hostname == 'extensions' && blacklist[0] == 'extensions'){
+    document.body.innerHTML = `Hey hey don't try to disable the extension you sneaky little rat...`;
+  }
+  
+})
+scrapeUserSite();
+console.log('adwa')

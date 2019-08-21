@@ -28,6 +28,10 @@ h1 {
   color: black;
 }
 
+p {
+  font-family: 'Lato', sans-serif;
+}
+
 .packtrackicon {
   height: 50px;
   width: 50px;
@@ -36,29 +40,30 @@ h1 {
 
 .column p {
   font-family: 'Lato', sans-serif;
+  /*font-family: 'Merriweather', serif;*/
   color: black;
   font-size: 11px;
   font-weight: 400;
 }
 
 .btn2 {
-  border: 4px solid #5bd8e3;
-  padding: 8px 18px;
-  border-radius: 50px;
+  border: 2px solid #5dcce8;
+  padding: 6px 16px;
+  border-radius: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
   outline: none;
   background: #fff;
-  color: #5bd8e3;
+  color: #5dcce8;
   font-size: 11px;
 }
 
 .btn2:hover {
-   background: #5bd8e3;
+   background: #5dcce8;
    color: #fff;
-   border: 4px solid #5bd8e3;
-   border-radius: 50px;
+   border: 2px solid #5dcce8;
+   border-radius: 12px;
  }
 
  .dropdown {
@@ -137,3 +142,4 @@ h1 {
  .container {
    text-align: center;
  }
+ 
