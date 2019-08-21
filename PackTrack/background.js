@@ -72,14 +72,22 @@ chrome.runtime.onMessage.addListener(
       // console.log(sender.tab ?
       //   "from a content script:" + sender.tab.url:
       //   "from the extension");
-
+      function doSim() {
+        if(!textBookText) {
+          setTimeout(doSim, 1000);
+          return;
+        }
         var sim = getSim(req.txt, textBookText)
+        console.log(sim);
 
         if (sim < 0.4) {
           sendResponse({res: true, sim: sim})
         } else {
           sendResponse({res: false, sim: sim})
         }
+      }
+      doSim();
+        
     }
     
   });
@@ -111,8 +119,14 @@ function genFreq(string) {
   var sentences = string.split('.');
   for (i=0; i < sentences.length; i++){
     var wordCount = sentences[i].split(" ");
-    
+    var cleanSentences = [];
+    if(wordCount > 4){
+      cleanSentences.push(sentences[i]);
+    }
   }
+
+  string = cleanSentences.join(" ");
+  
   var wordArray = string.split(" ");
   var termFreqDict = {};
   for(i=0; i < wordArray.length; i++) {
@@ -144,7 +158,6 @@ function union_arrays (x, y) {
 function getSim(str1, str2){
   str1 = str1.split(" ").filter(w => !stopWords.includes(w)).join(" ");
   str2 = str2.split(" ").filter(w => !stopWords.includes(w)).join(" ");
-
 
   var dict1 = genFreq(str1)
   var dict2 = genFreq(str2)
@@ -181,5 +194,9 @@ function getSim(str1, str2){
     for(key in allDict){
         sim += (allDict[key][0]*allDict[key][1])
       }
+    console.log('SIM SIM', sim)
     return sim
+   
 }
+
+setNewSubject();
