@@ -26,7 +26,6 @@ function getWordsFromFile(fileToLoad) {
     // document.querySelector('#textBook').innerHTML = result;
 
 
-
     textBookText = result;
 
 
@@ -35,38 +34,54 @@ function getWordsFromFile(fileToLoad) {
   xhr.send();
 }
 
-//Getting subject from chrome storage
-chrome.storage.sync.get(['subject'], function(result){
-  var newSubject = result.subject;
-  if(newSubject = "physics"){
-    getWordsFromFile("physics.txt");
-  } else if(newSubject = "biology"){
-    getWordsFromFile("biology.txt");
-  } else if(newSubject = "history"){
-    getWordsFromFile("history.txt");
-  } else {
-    return;
-  }
-})
+function setNewSubject(){
+  //Getting subject from chrome storage
+  chrome.storage.sync.get(['subject'], function(result){
+    var newSubject = result.subject;
+    console.log(newSubject);
+    if(newSubject = "physics"){
+      getWordsFromFile("physics.txt");
+    } else if(newSubject = "biology"){
+      getWordsFromFile("biology.txt");
+    } else if(newSubject = "history"){
+      getWordsFromFile("history.txt");
+    } else {
+      return;
+    }
+  })
+}
+
 
 
 // getWordsFromFile('physics.txt');
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
-    console.log(sender.tab ?
-                "from a content script:" + sender.tab.url:
-                "from the extension");
+    if (req.subject) {
+      
+      setNewSubject();
 
-                var sim = getSim(req.msg, textBookText)
+      chrome.runtime.sendMessage(chrome.runtime.id, {redo: true}, null)
+    }
+  }
+)
 
-                if (sim < 0.37) {
-                  sendResponse({res: "block this crapppppppppp", sim: sim})
-                } else {
-                  sendResponse({res: "Ontrakc", sim: sim})
-                }
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.txt) {
+      // console.log(sender.tab ?
+      //   "from a content script:" + sender.tab.url:
+      //   "from the extension");
 
-      // sendResponse({farewell: "goodbye"});
+        var sim = getSim(req.txt, textBookText)
+
+        if (sim < 0.4) {
+          sendResponse({res: true, sim: sim})
+        } else {
+          sendResponse({res: false, sim: sim})
+        }
+    }
+    
   });
 
 
@@ -87,10 +102,17 @@ chrome.runtime.onMessage.addListener(
 
 //   }, {url: [{urlMatches : 'https://grant.wisen.space/test.html'}]});
 
+
+
 function genFreq(string) {
   string = string.toLowerCase();
   string = string.replace(/[^\w\s]|_/g, "");
-
+  string = string.replace("\n", " ");
+  var sentences = string.split('.');
+  for (i=0; i < sentences.length; i++){
+    var wordCount = sentences[i].split(" ");
+    
+  }
   var wordArray = string.split(" ");
   var termFreqDict = {};
   for(i=0; i < wordArray.length; i++) {
