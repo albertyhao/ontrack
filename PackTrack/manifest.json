@@ -42,7 +42,6 @@
       "run_at": "document_idle",
       "js": [
         "contentscript.js"
-        , "ui2.js"
       ]
     }
   ],

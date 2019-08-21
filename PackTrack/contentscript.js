@@ -34,7 +34,8 @@ window.onblur = function(e) {
     console.log(whitelist);
 
     chrome.runtime.sendMessage(chrome.runtime.id, {txt: siteText}, function(response) {
-      if (response.res/* && whitelist.every(function(site){return site !== location.hostname})*/) {
+      if(!response) return;
+      if (response.res && whitelist.every(function(site){return site !== location.hostname}) ) {
         // Blokc this crup
         document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";
         document.body.style.height = "821px";

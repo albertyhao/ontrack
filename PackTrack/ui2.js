@@ -1,4 +1,3 @@
-
 chrome.storage.sync.get(['customerid'], function(result) {
 
   if (!result || Object.keys(result).length === 0) {
@@ -14,8 +13,10 @@ chrome.storage.sync.get(['customerid'], function(result) {
   document.querySelector('#console').innerHTML = 'hello' + JSON.stringify(result);
 })
 
+var $wlist = document.getElementById('wlistSite');
+if($wlist)
+$wlist.addEventListener('click', saveWhitelist);
 
-// document.getElementById('wlistSite').addEventListener('click', saveWhitelist);
 
 function saveWhitelist(){
   
