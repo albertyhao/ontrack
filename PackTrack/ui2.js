@@ -27,6 +27,33 @@ function saveWhitelist(){
   })
   
 }
+
+// //Code for saving subject 
+
+
+var subjectButton = document.querySelector('#submit');
+subjectButton.addEventListener('click', setSubject);
+chrome.storage.sync.get(['subject'], function(result){
+  document.querySelector('.dropdown-select').value = result.subject;
+  chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
+})
+function setSubject(){
+  // chrome.storage.sync.get(['subject'], function(result){
+  //   var $subject = result.subject;
+  //   $subject = document.querySelector('.dropdown-select').value;
+  //   chrome.storage.sync.set({subject: $subject}, null);
+  // })
+chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
+
+chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
+chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+  chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
+});
+}
+
+
+
+
 // Code for enhanced blocking mode
 chrome.storage.sync.set({blist: []}, null);
 var $button = document.querySelector('#superBlock');
