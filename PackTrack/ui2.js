@@ -15,7 +15,7 @@ chrome.storage.sync.get(['customerid'], function(result) {
 })
 
 
-document.getElementById('wlistSite').addEventListener('click', saveWhitelist);
+// document.getElementById('wlistSite').addEventListener('click', saveWhitelist);
 
 function saveWhitelist(){
   
