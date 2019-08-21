@@ -6,12 +6,12 @@
 var stopWords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd", 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's", 'her', 'hers', 'herself', 'it', "it's", 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', "that'll", 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', "don't", 'should', "should've", 'now', 'd', 'll', 'm', 'o', 're', 've', 'y', 'ain', 'aren', "aren't", 'couldn', "couldn't", 'didn', "didn't", 'doesn', "doesn't", 'hadn', "hadn't", 'hasn', "hasn't", 'haven', "haven't", 'isn', "isn't", 'ma', 'mightn', "mightn't", 'mustn', "mustn't", 'needn', "needn't", 'shan', "shan't", 'shouldn', "shouldn't", 'wasn', "wasn't", 'weren', "weren't", 'won', "won't", 'wouldn', "wouldn't"]
 var textBookText;
 
-chrome.storage.sync.get(['txtbook'], function(result) {
-  // console.log('Value currently is ' + result.key);
-});
+// chrome.storage.sync.get(['txtbook'], function(result) {
+//   // console.log('Value currently is ' + result.key);
+// });
 
 function getWordsFromFile(fileToLoad) {
-
+  
   var xhr = new XMLHttpRequest();
   // document.getElementById('console').innerHTML = text2;
 
@@ -35,17 +35,32 @@ function getWordsFromFile(fileToLoad) {
   xhr.send();
 }
 
-getWordsFromFile("biology.txt");
+//Getting subject from chrome storage
+chrome.storage.sync.get(['subject'], function(result){
+  var newSubject = result.subject;
+  if(newSubject = "physics"){
+    getWordsFromFile("physics.txt");
+  } else if(newSubject = "biology"){
+    getWordsFromFile("biology.txt");
+  } else if(newSubject = "history"){
+    getWordsFromFile("history.txt");
+  } else {
+    return;
+  }
+})
+
+
+// getWordsFromFile('physics.txt');
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     console.log(sender.tab ?
-                "from a content script:" + sender.tab.url :
+                "from a content script:" + sender.tab.url:
                 "from the extension");
 
                 var sim = getSim(req.msg, textBookText)
 
-                if (sim < 0.5) {
+                if (sim < 0.37) {
                   sendResponse({res: "block this crapppppppppp", sim: sim})
                 } else {
                   sendResponse({res: "Ontrakc", sim: sim})
