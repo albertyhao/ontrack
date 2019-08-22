@@ -15,18 +15,22 @@ chrome.storage.sync.get(['customerid'], function(result) {
 
 var $wlist = document.getElementById('wlistSite');
 
-if($wlist)
 $wlist.addEventListener('click', saveWhitelist);
+chrome.storage.sync.get(['wlist'], function(result){
+  chrome.storage.sync.set({wlist: result.wlist});
+})
 
 function saveWhitelist(){
   
   chrome.storage.sync.get(['wlist'], function(result){
-    var $whitelist = result.wlist;
-    $whitelist.push(document.querySelector('#whitelist').value);
-
-    chrome.storage.sync.set({wlist: $whitelist}, null);
+    var blankArray = result.wlist;
+    blankArray.push(document.querySelector('#whitelist').value);
+    chrome.storage.sync.set({wlist: blankArray}, null);
     document.querySelector('#whitelist').value = "";
   })
+  
+  
+  
   
 }
 
