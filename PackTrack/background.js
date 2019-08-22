@@ -82,7 +82,7 @@ chrome.runtime.onMessage.addListener(
         var sim = getSim(req.txt, textBookText)
         console.log(sim);
 
-        if (sim < 0.5) {
+        if (sim < 0.4) {
           sendResponse({res: true, sim: sim, txt: textBookText})
         } else {
           sendResponse({res: false, sim: sim})
@@ -138,7 +138,7 @@ chrome.runtime.onMessage.addListener(
 //   }, {url: [{urlMatches : 'https://grant.wisen.space/test.html'}]});
 
 
-
+//Cos Sim begins
 function genFreq(string) {
   string = string.toLowerCase();
   string = string.replace(/[^\w\s]|_/g, "");
@@ -152,7 +152,7 @@ function genFreq(string) {
   //   }
   // }
 
-  // string = cleanSentences.join(" ");
+  // var betterString = cleanSentences.join(" ");
   
   var wordArray = string.split(" ");
   var termFreqDict = {};

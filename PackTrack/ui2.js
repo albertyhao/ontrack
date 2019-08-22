@@ -25,6 +25,7 @@ function saveWhitelist(){
     $whitelist.push(document.querySelector('#whitelist').value);
 
     chrome.storage.sync.set({wlist: $whitelist}, null);
+    document.querySelector('#whitelist').value = "";
   })
   
 }
@@ -56,20 +57,20 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 
 
 // Code for enhanced blocking mode
-chrome.storage.sync.set({blist: []}, null);
-var $button = document.querySelector('#superBlock');
-     $button.addEventListener('click', toggleSuperBlock);
-     function toggleSuperBlock(){
-       if($button.innerText == 'Turn on enhanced mode!'){
-        $button.innerText = "Turn off enhanced mode!";
-        chrome.storage.sync.get(['blist'], function(result){
-          var $blacklist = result.blist;
-          $blacklist.push('extensions');
-          chrome.storage.sync.set({blist: $blacklist}, null);
-        })
+// chrome.storage.sync.set({blist: []}, null);
+// var $button = document.querySelector('#superBlock');
+//      $button.addEventListener('click', toggleSuperBlock);
+//      function toggleSuperBlock(){
+//        if($button.innerText == 'Turn on enhanced mode!'){
+//         $button.innerText = "Turn off enhanced mode!";
+//         chrome.storage.sync.get(['blist'], function(result){
+//           var $blacklist = result.blist;
+//           $blacklist.push('extensions');
+//           chrome.storage.sync.set({blist: $blacklist}, null);
+//         })
         
-       } else {
-         $button.innerText = "Turn on enhanced mode!";
-       }
+//        } else {
+//          $button.innerText = "Turn on enhanced mode!";
+//        }
        
-     }
+//      }

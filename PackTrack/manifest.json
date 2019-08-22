@@ -5,7 +5,8 @@
   "version": "1.1",
   "web_accessible_resources": [
     "biology.txt",
-    "history.txt"
+    "history.txt",
+    "physics.txt"
   ],
   "description": "OnTrack's PackTrack",
   "icons": {
