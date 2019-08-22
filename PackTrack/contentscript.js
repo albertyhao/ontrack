@@ -13,6 +13,7 @@
 //     s.parentNode.removeChild(s);
 // }; // This initializes the script onto the pages
 
+
 function scrapeUserSite() {
   var tags = Array.from(document.querySelectorAll('*'));
   var f = tags.filter(t => !['script', 'meta', 'link', 'input', 'html', 'body', 'head', 'style', 'img', 'iframe'].includes(t.tagName.toLowerCase()));
@@ -45,6 +46,7 @@ function scrapeUserSite() {
       }
 
       console.log(response.sim);
+      console.log(response.txt);
     })
   })
   
