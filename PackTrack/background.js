@@ -11,7 +11,8 @@ chrome.storage.local.get(['txtbook'], function(result){
   result.txtbook = "";
   chrome.storage.local.set({txtbook: ""}, null);
 })
-
+//This code sets the power to off when page loads
+chrome.storage.sync.set({on: false}, null);
 // chrome.storage.sync.get(['txtbook'], function(result) {
 //   // console.log('Value currently is ' + result.key);
 // });
@@ -66,7 +67,7 @@ function setNewSubject(){
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
-    if (req.subject) {
+    if (req.subject == "change subjects") {
       setNewSubject();
       chrome.runtime.sendMessage(chrome.runtime.id, {redo: true}, null)
     } else {

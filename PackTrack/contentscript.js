@@ -2,6 +2,7 @@
 var load = new Date ();
 
 var siteText;
+var power = false;
 function scrapeUserSite() {
   var tags = Array.from(document.querySelectorAll('*'));
   var f = tags.filter(t => !['script', 'meta', 'link', 'input', 'html', 'body', 'head', 'style', 'img', 'iframe'].includes(t.tagName.toLowerCase()));
@@ -107,11 +108,21 @@ chrome.storage.sync.get(['blist'], function(result){
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
-    if (req.subject) {
+    if (req.subject == "change subjects" && power == true) {
       scrapeUserSite()
     }
   }
 )
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse){
+    if(req.subject == "turn on"){
+      power = true;
+      console.log("extension on")
+      scrapeUserSite();
+    } else {
+      power = false;
+      console.log("extension off")
+    }
+  }
+)
 
-scrapeUserSite();
-console.log('adwa');
