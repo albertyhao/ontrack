@@ -1,6 +1,5 @@
-
-
 chrome.storage.sync.get(['customerid'], function(result) {
+
   if (!result || Object.keys(result).length === 0) {
     result = ((new Date()*1) + Math.random())
     result = (result + '').replace('.', 'a');
@@ -11,6 +10,7 @@ chrome.storage.sync.get(['customerid'], function(result) {
       xhr.send(); 
     })
   }
+  document.querySelector('#console').innerHTML = 'hello' + JSON.stringify(result);
 })
 
 var $wlist = document.getElementById('wlistSite');
@@ -19,6 +19,7 @@ $wlist.addEventListener('click', saveWhitelist);
 chrome.storage.sync.get(['wlist'], function(result){
   chrome.storage.sync.set({wlist: result.wlist});
 })
+
 
 function saveWhitelist(){
   
