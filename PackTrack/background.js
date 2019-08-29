@@ -69,7 +69,6 @@ function setNewSubject(){
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     if (req.subject) {
-      
       setNewSubject();
       chrome.runtime.sendMessage(chrome.runtime.id, {redo: true}, null)
     } else {
@@ -82,7 +81,9 @@ chrome.runtime.onMessage.addListener(
         var xhr = new XMLHttpRequest();
                   xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&sim=${sim}&subject=${result.subject}`);
                   xhr.send(); 
+        console.log('ploop')
         console.log(sim);
+        console.log()
         console.log(sender.tab.url.split('.').slice(-1)[0]);
         if (newSubject == "collegeApps"){
           if (sender.tab.url.split('.').slice(-1)[0].substring(0,3) !== "edu"){
@@ -142,7 +143,6 @@ chrome.runtime.onMessage.addListener(
 		})
 	}
   	else if (req.site) {
-  		console.log('HI')
 		chrome.storage.sync.get(['customerid'], function(result){
 			console.log(result)
   			var xhr = new XMLHttpRequest();
@@ -257,7 +257,6 @@ chrome.runtime.onMessage.addListener(
     })
   }
     else if (req.site) {
-      console.log('HI')
     chrome.storage.sync.get(['customerid'], function(result){
       console.log(result)
         var xhr = new XMLHttpRequest();
