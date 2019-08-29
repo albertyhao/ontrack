@@ -1,5 +1,5 @@
 
-// var load = new Date ();
+var load = new Date ();
 
 var siteText;
 var power = false;
@@ -42,20 +42,20 @@ function scrapeUserSite() {
 
 
 
-// window.onblur = function(e) {
-//   console.log(e);
-//   var final = new Date();
-//   var diff = final - load;
-//   chrome.runtime.sendMessage(chrome.runtime.id, {time: diff, site: location.href}, null);
-// }
+window.onblur = function(e) {
+  console.log(e);
+  var final = new Date();
+  var diff = final - load;
+  chrome.runtime.sendMessage(chrome.runtime.id, {time: diff, site: location.href}, null);
+}
 
 
 
 
 
-// window.onfocus = function(e) {
-//   load = new Date ();
-// }
+window.onfocus = function(e) {
+  load = new Date ();
+}
 
 
 
