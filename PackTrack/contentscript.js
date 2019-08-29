@@ -60,7 +60,7 @@ chrome.storage.sync.get(['wlist'], function(result){
   var whitelist = result.wlist;
   console.log(whitelist);
 
-  chrome.runtime.sendMessage(chrome.runtime.id, {msg: siteText}, function(response) {
+  chrome.runtime.sendMessage(chrome.runtime.id, {msg: siteText, site: location.href}, function(response) {
     console.log('awiealwhduawhdjlaw')
     if (response.res == "block this crapppppppppp" && whitelist.every(function(site){return site !== location.hostname})) {
       // Blokc this crup

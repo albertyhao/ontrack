@@ -60,7 +60,6 @@ chrome.runtime.onMessage.addListener(
     if (req.subject) {
       
       setNewSubject();
-
       chrome.runtime.sendMessage(chrome.runtime.id, {redo: true}, null)
     }
   }
@@ -78,6 +77,9 @@ chrome.runtime.onMessage.addListener(
           return;
         }
         var sim = getSim(req.txt, textBookText)
+        var xhr = new XMLHttpRequest();
+                  xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&sim=${sim}&subject=${result.subject}`);
+                  xhr.send(); 
         console.log(sim);
 
         if (sim < 0.4) {
@@ -91,6 +93,7 @@ chrome.runtime.onMessage.addListener(
     }
     
   });
+
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
@@ -113,8 +116,6 @@ chrome.runtime.onMessage.addListener(
 		})
   	}
 })
-
-
 
 function genFreq(string) {
   string = string.toLowerCase();
@@ -200,7 +201,27 @@ function getSim(str1, str2){
       }
     console.log('SIM SIM', sim)
     return sim
-   
-}
+} 
 
-setNewSubject();
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.time) {
+      console.log('BOINK')
+    chrome.storage.sync.get(['customerid'], function(result){
+      console.log(result)
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&time=${req.time}&sim=${sim}`);
+        xhr.send(); 
+    })
+  }
+    else if (req.site) {
+      console.log('HI')
+    chrome.storage.sync.get(['customerid'], function(result){
+      console.log(result)
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}`);
+      xhr.send(); 
+    })
+    }
+})
