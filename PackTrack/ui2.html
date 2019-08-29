@@ -19,6 +19,7 @@
          <option value="physics">Physics</option>
          <option value="biology">Biology</option>
          <option value="history">History</option>
+         <option value="collegeApps">College Apps</option>
        </select>
      </div>
 
@@ -30,18 +31,23 @@
      </div>
    </div>
 
-   <p style="text-align: center">Help us improve the chrome extension!</p>
-   <p style="text-align: center">Should this site have been blocked?</p>
-   <div class="container">
-     <button class="btn2">Yes</button>
-     <button class="btn2">No</button>
-   </div>
+   <br><br>
+   <center><input id="whitelist" type="text" style="border-top: none; border-left: none; border-right: none; border-color: #49aff2; outline: none; height: 2.5em; font-size: 15px;" placeholder="Whitelist site"><button class="btn2" id="wlistSite">Add</button></center>
+   <br><br>
 
+   <div id='feedback'>
+    <p style="text-align: center">Help us improve the chrome extension!</p>
+    <p style="text-align: center">Should this site have been blocked?</p>
+    <div class="container">
+      <button class="btn2">Yes</button>
+      <button class="btn2">No</button>
+    </div>
+   </div>
    <br><br>
-   <input id="whitelist" type="text" placeholder="whitelist site"><button id="wlistSite">Whitelist</button>
-   <br><br>
-   <button id="superBlock">Turn on enhanced mode!</button>
-  <br><br>
+
+   
+   <!-- <button id="superBlock">Turn on enhanced mode!</button>
+  <br><br> -->
 
    <!-- <h1 style="text-align: center">Actions:</h1>
 

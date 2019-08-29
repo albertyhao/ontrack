@@ -1,6 +1,7 @@
 
 var load = new Date ();
 
+
 function scrapeUserSite() {
   var tags = Array.from(document.querySelectorAll('*'));
   var f = tags.filter(t => !['script', 'meta', 'link', 'input', 'html', 'body', 'head', 'style', 'img', 'iframe'].includes(t.tagName.toLowerCase()));
@@ -43,6 +44,7 @@ window.onblur = function(e) {
       }
 
       console.log(response.sim);
+      console.log(response.txt);
     })
 
 window.onfocus = function(e) {

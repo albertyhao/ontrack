@@ -14,18 +14,24 @@ chrome.storage.sync.get(['customerid'], function(result) {
 })
 
 var $wlist = document.getElementById('wlistSite');
-if($wlist)
+
 $wlist.addEventListener('click', saveWhitelist);
+chrome.storage.sync.get(['wlist'], function(result){
+  chrome.storage.sync.set({wlist: result.wlist});
+})
 
 
 function saveWhitelist(){
   
   chrome.storage.sync.get(['wlist'], function(result){
-    var $whitelist = result.wlist;
-    $whitelist.push(document.querySelector('#whitelist').value);
-
-    chrome.storage.sync.set({wlist: $whitelist}, null);
+    var blankArray = result.wlist;
+    blankArray.push(document.querySelector('#whitelist').value);
+    chrome.storage.sync.set({wlist: blankArray}, null);
+    document.querySelector('#whitelist').value = "";
   })
+  
+  
+  
   
 }
 
@@ -56,20 +62,20 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 
 
 // Code for enhanced blocking mode
-chrome.storage.sync.set({blist: []}, null);
-var $button = document.querySelector('#superBlock');
-     $button.addEventListener('click', toggleSuperBlock);
-     function toggleSuperBlock(){
-       if($button.innerText == 'Turn on enhanced mode!'){
-        $button.innerText = "Turn off enhanced mode!";
-        chrome.storage.sync.get(['blist'], function(result){
-          var $blacklist = result.blist;
-          $blacklist.push('extensions');
-          chrome.storage.sync.set({blist: $blacklist}, null);
-        })
+// chrome.storage.sync.set({blist: []}, null);
+// var $button = document.querySelector('#superBlock');
+//      $button.addEventListener('click', toggleSuperBlock);
+//      function toggleSuperBlock(){
+//        if($button.innerText == 'Turn on enhanced mode!'){
+//         $button.innerText = "Turn off enhanced mode!";
+//         chrome.storage.sync.get(['blist'], function(result){
+//           var $blacklist = result.blist;
+//           $blacklist.push('extensions');
+//           chrome.storage.sync.set({blist: $blacklist}, null);
+//         })
         
-       } else {
-         $button.innerText = "Turn on enhanced mode!";
-       }
+//        } else {
+//          $button.innerText = "Turn on enhanced mode!";
+//        }
        
-     }
+//      }
