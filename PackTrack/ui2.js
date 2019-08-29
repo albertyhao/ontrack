@@ -10,7 +10,6 @@ chrome.storage.sync.get(['customerid'], function(result) {
       xhr.send(); 
     })
   }
-  document.querySelector('#console').innerHTML = 'hello' + JSON.stringify(result);
 })
 
 var $wlist = document.getElementById('wlistSite');
@@ -29,10 +28,6 @@ function saveWhitelist(){
     chrome.storage.sync.set({wlist: blankArray}, null);
     document.querySelector('#whitelist').value = "";
   })
-  
-  
-  
-  
 }
 
 // //Code for saving subject 
@@ -68,6 +63,7 @@ chrome.storage.sync.get(['on'], function(result){
     $powerButton.innerHTML = "Turn Extension On";
   } else {
     $powerButton.innerHTML = "Turn Extension Off";
+
   }
 })
 $powerButton.addEventListener('click', powerOnOff);
@@ -75,14 +71,17 @@ function powerOnOff(){
   if($powerButton.innerText == "Turn Extension On"){
     $powerButton.innerHTML = "Turn Extension Off";
     chrome.storage.sync.set({on: true}, null);
-
+    var final = new Date();
+    chrome.storage.sync.set({on: true}, null);   
+    chrome.storage.sync.set({ontime: final}, null);    
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, {subject: "turn on"}, null);
     });
   } else {
     $powerButton.innerHTML = "Turn Extension On";
+    var final = new Date();
     chrome.storage.sync.set({on: false}, null);
-
+    chrome.storage.sync.set({offtime: final}, null);
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, {subject: "turn off"}, null);
     });
