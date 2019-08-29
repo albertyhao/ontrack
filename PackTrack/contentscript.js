@@ -35,7 +35,9 @@ function scrapeUserSite() {
   chrome.storage.sync.get(['wlist'], function(result){
     var whitelist = result.wlist;
     console.log(whitelist);
-
+    if(!whitelist){
+      whitelist = [];
+    }
     chrome.runtime.sendMessage(chrome.runtime.id, {txt: siteText}, function(response) {
       if(!response) return;
       if (response.res && whitelist.every(function(site){return site !== location.hostname}) ) {
@@ -49,18 +51,18 @@ function scrapeUserSite() {
       console.log(response.txt);
     })
   })
-  
-  
+
+
 
 }
 // Blokcing code for enhanced blocking
 chrome.storage.sync.get(['blist'], function(result){
   var blacklist = result.blist || [];
-  
+
   if(location.hostname == 'extensions' && blacklist[0] == 'extensions'){
     document.body.innerHTML = `Hey hey don't try to disable the extension you sneaky little rat...`;
   }
-  
+
 })
 
 chrome.runtime.onMessage.addListener(
