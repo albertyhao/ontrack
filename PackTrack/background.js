@@ -84,7 +84,7 @@ chrome.runtime.onMessage.addListener(
         console.log(sender.tab.url.split('.').slice(-1)[0]);
         if (newSubject == "collegeApps"){
           if (sender.tab.url.split('.').slice(-1)[0].substring(0,3) !== "edu"){
-            sendResponse({res: true, sim: sim, txt: textBookText})
+            sendResponse({res: true, sim: sim, txt: "This ain't a college website"})
           } else {
             sendResponse({res: false, sim: sim})
           }
@@ -92,7 +92,7 @@ chrome.runtime.onMessage.addListener(
           if (sim < 0.4) {
             sendResponse({res: true, sim: sim, txt: textBookText})
           } else {
-            sendResponse({res: false, sim: sim})
+            sendResponse({res: false, sim: sim, txt: textBookText})
           }
         }
         

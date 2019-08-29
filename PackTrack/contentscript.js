@@ -13,7 +13,7 @@
 //     s.parentNode.removeChild(s);
 // }; // This initializes the script onto the pages
 
-
+var siteText;
 function scrapeUserSite() {
   var tags = Array.from(document.querySelectorAll('*'));
   var f = tags.filter(t => !['script', 'meta', 'link', 'input', 'html', 'body', 'head', 'style', 'img', 'iframe'].includes(t.tagName.toLowerCase()));
@@ -34,7 +34,11 @@ function scrapeUserSite() {
 
   chrome.storage.sync.get(['wlist'], function(result){
     var whitelist = result.wlist;
-    console.log(whitelist);
+    if (!whitelist){
+      whitelist = [];
+    } else {
+      console.log(whitelist);
+    }
 
     chrome.runtime.sendMessage(chrome.runtime.id, {txt: siteText}, function(response) {
       if(!response) return;
@@ -47,6 +51,7 @@ function scrapeUserSite() {
 
       console.log(response.sim);
       console.log(response.txt);
+      console.log(siteText);
     })
   })
   
