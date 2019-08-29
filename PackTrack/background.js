@@ -11,7 +11,8 @@ chrome.storage.local.get(['txtbook'], function(result){
   result.txtbook = "";
   chrome.storage.local.set({txtbook: ""}, null);
 })
-
+//This code sets the power to off when page loads
+chrome.storage.sync.set({on: false}, null);
 // chrome.storage.sync.get(['txtbook'], function(result) {
 //   // console.log('Value currently is ' + result.key);
 // });
@@ -62,16 +63,12 @@ function setNewSubject(){
   })
 }
 
-
-
 // getWordsFromFile('physics.txt');
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
-    if (req.subject) {
-      
+    if (req.subject == "change subjects") {
       setNewSubject();
-
       chrome.runtime.sendMessage(chrome.runtime.id, {redo: true}, null)
     } else {
       function doSim() {
@@ -79,8 +76,15 @@ chrome.runtime.onMessage.addListener(
           setTimeout(doSim, 1000);
           return;
         }
+        console.log('ploopsim');
         var sim = getSim(req.txt, textBookText)
-        console.log(sim);
+        chrome.storage.sync.get(['customerid', 'subject'], function(result){
+          console.log(result);
+          console.log(req.site)
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&sim=${sim}&subject=${result.subject}&loadsimtime=${req.loadsimtime}`);
+          xhr.send(); 
+        })
         console.log(sender.tab.url.split('.').slice(-1)[0]);
         if (newSubject == "collegeApps"){
           if (sender.tab.url.split('.').slice(-1)[0].substring(0,3) !== "edu"){
@@ -128,23 +132,26 @@ chrome.runtime.onMessage.addListener(
     
 //   });
 
-
-
-// chrome.webNavigation.onCompleted.addListener(function() {
-//      alert("I love hulu!");
-//  }, {url: [{urlMatches : 'https://www.hulu.com'}]});
-// use for the blacklist
-
-//  chrome.webNavigation.onCompleted.addListener(function() {
-//    var s = document.createElement('script');
-//    // TODO: add "script.js" to web_accessible_resources in manifest.json
-//    s.src = chrome.extension.getURL('injectBackground.js');
-//    s.onload = function() {
-//        this.remove();
-//    };
-//    (document.head || document.documentElement).appendChild(s);
-
-//   }, {url: [{urlMatches : 'https://grant.wisen.space/test.html'}]});
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+  	if (req.time) {
+  		console.log('BOINK')
+		chrome.storage.sync.get(['customerid'], function(result){
+			console.log(result)
+  			var xhr = new XMLHttpRequest();
+  			xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&time=${encodeURIComponent(req.time)}`);
+ 			xhr.send(); 
+		})
+	}
+  	else if (req.site) {
+		chrome.storage.sync.get(['customerid'], function(result){
+			console.log(result)
+  			var xhr = new XMLHttpRequest();
+  			xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}`);
+ 			xhr.send(); 
+		})
+  	}
+})
 
 
 //Cos Sim begins
@@ -236,7 +243,26 @@ function getSim(str1, str2){
       }
     console.log('SIM SIM', sim)
     return sim
-   
-}
+} 
 
-setNewSubject();
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.time) {
+      console.log('BOINK')
+    chrome.storage.sync.get(['customerid'], function(result){
+      console.log(result)
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&time=${req.time}`);
+        xhr.send(); 
+    })
+  }
+    else if (req.site) {
+    chrome.storage.sync.get(['customerid'], function(result){
+      console.log(result)
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}`);
+      xhr.send(); 
+    })
+    }
+})
