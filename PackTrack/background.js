@@ -67,7 +67,7 @@ function setNewSubject(){
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
-    if (req.subject == "change subjects") {
+    if (req.subject == "change subject") {
       setNewSubject();
       chrome.runtime.sendMessage(chrome.runtime.id, {redo: true}, null)
     } else {
