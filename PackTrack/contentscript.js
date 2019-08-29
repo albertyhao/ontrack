@@ -1,5 +1,5 @@
 
-var load = new Date ();
+// var load = new Date ();
 
 var siteText;
 var power = false;
@@ -42,56 +42,48 @@ function scrapeUserSite() {
 
 
 
-window.onblur = function(e) {
-  console.log(e);
-  var final = new Date();
-  var diff = final - load;
-  chrome.runtime.sendMessage(chrome.runtime.id, {time: diff, site: location.href}, function(response) {})
-}
+// window.onblur = function(e) {
+//   console.log(e);
+//   var final = new Date();
+//   var diff = final - load;
+//   chrome.runtime.sendMessage(chrome.runtime.id, {time: diff, site: location.href}, null);
+// }
 
 
 
 
 
-window.onfocus = function(e) {
-  load = new Date ();
-}
+// window.onfocus = function(e) {
+//   load = new Date ();
+// }
 
 
 
 
 
-  // var whitelist = document.querySelector('#whitelist').innerText;
-  // chrome.storage.sync.set({wlist: whitelist});
-
-
-// Blokcing code for enhanced blocking
-chrome.storage.sync.get(['blist'], function(result){
-  var blacklist = result.blist || [];
-
-  if(location.hostname == 'extensions' && blacklist[0] == 'extensions'){
-    document.body.innerHTML = `Hey hey don't try to disable the extension you sneaky little rat...`;
-  }
-
-})
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
-    if (req.subject == "change subjects" && power == true) {
-      scrapeUserSite()
-    }
-  }
-)
-chrome.runtime.onMessage.addListener(
-  function(req, sender, sendResponse){
-    if(req.subject == "turn on"){
-      power = true;
-      console.log("extension on")
-      scrapeUserSite();
-    } else {
-      power = false;
-      console.log("extension off")
+    if (req.subject == "change subjects") {
+      console.log("got it")
       location.reload();
+      scrapeUserSite();
+      
     }
   }
 )
+// chrome.runtime.onMessage.addListener(
+//   function(req, sender, sendResponse){
+//     if(req.subject == "turn on"){
+//       power = true;
+//       console.log("extension on")
+//       scrapeUserSite();
+//     } else {
+//       power = false;
+//       console.log("extension off")
+//       location.reload();
+//     }
+//   }
+// )
+console.log('did it get this far?')
+scrapeUserSite();
