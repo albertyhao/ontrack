@@ -86,6 +86,7 @@ chrome.runtime.onMessage.addListener(
     } else {
       power = false;
       console.log("extension off")
+      location.reload();
     }
   }
 )
