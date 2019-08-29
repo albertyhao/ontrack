@@ -137,11 +137,13 @@ chrome.storage.sync.get(['customerid'], function(result) {
 
 var $wlist = document.getElementById('wlistSite');
 
-chrome.storage.sync.set({wlist: ["www.google.com"]}, null);
+
+$wlist.addEventListener('click', saveWhitelist);
 
 
 function saveWhitelist(){
-
+  chrome.storage.sync.set({wlist: ["www.google.com"]}, null);
+  
   chrome.storage.sync.get(['wlist'], function(result){
     var blankArray = result.wlist;
     blankArray.push(document.querySelector('#whitelist').value);
