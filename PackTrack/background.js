@@ -62,8 +62,6 @@ function setNewSubject(){
   })
 }
 
-
-
 // getWordsFromFile('physics.txt');
 
 chrome.runtime.onMessage.addListener(
@@ -77,13 +75,15 @@ chrome.runtime.onMessage.addListener(
           setTimeout(doSim, 1000);
           return;
         }
+        console.log('ploopsim');
         var sim = getSim(req.txt, textBookText)
-        var xhr = new XMLHttpRequest();
-                  xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&sim=${sim}&subject=${result.subject}`);
-                  xhr.send(); 
-        console.log('ploop')
-        console.log(sim);
-        console.log()
+        chrome.storage.sync.get(['customerid', 'subject'], function(result){
+          console.log(result);
+          console.log(req.site)
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&sim=${sim}&subject=${result.subject}&loadsimtime=${req.loadsimtime}`);
+          xhr.send(); 
+        })
         console.log(sender.tab.url.split('.').slice(-1)[0]);
         if (newSubject == "collegeApps"){
           if (sender.tab.url.split('.').slice(-1)[0].substring(0,3) !== "edu"){
@@ -252,7 +252,7 @@ chrome.runtime.onMessage.addListener(
     chrome.storage.sync.get(['customerid'], function(result){
       console.log(result)
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&time=${req.time}&sim=${sim}`);
+        xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&time=${req.time}`);
         xhr.send(); 
     })
   }
