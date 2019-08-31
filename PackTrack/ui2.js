@@ -138,7 +138,7 @@ chrome.storage.sync.get(['customerid'], function(result) {
 
 
 chrome.storage.sync.get(['wlist'], function(result){
-  if(result.wlist.includes('www.google.com') === false){
+  if(!result.wlist){
     chrome.storage.sync.set({wlist: ["www.google.com"]}, null);
   }
 })
