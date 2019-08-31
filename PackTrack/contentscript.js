@@ -72,6 +72,18 @@ chrome.runtime.onMessage.addListener(
     }
   }
 )
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "unblock") {
+      
+      location.reload();
+      window.onload = function (){
+        chrome.storage.sync.set({wlist: ['www.google.com']}, null);
+      }
+      
+    }
+  }
+)
 // chrome.runtime.onMessage.addListener(
 //   function(req, sender, sendResponse){
 //     if(req.subject == "turn on"){

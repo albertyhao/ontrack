@@ -135,14 +135,17 @@ chrome.storage.sync.get(['customerid'], function(result) {
   }
 })
 
-var $wlist = document.getElementById('wlistSite');
 
 
-$wlist.addEventListener('click', saveWhitelist);
-
+chrome.storage.sync.get(['wlist'], function(result){
+  if(result.wlist.includes('www.google.com') === false){
+    chrome.storage.sync.set({wlist: ["www.google.com"]}, null);
+  }
+})
 
 function saveWhitelist(){
-  chrome.storage.sync.set({wlist: ["www.google.com"]}, null);
+  
+  
   
   chrome.storage.sync.get(['wlist'], function(result){
     var blankArray = result.wlist;
@@ -152,7 +155,7 @@ function saveWhitelist(){
   })
 }
 
-// //Code for saving subject
+//Code for saving subject
 
 
 var subjectButton = document.querySelector('#submit');
@@ -230,3 +233,29 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 //        }
 
 //      }
+
+//code for unblocking current site
+var $unblock = document.querySelector('#unblock');
+$unblock.addEventListener('click', unblockSite);
+
+function unblockSite(){
+  var getLocation = function(href){
+    var l = document.createElement('a');
+    l.href = href;
+    return l;
+  }
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    var l = getLocation(tabs[0].url);
+    var $hostname = l.hostname;
+    chrome.storage.sync.get(['wlist'], function(result){
+      var blankArray = result.wlist;
+      blankArray.push($hostname);
+      chrome.storage.sync.set({wlist: blankArray}, null);
+    })
+});
+
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {subject: "unblock"}, null);
+  });
+
+}

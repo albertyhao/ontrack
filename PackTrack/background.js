@@ -57,6 +57,8 @@ function setNewSubject(){
       console.log(textBookText);
     } else if(newSubject == "history"){
       getWordsFromFile("history.txt");
+    } else if(newSubject == 'none'){
+      //stuff
     } else {
       console.log('help me plz')
     }
@@ -92,6 +94,8 @@ chrome.runtime.onMessage.addListener(
           } else {
             sendResponse({res: false, sim: sim})
           }
+        } else if(newSubject == "none"){
+            sendResponse({res: false, sim: sim})
         } else {
           if (sim < 0.4) {
             sendResponse({res: true, sim: sim, txt: textBookText})
