@@ -1,6 +1,6 @@
 
 var load = new Date ();
-
+var $qblock;
 var siteText;
 var power = false;
 function scrapeUserSite() {
@@ -18,6 +18,14 @@ function scrapeUserSite() {
     .filter(q => q.length);
   siteText = t.join(' ');
 
+  chrome.storage.sync.get(['qblock'], function(result){
+    if(!result.qblock){
+      $qblock = [];
+    } else {
+      $qblock = result.qblock;
+    }
+  })
+
   chrome.storage.sync.get(['wlist'], function(result){
     var whitelist = result.wlist;
     if (!whitelist){
@@ -27,7 +35,7 @@ function scrapeUserSite() {
     }
       chrome.runtime.sendMessage(chrome.runtime.id, {txt: siteText}, function(response) {
         if(!response) return;
-        if (response.res && whitelist.every(function(site){return site !== location.hostname}) ) {
+        if (response.res && whitelist.every(function(site){return site !== location.hostname}) && $qblock.every(function(site){return site !== location.hostname}) ) {
           // Blokc this crup
           document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";
           document.body.style.height = "821px";

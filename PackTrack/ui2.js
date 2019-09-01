@@ -143,16 +143,23 @@ chrome.storage.sync.get(['wlist'], function(result){
   }
 })
 
+document.getElementById('wlistSite').addEventListener('click', saveWhitelist);
+
 function saveWhitelist(){
+  if(document.querySelector('#whitelist').value.split('.').length < 2){
+    document.getElementById('warning').style.visibility = 'visible';
+  } else {
+    chrome.storage.sync.get(['wlist'], function(result){
+      var blankArray = result.wlist;
+      blankArray.push(document.querySelector('#whitelist').value);
+      chrome.storage.sync.set({wlist: blankArray}, null);
+      document.querySelector('#whitelist').value = "";
+    })
+    document.getElementById('warning').style.visibility = 'hidden';
+  }
   
   
   
-  chrome.storage.sync.get(['wlist'], function(result){
-    var blankArray = result.wlist;
-    blankArray.push(document.querySelector('#whitelist').value);
-    chrome.storage.sync.set({wlist: blankArray}, null);
-    document.querySelector('#whitelist').value = "";
-  })
 }
 
 //Code for saving subject
@@ -235,6 +242,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 //      }
 
 //code for unblocking current site
+chrome.storage.sync.set({qblock: []}, null);
 var $unblock = document.querySelector('#unblock');
 $unblock.addEventListener('click', unblockSite);
 
@@ -247,10 +255,10 @@ function unblockSite(){
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     var l = getLocation(tabs[0].url);
     var $hostname = l.hostname;
-    chrome.storage.sync.get(['wlist'], function(result){
-      var blankArray = result.wlist;
+    chrome.storage.sync.get(['qblock'], function(result){
+      var blankArray = result.qblock;
       blankArray.push($hostname);
-      chrome.storage.sync.set({wlist: blankArray}, null);
+      chrome.storage.sync.set({qblock: blankArray}, null);
     })
 });
 
