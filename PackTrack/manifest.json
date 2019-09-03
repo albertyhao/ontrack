@@ -6,7 +6,8 @@
   "web_accessible_resources": [
     "biology.txt",
     "history.txt",
-    "physics.txt"
+    "physics.txt",
+    "collegeApps.txt"
   ],
   "description": "OnTrack's PackTrack",
   "icons": {

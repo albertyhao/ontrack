@@ -57,8 +57,8 @@ function setNewSubject(){
       console.log(textBookText);
     } else if(newSubject == "history"){
       getWordsFromFile("history.txt");
-    } else if(newSubject == 'none'){
-      //stuff
+    } else if(newSubject == 'collegeApps'){
+      getWordsFromFile("collegeApps.txt");
     } else {
       console.log('help me plz')
     }
@@ -89,13 +89,15 @@ chrome.runtime.onMessage.addListener(
         })
         console.log(sender.tab.url.split('.').slice(-1)[0]);
         if (newSubject == "collegeApps"){
-          if (sender.tab.url.split('.').slice(-1)[0].substring(0,3) !== "edu"){
-            sendResponse({res: true, sim: sim, txt: "This ain't a college website"})
-          } else {
+          if (sender.tab.url.split('.').slice(-1)[0].substring(0,3) == "edu" || sim > 0.4){
             sendResponse({res: false, sim: sim})
+          } else {
+            sendResponse({res: true, sim: sim, txt: "This ain't a college website"})
           }
         } else if(newSubject == "none"){
             sendResponse({res: false, sim: sim})
+        } else if(newSubject == "hardBlock"){
+            sendResponse({res: true, sim: sim})
         } else {
           if (sim < 0.4) {
             sendResponse({res: true, sim: sim, txt: textBookText})
