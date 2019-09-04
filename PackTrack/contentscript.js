@@ -31,7 +31,7 @@ function scrapeUserSite() {
     if (!whitelist){
       whitelist = [];
     } else {
-      console.log(whitelist);
+      // console.log(whitelist);
     }
       chrome.runtime.sendMessage(chrome.runtime.id, {txt: siteText}, function(response) {
         if(!response) return;
@@ -39,11 +39,11 @@ function scrapeUserSite() {
           // Blokc this crup
           document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";
           document.body.style.height = "821px";
-          document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><br><img src="http://i66.tinypic.com/10ykqkk.png" border="0" alt="Image and video hosting by TinyPic"><br><br><p>${response.sim}</p></center>`;
+          document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><br><img src="http://i66.tinypic.com/10ykqkk.png" border="0" alt="Image and video hosting by TinyPic"></center>`;
         }
   
-        console.log(response.sim);
-        console.log(response.txt);
+        // console.log(response.sim);
+        // console.log(response.txt);
       })
     })
 }
@@ -51,7 +51,7 @@ function scrapeUserSite() {
 
 
 window.onblur = function(e) {
-  console.log(e);
+  // console.log(e);
   var final = new Date();
   var diff = final - load;
   chrome.runtime.sendMessage(chrome.runtime.id, {time: diff, site: location.href}, null);
@@ -73,7 +73,7 @@ window.onfocus = function(e) {
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     if (req.subject == "change subjects") {
-      console.log("got it")
+      // console.log("got it")
       location.reload();
       scrapeUserSite();
       
@@ -85,9 +85,7 @@ chrome.runtime.onMessage.addListener(
     if (req.subject == "unblock") {
       
       location.reload();
-      window.onload = function (){
-        chrome.storage.sync.set({wlist: ['www.google.com']}, null);
-      }
+      
       
     }
   }
@@ -105,5 +103,5 @@ chrome.runtime.onMessage.addListener(
 //     }
 //   }
 // )
-console.log('did it get this far?')
+// console.log('did it get this far?')
 scrapeUserSite();
