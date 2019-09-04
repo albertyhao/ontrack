@@ -147,3 +147,23 @@ p {
    text-align: center;
    font-size: 25px;
  }
+
+ #unblock {
+  border: 2px solid #5dcce8;
+  padding: 6px 16px;
+  border-radius: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: none;
+  background: #fff;
+  color: #5dcce8;
+  font-size: 11px;
+ }
+
+ #unblock:hover {
+  background: #5dcce8;
+   color: #fff;
+   border: 2px solid #5dcce8;
+   border-radius: 12px;
+ }
