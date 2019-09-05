@@ -1,125 +1,156 @@
-// document.addEventListener('keypress', function(e) {
-//   if (document.getElementById("timer_start").innerHTML == "Start") {
-//     var nums = "0123456789"
-//     if (nums.includes(e.key)) {
-//       addNumToTimer(parseInt(e.key))
-//     }
-//   }
-// })
+document.addEventListener('keypress', function(e) {
+  if (document.getElementById("timer_start").innerHTML == "Start") {
+    var nums = "0123456789"
+    if (nums.includes(e.key)) {
+      addNumToTimer(parseInt(e.key))
+    }
+  }
+})
 
-// function addNumToTimer(n) {
-//   var time = document.getElementById("time").innerHTML
-//   time = time.replace(":", "").replace(":", "");
-//   time = time.substr(1) + n;
-//   time = time.substr(0, 2) + ":" + time.substr(2, 2) + ":" + time.substr(4, 2)
-//   document.getElementById("time").innerHTML = time
-// }
+function addNumToTimer(n) {
+  var time = document.getElementById("time").innerHTML
+  time = time.replace(":", "").replace(":", "");
+  time = time.substr(1) + n;
+  time = time.substr(0, 2) + ":" + time.substr(2, 2) + ":" + time.substr(4, 2)
+  document.getElementById("time").innerHTML = time
+}
 
-// document.getElementById("timer_clear").addEventListener('click', function(e) {
-//   document.getElementById("time").innerHTML = "00:00:00"
-// })
+document.getElementById("timer_clear").addEventListener('click', function(e) {
+  document.getElementById("time").innerHTML = "00:00:00"
+})
 
-// var countdown;
+var countdown;
 
-// document.getElementById("timer_start").addEventListener('click', function(e) {
-//   if (document.getElementById("timer_start").innerHTML == "Start") {
-//     confirmValidity()
+document.getElementById("timer_start").addEventListener('click', function(e) {
+  if (document.getElementById("timer_start").innerHTML == "Start") {
+    confirmValidity()
 
-//     countdown = setInterval(startTimer, 1000)
-//     document.getElementById("timer_start").innerHTML = "Stop"
-//     document.getElementById("timer_clear").style.display = "none"
-//   } else if (document.getElementById("timer_start").innerHTML == "Stop") {
-//     clearInterval(countdown)
-//     document.getElementById("timer_start").innerHTML = "Start"
-//     document.getElementById("timer_clear").style.display = "inline"
-//   }
-// })
+    chrome.runtime.sendMessage(chrome.runtime.id,
+      {timer: document.getElementById("time").innerHTML}, null)
 
-// function confirmValidity() {
-//   var time = document.getElementById("time").innerHTML
+    timerStart()
+  } else if (document.getElementById("timer_start").innerHTML == "Stop") {
+    chrome.runtime.sendMessage(chrome.runtime.id,
+      {timerStop: true}, null)
 
-//   var hr = parseInt(time.substr(0, 2))
-//   var min = parseInt(time.substr(3, 2))
-//   var sec = parseInt(time.substr(6, 2))
+    timerEnd()
+  }
+})
 
-//   if (sec > 59) {
-//     var add = Math.floor(sec / 60)
-//     sec = sec % 60
-//     min += add
-//   }
+function confirmValidity() {
+  var time = document.getElementById("time").innerHTML
 
-//   if (min > 59) {
-//     var add = Math.floor(min / 60)
-//     min = min % 60
-//     hr += add
-//   }
+  var hr = parseInt(time.substr(0, 2))
+  var min = parseInt(time.substr(3, 2))
+  var sec = parseInt(time.substr(6, 2))
 
-//   if (sec / 10 < 1) {
-//     sec = "0" + String(sec)
-//   } else {
-//     sec = String(sec)
-//   }
+  if (sec > 59) {
+    var add = Math.floor(sec / 60)
+    sec = sec % 60
+    min += add
+  }
 
-//   if (min / 10 < 1) {
-//     min = "0" + String(min)
-//   } else {
-//     min = String(min)
-//   }
+  if (min > 59) {
+    var add = Math.floor(min / 60)
+    min = min % 60
+    hr += add
+  }
 
-//   if (hr / 10 < 1) {
-//     hr = "0" + String(hr)
-//   } else {
-//     hr = String(hr)
-//   }
+  if (sec / 10 < 1) {
+    sec = "0" + String(sec)
+  } else {
+    sec = String(sec)
+  }
 
-//   document.getElementById("time").innerHTML = hr + ":" + min + ":" + sec
-// }
+  if (min / 10 < 1) {
+    min = "0" + String(min)
+  } else {
+    min = String(min)
+  }
 
-// function startTimer() {
-//   var time = document.getElementById("time").innerHTML
+  if (hr / 10 < 1) {
+    hr = "0" + String(hr)
+  } else {
+    hr = String(hr)
+  }
 
-//   var hr = parseInt(time.substr(0, 2))
-//   var min = parseInt(time.substr(3, 2))
-//   var sec = parseInt(time.substr(6, 2))
+  document.getElementById("time").innerHTML = hr + ":" + min + ":" + sec
+}
 
-//   if (sec != 0 || min != 0 || hr != 0) {
-//     sec -= 1
-//     if (sec < 0) {
-//       sec = 59
-//       min -= 1
-//       if (min < 0) {
-//         min = 59
-//         hr -= 1
-//       }
-//     }
+function startTimer() {
+  var time = document.getElementById("time").innerHTML
 
-//     if (sec / 10 < 1) {
-//       sec = "0" + String(sec)
-//     } else {
-//       sec = String(sec)
-//     }
+  var hr = parseInt(time.substr(0, 2))
+  var min = parseInt(time.substr(3, 2))
+  var sec = parseInt(time.substr(6, 2))
 
-//     if (min / 10 < 1) {
-//       min = "0" + String(min)
-//     } else {
-//       min = String(min)
-//     }
+  if (sec != 0 || min != 0 || hr != 0) {
+    sec -= 1
+    if (sec < 0) {
+      sec = 59
+      min -= 1
+      if (min < 0) {
+        min = 59
+        hr -= 1
+      }
+    }
 
-//     if (hr / 10 < 1) {
-//       hr = "0" + String(hr)
-//     } else {
-//       hr = String(hr)
-//     }
+    if (sec / 10 < 1) {
+      sec = "0" + String(sec)
+    } else {
+      sec = String(sec)
+    }
 
-//     document.getElementById("time").innerHTML = hr + ":" + min + ":" + sec
-//   } else {
-//     clearInterval(countdown)
-//     document.getElementById("timer_start").innerHTML = "Start"
-//     document.getElementById("timer_start").style.display = "inline"
-//   }
-// }
+    if (min / 10 < 1) {
+      min = "0" + String(min)
+    } else {
+      min = String(min)
+    }
 
+    if (hr / 10 < 1) {
+      hr = "0" + String(hr)
+    } else {
+      hr = String(hr)
+    }
 
+    document.getElementById("time").innerHTML = hr + ":" + min + ":" + sec
+  } else {
+    timerEnd()
+  }
+}
+
+function timerEnd() {
+  document.querySelector('.dropdown-select').options[0].selected = true;
+
+  chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
+
+  chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
+  });
+
+  clearInterval(countdown)
+  document.getElementById("timer_start").innerHTML = "Start"
+  document.getElementById("timer_clear").style.display = "inline"
+}
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.endTimer) {
+      timerEnd()
+    }
+  }
+)
+
+chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (resp) {
+  if (resp) {
+    document.getElementById("time").innerHTML = resp;
+
+    countdown = setInterval(startTimer, 1000)
+    document.getElementById("timer_start").innerHTML = "Stop"
+    document.getElementById("timer_clear").style.display = "none"
+  }
+})
 
 chrome.storage.sync.get(['customerid'], function(result) {
 
@@ -157,33 +188,47 @@ function saveWhitelist(){
     })
     document.getElementById('warning').style.visibility = 'hidden';
   }
-  
-  
-  
+
+
+
 }
 
 //Code for saving subject
 
 
-var subjectButton = document.querySelector('#submit');
-subjectButton.addEventListener('click', setSubject);
+// var subjectButton = document.querySelector('#submit');
+// subjectButton.addEventListener('click', setSubject);
 chrome.storage.sync.get(['subject'], function(result){
   document.querySelector('.dropdown-select').value = result.subject;
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
 })
-function setSubject(){
-  // chrome.storage.sync.get(['subject'], function(result){
-  //   var $subject = result.subject;
-  //   $subject = document.querySelector('.dropdown-select').value;
-  //   chrome.storage.sync.set({subject: $subject}, null);
-  // })
-chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
+// function setSubject(){
+//   // chrome.storage.sync.get(['subject'], function(result){
+//   //   var $subject = result.subject;
+//   //   $subject = document.querySelector('.dropdown-select').value;
+//   //   chrome.storage.sync.set({subject: $subject}, null);
+//   // })
+// chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
+//
+// chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
+// chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+//   chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
+// });
+// }
 
-chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
-chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-  chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
-});
+function timerStart(){
+  chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
+
+  chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
+  });
+
+  countdown = setInterval(startTimer, 1000)
+  document.getElementById("timer_start").innerHTML = "Stop"
+  document.getElementById("timer_clear").style.display = "none"
 }
+
 
 //Code for turning on/off extension
 
@@ -204,8 +249,8 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 //     $powerButton.innerHTML = "Turn Extension Off";
 //     chrome.storage.sync.set({on: true}, null);
 //     var final = new Date();
-//     chrome.storage.sync.set({on: true}, null);   
-//     chrome.storage.sync.set({ontime: final}, null);    
+//     chrome.storage.sync.set({on: true}, null);
+//     chrome.storage.sync.set({ontime: final}, null);
 //     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 //       chrome.tabs.sendMessage(tabs[0].id, {subject: "turn on"}, null);
 //     });
@@ -267,4 +312,3 @@ function unblockSite(){
   });
 
 }
-
