@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather:700');
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+body {
+  width: 300px;
+  height: 220px;
+}
+
+.column {
+  float: left;
+  width: 33.33%;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+h1 {
+  font-family: 'Merriweather', serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: black;
+}
+
+p {
+  font-family: 'Lato', sans-serif;
+}
+
+.packtrackicon {
+  height: 50px;
+  width: 50px;
+  text-align: center;
+}
+
+.column p {
+  font-family: 'Lato', sans-serif;
+  /*font-family: 'Merriweather', serif;*/
+  color: black;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.btn2 {
+  border: 2px solid #5dcce8;
+  padding: 6px 16px;
+  border-radius: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: none;
+  background: #fff;
+  color: #5dcce8;
+  font-size: 11px;
+}
+
+.btn2:hover {
+   background: #5dcce8;
+   color: #fff;
+   border: 2px solid #5dcce8;
+   border-radius: 12px;
+ }
+
+ .dropdown {
+   display: inline-block;
+   position: relative;
+   overflow: hidden;
+   height: 28px;
+   width: 150px;
+   background: #f2f2f2;
+   border: 1px solid;
+   border-color: white #f7f7f7 whitesmoke;
+   border-radius: 3px;
+   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+ }
+
+ .dropdown:before, .dropdown:after {
+   content: '';
+   position: absolute;
+   z-index: 2;
+   top: 9px;
+   right: 10px;
+   width: 0;
+   height: 0;
+   border: 4px dashed;
+   border-color: #888888 transparent;
+   pointer-events: none;
+ }
+
+ .dropdown:before {
+   border-bottom-style: solid;
+   border-top: none;
+ }
+
+ .dropdown:after {
+   margin-top: 7px;
+   border-top-style: solid;
+   border-bottom: none;
+ }
+
+ .dropdown-select {
+   position: relative;
+   width: 130%;
+   margin: 0;
+   padding: 6px 8px 6px 10px;
+   height: 28px;
+   line-height: 14px;
+   font-size: 12px;
+   color: #62717a;
+   text-shadow: 0 1px white;
+   background: #f2f2f2; /* Fallback for IE 8 */
+   background: rgba(0, 0, 0, 0) !important; /* "transparent" doesn't work with Opera */
+   border: 0;
+   border-radius: 0;
+   -webkit-appearance: none;
+ }
+
+ .dropdown-select:focus {
+   z-index: 3;
+   width: 100%;
+   color: #394349;
+   outline: 2px solid #49aff2;
+   outline: 2px solid -webkit-focus-ring-color;
+   outline-offset: -2px;
+ }
+
+ .dropdown-select > option {
+   margin: 3px;
+   padding: 6px 8px;
+   text-shadow: none;
+   background: #f2f2f2;
+   border-radius: 3px;
+   cursor: pointer;
+ }
+
+ .container {
+   text-align: center;
+ }
+
+ .timer {
+   text-align: center;
+   font-size: 25px;
+ }
+
+ #unblock {
+  border: 2px solid #5dcce8;
+  padding: 6px 16px;
+  border-radius: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: none;
+  background: #fff;
+  color: #5dcce8;
+  font-size: 11px;
+ }
+
+ #unblock:hover {
+  background: #5dcce8;
+   color: #fff;
+   border: 2px solid #5dcce8;
+   border-radius: 12px;
+ }

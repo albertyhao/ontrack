@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OnTrack</title>
+    <link href="/navbar.css" rel="stylesheet">
+    <link href="/home.css" rel="stylesheet">
+    <style>
+      body {
+  margin : 0;
+  padding : 0;
+}
+progress[value] {
+  width: 20vw;
+  height: 7vh;
+}
+progress {
+  border-radius: 2px;
+  width: 80%;
+  height: 22px;
+}
+progress::-webkit-progress-bar {
+ background-color: white;
+  border-radius: 2px;
+}
+progress::-webkit-progress-value {
+   border-radius: 2px;
+}
+
+.container {
+  display:flex;
+  min-height: 100vh;
+  flex-direction:column;
+  width: 90vw;
+  float: right;
+}
+.options {
+  height : 70px;
+  width : 100%;
+  display : flex;
+}
+.option {
+  flex-grow: 1;
+  
+  border : 0;
+  outline : none;
+  cursor: pointer;
+  color:white;
+}
+.option::placeholder {
+  color : #fff;
+}
+form {
+  flex:1;
+  display:flex;
+}
+input[type="text"] {
+  padding: 1rem;
+  font-size: 16px;
+  float: center;
+}
+
+.subject {
+  width: 20vw;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.display {
+  flex:1;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to right, #2ab2c0, #098d9a);
+}
+.time_left {
+  font-weight: 100;
+  font-size: 5rem;
+  margin: 0;
+  color:white;
+  text-shadow:4px 4px 0   rgba(0,0,0,0.05);
+}
+.end_time {
+  font-size: 2rem;
+  color:white;
+}
+
+.sidenav {
+  width: 10vw;
+  float: left;
+}
+    </style>
+  </head>
+  <body>
+
+
+    <!-- timer code -->
+
+    <div class="container">
+      <!-- <div class="options">
+        <form name="customForm" id="custom">
+          <input type="text" name="minutes" class="option" placeholder="Enter Minutes...">
+        </form>
+      </div> -->
+      <div class="display">
+        <p style="color: white; font-size: 2rem">I Want to Study For </p>
+        <h1 class="time_left">
+        <form name="customForm" id="custom">
+          <input type="text" name="minutes" class="option" placeholder="Enter Minutes...">
+        </form>
+          <!-- <form id="minutesID"><input placeholder="Minutes..."></form>:00</h1> -->
+        <div>
+          <p class="end_time"></p>
+          <input type="text" class="subject" placeholder="Subject I'm Studying...">
+          <br>
+          <!-- <p class="studying">I'm studying something</p> -->
+          <progress color="ef6c36" value="22" max="100"></progress>
+        </div>
+      </div>
+    </div>
+
+  </body>
+  <script>
+    /* Function to display a Countdown timer with starting time from a form */
+    // sets variables for minutes and seconds
+
+    const timerDisplay = document.querySelector('.time_left');
+    const endTime = document.querySelector('.end_time');
+    const buttons = document.querySelectorAll('[data-time]');
+
+    let countdown;
+
+    function timer(seconds) {
+
+        clearInterval(countdown);
+
+        const now = Date.now();
+        const future = now + seconds * 1000;
+        displayTimeLeft(seconds);
+        displayEndTime(future);
+
+        countdown = setInterval(() => {
+            const secondsLeft = Math.round((future - Date.now()) / 1000);
+            if(secondsLeft < 0) {
+                clearInterval(countdown);
+                return;
+              }
+            displayTimeLeft(secondsLeft);
+        }, 1000);
+    }
+
+    function displayTimeLeft(seconds) {
+        const minute = Math.floor(seconds / 60);
+        const remainderSeconds = seconds % 60;
+        const display = `${minute}:${remainderSeconds < 10 ? '0' : ''}${Math.floor(remainderSeconds)}`;
+        timerDisplay.textContent = display;
+    }
+
+    function displayEndTime(timestamp) {
+        const end = new Date(timestamp);
+        const hour = end.getHours();
+        const adjustedHour = hour > 12 ? hour - 12 : hour;
+        const minutes = end.getMinutes();
+        endTime.textContent = `Be Back At ${adjustedHour}:${minutes < 10 ? '0' : ''}${minutes}`;
+    }
+
+    function startTimer() {
+        const seconds = parseInt(this.dataset.time);
+        timer(seconds);
+    }
+
+    buttons.forEach(button => button.addEventListener('click', startTimer));
+
+    document.customForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const mins = this.minutes.value;
+        if(isNaN(mins)){
+          console.log("works")
+          alert("Please enter a whole number of minutes!");
+        }
+        else{
+          console.log(mins);
+          timer(mins * 60);
+          this.reset();
+        }
+    });
+
+    document.getElementsByClassName('subject').addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        alert("works")
+      }
+    })
+
+  </script>
+</html>
