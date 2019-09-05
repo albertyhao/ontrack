@@ -139,7 +139,7 @@ chrome.storage.sync.get(['customerid'], function(result) {
 
 chrome.storage.sync.get(['wlist'], function(result){
   if(!result.wlist){
-    chrome.storage.sync.set({wlist: ["www.google.com"]}, null);
+    chrome.storage.sync.set({wlist: ["www.google.com", "www.joinontrack.com"]}, null);
   }
 })
 
