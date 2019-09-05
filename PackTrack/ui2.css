@@ -167,3 +167,47 @@ p {
    border: 2px solid #5dcce8;
    border-radius: 12px;
  }
+
+#table{ 
+  display: table; 
+  box-shadow: 0 0 1px 1px lightgray;
+  z-index: 1000000;
+  position: absolute;
+  top: 135px;
+  background-color: white;
+  width: 60%;
+  height: 10%;
+  right: 15px;
+  visibility: hidden;
+}
+.tr{ 
+  display: table-row; 
+  cursor: pointer;
+}
+.td{ 
+  display: table-cell; 
+  font-size: 20px;
+  
+  padding: 0.5em 0.25em;
+  vertical-align: middle;
+}
+.tr:hover {
+  background-color: lightgray;
+}
+#settings {
+  z-index: 10000000000000;
+  background-color: white;
+  box-shadow: 0 0 1px 1px lightgray;
+  height: 90%;
+  width: 95%;
+  top: 20px;
+  right: 2.5%;
+  position: absolute;
+  padding: 0 1em;
+  box-sizing: border-box;
+  visibility: hidden;
+}
+
+#settings svg:hover {
+  background-color: lightgray;
+}

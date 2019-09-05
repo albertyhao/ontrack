@@ -268,3 +268,28 @@ function unblockSite(){
 
 }
 
+//Open menu with hamburger
+var hamburger = document.querySelector('#options');
+hamburger.addEventListener('click', openMenu);
+function openMenu(){
+  var table = document.querySelector('#table');
+  if(table.style.visibility === 'hidden'){
+    table.style.visibility = 'visible';
+  } else {
+    table.style.visibility = 'hidden';
+  }
+  
+}
+
+var settingsButton = document.querySelector('#openSettings');
+settingsButton.addEventListener('click', openSettings);
+function openSettings(){
+  document.querySelector('#settings').style.visibility = 'visible';
+  document.querySelector('#table').style.visibility = 'hidden';
+}
+
+var exitSettings = document.querySelector('#exitSettings');
+exitSettings.addEventListener('click', exitSettingsPage);
+function exitSettingsPage(){
+  document.querySelector('#settings').style.visibility = 'hidden';
+}
