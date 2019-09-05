@@ -280,7 +280,7 @@ function openMenu(){
   }
   
 }
-
+//Code for opening and closing settings menu
 var settingsButton = document.querySelector('#openSettings');
 settingsButton.addEventListener('click', openSettings);
 function openSettings(){
@@ -293,3 +293,39 @@ exitSettings.addEventListener('click', exitSettingsPage);
 function exitSettingsPage(){
   document.querySelector('#settings').style.visibility = 'hidden';
 }
+
+
+//Code for grabbing settings data
+
+var $saveSettings = document.querySelector('#saveSettings');
+$saveSettings.addEventListener('click', saveSettings);
+function saveSettings(){
+  for(i=0; i<3; i++){
+    var radios = document.getElementsByName('mode');
+    var val;
+    if(radios[i].checked === true){
+      val = radios[i].value;
+    }
+  }
+  chrome.storage.sync.set({mode: val}, null);
+  chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change mode"}, null);
+}
+
+chrome.storage.sync.get(['mode'], function(result){
+  if(!result.mode){
+    chrome.storage.sync.set({mode: "moderate"}, null);
+  } else {
+    chrome.storage.sync.set({mode: result.mode}, null);
+    checkSetting(result.mode);
+  }
+})
+
+function checkSetting(val) {
+	var rs =document.getElementsByName('mode');
+	rs.forEach(r => {
+		if(r.value === val) {
+			r.checked = true;
+        }
+    });
+}
+
