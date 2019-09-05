@@ -67,25 +67,40 @@ function setNewSubject(){
   })
 }
 
-function newMode(){
-  console.log(simCutoff);
-  chrome.storage.sync.get(['mode'], function(result){
-    mode = result.mode;
-  })
-  if(mode == "light"){
-    simCutoff = 0.35;
-  } else if(mode == "moderate"){
-    simCutoff = 0.4;
-  } else {
-    simCutoff = 0.45;
-  }
-}
+// chrome.storage.sync.get(['mode'], function(result){
+//   console.log(result.mode);
+//     if(result.mode == "light"){
+//       simCutoff = 0.35;
+//     } else if(result.mode == "moderate"){
+//       simCutoff = 0.4;
+//     }else {
+//       simCutoff = 0.45;
+//     }
+//   console.log(simCutoff)
+// })
+// function newMode(){
+  
+//   chrome.storage.sync.get(['mode'], function(result){
+//     simCutoff = result.mode;
+//   })
+//   console.log(simCutoff)
+//   // if(mode == "light"){
+//   //   simCutoff = 0.35;
+//   // } else if(mode == "moderate"){
+//   //   simCutoff = 0.4;
+//   // } else {
+//   //   simCutoff = 0.45;
+//   //   console.log(simCutoff);
+//   // }
+// }
 
 //Code to receive mode change
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse){
     if(req.subject == "change mode"){
-      newMode();
+      simCutoff = req.cutoff;
+      console.log(simCutoff)
+    
     }
   }
 )
@@ -296,3 +311,79 @@ function getSim(str1, str2){
 //     })
 //     }
 // })
+
+//Timer Code
+var timerInterval;
+var time;
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.timer) {
+      time = req.timer
+      timerInterval = setInterval(timeCountdown, 1000)
+    }
+  }
+)
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.timeRequest && timerInterval != 0) {
+      sendResponse(time)
+    }
+  }
+)
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.timerStop) {
+      clearInterval(timerInterval)
+      timerInterval = 0
+    }
+  }
+)
+
+function timeCountdown() {
+  console.log(time)
+
+  var hr = parseInt(time.substr(0, 2))
+  var min = parseInt(time.substr(3, 2))
+  var sec = parseInt(time.substr(6, 2))
+
+  if (sec != 0 || min != 0 || hr != 0) {
+    sec -= 1
+    if (sec < 0) {
+      sec = 59
+      min -= 1
+      if (min < 0) {
+        min = 59
+        hr -= 1
+      }
+    }
+
+    if (sec / 10 < 1) {
+      sec = "0" + String(sec)
+    } else {
+      sec = String(sec)
+    }
+
+    if (min / 10 < 1) {
+      min = "0" + String(min)
+    } else {
+      min = String(min)
+    }
+
+    if (hr / 10 < 1) {
+      hr = "0" + String(hr)
+    } else {
+      hr = String(hr)
+    }
+
+    time = hr + ":" + min + ":" + sec
+  } else {
+    clearInterval(timerInterval)
+    chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
+  }
+}
+
+console.log(simCutoff)
+console.log(newSubject)
