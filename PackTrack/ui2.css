@@ -232,3 +232,34 @@ p {
    border: 2px solid #5dcce8;
    border-radius: 12px;
 }
+#options:hover{
+  background-color: lightgray;
+}
+
+#whitelistPanel{
+  z-index: 1000000000000000000000000000;
+  position: absolute;
+  right: 5%;
+  top: 30%;
+  height: 40%;
+  width: 90%;
+  background-color: white;
+  box-shadow: 0 0 1px 1px lightgray;
+  visibility: hidden;
+  
+
+}
+#overlay{
+  z-index: 10000000000000000000;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(30, 30, 30, 0.8);
+  visibility: hidden;
+}
+#whitelistPanel svg:hover{
+  background-color: lightgray;
+}
+

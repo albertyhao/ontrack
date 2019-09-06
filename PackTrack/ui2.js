@@ -338,6 +338,20 @@ function exitSettingsPage(){
   document.querySelector('#settings').style.visibility = 'hidden';
 }
 
+var $whitelist = document.querySelector('#openWhitelistPanel');
+$whitelist.addEventListener('click', openWhitelist);
+function openWhitelist(){
+  document.querySelector('#overlay').style.visibility = 'visible';
+  document.querySelector('#whitelistPanel').style.visibility = 'visible';
+}
+
+document.querySelector('#exitWhitelistPanel').addEventListener('click', exitWhitelist);
+function exitWhitelist(){
+  document.querySelector('#table').style.visibility = 'hidden';
+  document.querySelector('#overlay').style.visibility = 'hidden';
+  document.querySelector('#whitelistPanel').style.visibility = 'hidden';
+  
+}
 
 //Code for grabbing settings data
 
