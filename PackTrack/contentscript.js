@@ -43,7 +43,7 @@ chrome.storage.sync.get(['wlist'], function(result){
         // Blokc this crup
         document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";
         document.body.style.height = "821px";
-        document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><br><img src="http://i66.tinypic.com/10ykqkk.png" border="0" alt="Image and video hosting by TinyPic"><br><br><p>${response.sim}</p></center>`;
+        document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><br><br><br><p>${response.sim}</p></center>`;
       }
 
       console.log(response.sim);
