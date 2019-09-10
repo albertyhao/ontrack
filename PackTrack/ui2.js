@@ -120,6 +120,11 @@ function startTimer() {
 }
 
 function timerEnd() {
+ 
+  chrome.runtime.sendMessage(chrome.runtime.id,{timerStop: true}, null);
+  
+  document.getElementById("timer_start").innerHTML = "Start"
+  document.getElementById("timer_clear").style.display = "inline"
   document.querySelector('.dropdown-select').options[0].selected = true;
 
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
@@ -130,8 +135,7 @@ function timerEnd() {
   });
 
   clearInterval(countdown)
-  document.getElementById("timer_start").innerHTML = "Start"
-  document.getElementById("timer_clear").style.display = "inline"
+  
 }
 
 chrome.runtime.onMessage.addListener(
@@ -172,7 +176,10 @@ chrome.storage.sync.get(['customerid'], function(result) {
 
 chrome.storage.sync.get(['wlist'], function(result){
   if(!result.wlist){
-    chrome.storage.sync.set({wlist: ["www.google.com", "www.joinontrack.com"]}, null);
+    chrome.storage.sync.set({wlist: ["www.google.com", "www.joinontrack.com", "spcs.instructure.com"]}, null);
+  } else {
+    var $new = result.wlist.filter(i => i !== "www.netflix.com");
+    chrome.storage.sync.set({wlist: $new}, null);
   }
 })
 
@@ -200,9 +207,15 @@ function saveWhitelist(){
 
 // var subjectButton = document.querySelector('#submit');
 // subjectButton.addEventListener('click', setSubject);
+
 chrome.storage.sync.get(['subject'], function(result){
-  document.querySelector('.dropdown-select').value = result.subject;
+  if(!result.subject || !document.querySelector('.dropdown-select').value){
+    chrome.storage.sync.set({subject: "none"}, null);
+  } else {
+    document.querySelector('.dropdown-select').value = result.subject;
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
+  }
+  
 })
 // function setSubject(){
 //   // chrome.storage.sync.get(['subject'], function(result){
@@ -353,6 +366,18 @@ function exitWhitelist(){
   
 }
 
+//Opening and closing tutorial menu
+var openTut = document.querySelector('#openTutorial');
+openTut.addEventListener('click', openTutorial);
+function openTutorial(){
+  document.querySelector('#tutorial').style.visibility = "visible";
+}
+
+document.querySelector('#exitTutorial').addEventListener('click', closeTutorial);
+function closeTutorial(){
+  document.querySelector('#tutorial').style.visibility = "hidden";
+}
+
 //Code for grabbing settings data
 
 var $saveSettings = document.querySelector('#saveSettings');
@@ -364,9 +389,11 @@ function saveSettings(){
     if(radios[i].checked === true){
       val = radios[i].value;
     }
-    chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change mode", cutoff: val}, null);
+    
   }
   chrome.storage.sync.set({mode: val}, null);
+  chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change mode", cutoff: val}, null);
+  
   
   
 }

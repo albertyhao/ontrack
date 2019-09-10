@@ -40,7 +40,7 @@ function scrapeUserSite() {
           document.head.innerHTML = '';
           document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";
           document.body.style.height = "821px";
-          document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><br><img src="http://i66.tinypic.com/10ykqkk.png" border="0" alt="Image and video hosting by TinyPic"></center>`;
+          document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><br></center>`;
         }
   
         console.log(response.sim);
@@ -81,6 +81,7 @@ chrome.runtime.onMessage.addListener(
     }
   }
 )
+
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     if (req.subject == "unblock") {

@@ -8,6 +8,9 @@ var textBookText;
 var newSubject;
 var mode;
 var simCutoff;
+if(!simCutoff){
+  simCutoff = 0.4;
+}
 // This code sets up the txtbook var in chrome local storage
 chrome.storage.local.get(['txtbook'], function(result){
   result.txtbook = "";
@@ -128,7 +131,7 @@ chrome.runtime.onMessage.addListener(
         })
         // console.log(sender.tab.url.split('.').slice(-1)[0]);
         if (newSubject == "collegeApps"){
-          if (sender.tab.url.split('.').slice(-1)[0].substring(0,3) == "edu" || sim > simCutoff){
+          if (sender.tab.url.includes(".edu/") || sim > simCutoff){
             sendResponse({res: false, sim: sim})
           } else {
             sendResponse({res: true, sim: sim, txt: "This ain't a college website"})
@@ -382,6 +385,8 @@ function timeCountdown() {
   } else {
     clearInterval(timerInterval)
     chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
+    
+    alert("Study session finished!");
   }
 }
 
