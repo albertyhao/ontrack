@@ -6,19 +6,6 @@ body {
   height: 220px;
 }
 
-.column {
-  float: left;
-  width: 33.33%;
-  text-align: center;
-  vertical-align: middle;
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
 
 h1 {
   font-family: 'Merriweather', serif;
@@ -28,26 +15,10 @@ h1 {
   color: black;
 }
 
-p {
-  
-}
 
-.packtrackicon {
-  height: 50px;
-  width: 50px;
-  text-align: center;
-}
-
-.column p {
-  font-family: 'Lato', sans-serif;
-  /*font-family: 'Merriweather', serif;*/
-  color: black;
-  font-size: 11px;
-  font-weight: 400;
-}
 
 .btn2 {
-  border: 2px solid #6FB6E4;
+  border: 2px solid #736cdb;
   padding: 6px 16px;
   border-radius: 12px;
   letter-spacing: 0.06em;
@@ -55,14 +26,14 @@ p {
   text-decoration: none;
   outline: none;
   background: #fff;
-  color: #6FB6E4;
+  color: #736cdb;
   font-size: 11px;
 }
 
 .btn2:hover {
-   background: #6FB6E4;
+   background: #736cdb;
    color: #fff;
-   border: 2px solid #6FB6E4;
+   border: 2px solid #736cdb;
    border-radius: 12px;
  }
 
@@ -141,15 +112,20 @@ p {
 
  .container {
    text-align: center;
+   
  }
 
  .timer {
    text-align: center;
    font-size: 25px;
+   position: absolute;
+   top: 50px;
+   left: 70px;
+   
  }
 
  #unblock {
-  border: 2px solid #6FB6E4;
+  border: 2px solid #736cdb;
   padding: 6px 16px;
   border-radius: 12px;
   letter-spacing: 0.06em;
@@ -157,14 +133,14 @@ p {
   text-decoration: none;
   outline: none;
   background: #fff;
-  color: #6FB6E4;
+  color: #736cdb;
   font-size: 11px;
  }
 
  #unblock:hover {
-  background: #6FB6E4;
+  background: #736cdb;
    color: #fff;
-   border: 2px solid #6FB6E4;
+   border: 2px solid #736cdb;
    border-radius: 12px;
  }
 
@@ -173,7 +149,7 @@ p {
   box-shadow: 0 0 1px 1px lightgray;
   z-index: 1000000;
   position: absolute;
-  top: 140px;
+  top: 42px;
   background-color: white;
   width: 60%;
   height: 10%;
@@ -198,9 +174,9 @@ p {
   z-index: 10000000000000;
   background-color: white;
   box-shadow: 0 0 1px 1px lightgray;
-  height: 90%;
+  height: 95%;
   width: 95%;
-  top: 20px;
+  top: 2.5%;
   right: 2.5%;
   position: absolute;
   padding: 0 1em;
@@ -215,7 +191,7 @@ p {
   position: absolute;
   bottom: 10px;
   right: 110px;
-  border: 2px solid #6FB6E4;
+  border: 2px solid #736cdb;
   padding: 6px 16px;
   border-radius: 12px;
   letter-spacing: 0.06em;
@@ -223,13 +199,13 @@ p {
   text-decoration: none;
   outline: none;
   background: #fff;
-  color: #6FB6E4;
+  color: #736cdb;
   font-size: 11px;
 }
 #saveSettings:hover {
-  background: #6FB6E4;
+  background: #736cdb;
    color: #fff;
-   border: 2px solid #6FB6E4;
+   border: 2px solid #736cdb;
    border-radius: 12px;
 }
 #options:hover{
@@ -267,10 +243,11 @@ p {
   z-index: 10000000000000;
   background-color: white;
   box-shadow: 0 0 1px 1px lightgray;
-  height: 90%;
+  height: 95%;
   width: 95%;
   top: 20px;
   right: 2.5%;
+  top: 2.5%;
   position: absolute;
   padding: 0 1em;
   box-sizing: border-box;
@@ -281,3 +258,8 @@ p {
 #exitTutorial:hover {
   background-color: lightgray;
 }
+
+hr{
+  color: #333333;
+}
+

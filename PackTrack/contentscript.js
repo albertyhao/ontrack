@@ -35,12 +35,17 @@ function scrapeUserSite() {
     }
       chrome.runtime.sendMessage(chrome.runtime.id, {txt: siteText}, function(response) {
         if(!response) return;
-        if (response.res && whitelist.every(function(site){return site !== location.hostname}) && $qblock.every(function(site){return site !== location.hostname}) ) {
+        if (response.res && response.res !== "power off" && whitelist.every(function(site){return site !== location.hostname}) && $qblock.every(function(site){return site !== location.hostname}) ) {
           // Blokc this crup
           document.head.innerHTML = '';
           document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";
-          document.body.style.height = "821px";
+          document.body.style.height = '960px';
           document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><br></center>`;
+          insertMarker();
+        } else if(response.res == "power off"){
+          console.log('power off');
+        } else {
+          insertMarker();
         }
   
         console.log(response.sim);
@@ -88,6 +93,57 @@ chrome.runtime.onMessage.addListener(
       
       location.reload();
       
+      
+    }
+  }
+)
+function insertMarker(){
+  var marker = document.createElement('div');
+  marker.innerHTML = `<p style="text-align: center;">Time remaining: 00:00:00</p>`
+  marker.style.position = 'fixed';
+  marker.style.bottom = '0';
+  marker.style.width = '300px';
+  marker.style.height = '50px';
+  marker.style.backgroundColor = '#f0f0f0';
+  marker.style.left = '42%';
+  marker.style.zIndex = '100';
+  marker.style.borderTop = '4px solid #736cdb';
+  marker.style.borderLeft = '4px solid #736cdb';
+  marker.style.borderRight = '4px solid #736cdb';
+  var currentSubject;
+  document.body.appendChild(marker);
+  chrome.storage.sync.get(['subject'], function(result){
+    if(result.subject == "none"){
+      currentSubject = "None";
+    } else if(result.subject == "biology"){
+      currentSubject = "Biology";
+    } else if(result.subject == "history"){
+      currentSubject = "American History"
+    } else if(result.subject == "collegeApps"){
+      currentSubject = "College Apps"
+    } else {
+      currentSubject = "General Studying"
+    }
+  })
+  marker.addEventListener('click', enlarge);
+  function enlarge(){
+    marker.style.height = '150px';
+    marker.innerHTML = `<b><h4 style="text-align: center;">Study session in progress</h4></b><p style="text-align: center;">Time remaining: 00:00:00</p><p style="text-align: center;">Current Subject: ${currentSubject}</p>`
+    
+    
+    
+  }
+  marker.addEventListener('mouseout', shrink);
+  function shrink(){
+    marker.style.height = '50px';
+    marker.innerHTML = `<p style="text-align: center;">Time remaining: 00:00:00</p>`
+  }
+}
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "study session start") {
+      console.log('hello');
+      insertMarker();
       
     }
   }

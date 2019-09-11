@@ -137,7 +137,7 @@ chrome.runtime.onMessage.addListener(
             sendResponse({res: true, sim: sim, txt: "This ain't a college website"})
           }
         } else if(newSubject == "none"){
-            sendResponse({res: false, sim: sim})
+            sendResponse({res: "power off", sim: sim})
         } else if(newSubject == "hardBlock"){
             sendResponse({res: true, sim: sim})
         } else {

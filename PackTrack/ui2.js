@@ -79,7 +79,9 @@ function confirmValidity() {
 
 function startTimer() {
   var time = document.getElementById("time").innerHTML
-
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {subject: "study session start"}, null);
+  });
   var hr = parseInt(time.substr(0, 2))
   var min = parseInt(time.substr(3, 2))
   var sec = parseInt(time.substr(6, 2))
@@ -356,6 +358,7 @@ $whitelist.addEventListener('click', openWhitelist);
 function openWhitelist(){
   document.querySelector('#overlay').style.visibility = 'visible';
   document.querySelector('#whitelistPanel').style.visibility = 'visible';
+  document.querySelector('#table').style.visibility = 'hidden';
 }
 
 document.querySelector('#exitWhitelistPanel').addEventListener('click', exitWhitelist);
@@ -363,6 +366,7 @@ function exitWhitelist(){
   document.querySelector('#table').style.visibility = 'hidden';
   document.querySelector('#overlay').style.visibility = 'hidden';
   document.querySelector('#whitelistPanel').style.visibility = 'hidden';
+  document.querySelector('#warning').style.visibility = 'hidden';
   
 }
 
