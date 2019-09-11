@@ -131,11 +131,31 @@ function timerEnd() {
 
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
+    chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects and end session"}, null);
   });
 
   clearInterval(countdown)
   
+  //Code to reload every tab except the one user is on
+  var tabUrls = [];
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      tabUrls.push(tabs[i].url);
+      }
+  });
+  var currentTabNum;
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    currentTabNum = tabUrls.indexOf(tabs[0].url);
+  });
+
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      if(i === currentTabNum){
+        continue;
+      }
+      chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
+      }
+  });
 }
 
 chrome.runtime.onMessage.addListener(
@@ -176,7 +196,7 @@ chrome.storage.sync.get(['customerid'], function(result) {
 
 chrome.storage.sync.get(['wlist'], function(result){
   if(!result.wlist){
-    chrome.storage.sync.set({wlist: ["www.google.com", "www.joinontrack.com", "spcs.instructure.com"]}, null);
+    chrome.storage.sync.set({wlist: ["www.google.com", "www.joinontrack.com", "spcs.instructure.com", "mail.google.com", "drive.google.com", "sheets.google.com", "docs.google.com", "slides.google.com", "forms.google.com"]}, null);
   } else {
     var $new = result.wlist.filter(i => i !== "www.netflix.com");
     chrome.storage.sync.set({wlist: $new}, null);
@@ -243,6 +263,27 @@ function timerStart(){
   countdown = setInterval(startTimer, 1000)
   document.getElementById("timer_start").innerHTML = "Stop"
   document.getElementById("timer_clear").style.display = "none"
+
+  //Code to reload every tab except the one user is on
+  var tabUrls = [];
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      tabUrls.push(tabs[i].url);
+      }
+  });
+  var currentTabNum;
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    currentTabNum = tabUrls.indexOf(tabs[0].url);
+  });
+
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      if(i === currentTabNum){
+        continue;
+      }
+      chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
+      }
+  });
 }
 //Code for turning on/off extension
 

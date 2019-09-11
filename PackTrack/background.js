@@ -398,3 +398,11 @@ function timeCountdown() {
 
 console.log(simCutoff)
 console.log(newSubject)
+
+//Every time the user clicks onto a new tab, run content script
+chrome.tabs.onActivated.addListener(function(activeInfo) {
+  console.log('you just clicked onto a new tab');
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {subject: "new tab"}, null);
+  });
+});

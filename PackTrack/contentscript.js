@@ -45,11 +45,12 @@ function scrapeUserSite() {
           document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";
           document.body.style.height = '960px';
           document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><br></center>`;
-          insertMarker();
+          
+          insertMarkerTop();
         } else if(response.res == "power off"){
           console.log('power off');
         } else {
-          insertMarker();
+          insertMarkerBottom();
         }
   
         console.log(response.sim);
@@ -84,6 +85,17 @@ chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     if (req.subject == "change subjects") {
       // console.log("got it")
+      
+      scrapeUserSite();
+      
+    }
+  }
+)
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "change subjects and end session") {
+      // console.log("got it")
       location.reload();
       scrapeUserSite();
       
@@ -96,6 +108,17 @@ chrome.runtime.onMessage.addListener(
     if (req.subject == "unblock") {
       
       location.reload();
+      
+      
+    }
+  }
+)
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "new tab") {
+      console.log("new tab received")
+      scrapeUserSite();
       
       
     }
@@ -117,8 +140,92 @@ setInterval(getTime, 1000);
 
 
 if(!time){time = "00:00:00"}
+function insertMarkerTop(){
+  var marker = document.createElement('div');
+  marker.innerHTML = `<p style="text-align: center; cursor: pointer;">Time remaining: ${time}</p>`;
+  setInterval(function(){marker.getElementsByTagName('p')[0].innerHTML = `<p style="text-align: center;">Time remaining: ${time}</p>`}, 1000);
+  marker.style.position = 'fixed';
+  marker.style.top = '25%';
+  marker.style.width = '300px';
+  marker.style.height = '50px';
+  marker.style.backgroundColor = '#f0f0f0';
+  marker.style.left = '42%';
+  marker.style.zIndex = '100';
+  marker.style.borderTop = '4px solid #736cdb';
+  marker.style.borderLeft = '4px solid #736cdb';
+  marker.style.borderRight = '4px solid #736cdb';
+  var currentSubject;
+  document.body.appendChild(marker);
+  chrome.storage.sync.get(['subject'], function(result){
+    if(result.subject == "none"){
+      currentSubject = "None";
+    } else if(result.subject == "biology"){
+      currentSubject = "Biology";
+    } else if(result.subject == "history"){
+      currentSubject = "American History"
+    } else if(result.subject == "collegeApps"){
+      currentSubject = "College Apps"
+    } else {
+      currentSubject = "General Studying"
+    }
+  })
+  marker.addEventListener('click', enlarge);
+  function enlarge(){
+    marker.style.height = '150px';
+    marker.innerHTML = `<b><h4 style="text-align: center;">Study session in progress</h4></b><p style="text-align: center;">Time remaining: ${time}</p><p style="text-align: center;">Current Subject: ${currentSubject}</p>`
+    
+    
+    
+  }
+  marker.addEventListener('mouseout', shrink);
+  function shrink(){
+    marker.style.height = '50px';
+    marker.innerHTML = `<p style="text-align: center; cursor: pointer;">Time remaining: ${time}</p>`
+  }
 
-function insertMarker(){
+  //Make the DIV element draggagle:
+  dragElement(marker);
+  marker.style.cursor = 'move';
+  function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    
+      /* otherwise, move the DIV from anywhere inside the DIV:*/
+      elmnt.onmousedown = dragMouseDown;
+  
+
+    function dragMouseDown(e) {
+      e = e || window.event;
+      e.preventDefault();
+      // get the mouse cursor position at startup:
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      // call a function whenever the cursor moves:
+      document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+      e = e || window.event;
+      e.preventDefault();
+      // calculate the new cursor position:
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      // set the element's new position:
+      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    
+    }
+
+    function closeDragElement() {
+      /* stop moving when mouse button is released:*/
+      document.onmouseup = null;
+      document.onmousemove = null;
+    }
+  }
+}
+function insertMarkerBottom(){
   var marker = document.createElement('div');
   marker.innerHTML = `<p style="text-align: center; cursor: pointer;">Time remaining: ${time}</p>`;
   setInterval(function(){marker.getElementsByTagName('p')[0].innerHTML = `<p style="text-align: center;">Time remaining: ${time}</p>`}, 1000);
@@ -204,15 +311,15 @@ function insertMarker(){
   }
 
 }
-chrome.runtime.onMessage.addListener(
-  function(req, sender, sendResponse) {
-    if (req.subject == "study session start") {
-      console.log('hello');
-      insertMarker();
+// chrome.runtime.onMessage.addListener(
+//   function(req, sender, sendResponse) {
+//     if (req.subject == "study session start") {
+//       console.log('hello');
+//       insertMarker();
       
-    }
-  }
-)
+//     }
+//   }
+// )
 // chrome.runtime.onMessage.addListener(
 //   function(req, sender, sendResponse){
 //     if(req.subject == "turn on"){
