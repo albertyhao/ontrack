@@ -3,6 +3,7 @@ var load = new Date ();
 var $qblock;
 var siteText;
 var power = false;
+var time;
 function scrapeUserSite() {
   var tags = Array.from(document.querySelectorAll('*'));
   var f = tags.filter(t => !['script', 'meta', 'link', 'input', 'html', 'body', 'head', 'style', 'img', 'iframe'].includes(t.tagName.toLowerCase()));
@@ -37,7 +38,10 @@ function scrapeUserSite() {
         if(!response) return;
         if (response.res && response.res !== "power off" && whitelist.every(function(site){return site !== location.hostname}) && $qblock.every(function(site){return site !== location.hostname}) ) {
           // Blokc this crup
-          document.head.innerHTML = '';
+          var cant = document.styleSheets.length
+          for(var i=0;i<cant;i++){
+              document.styleSheets[i].disabled=true;
+          }
           document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";
           document.body.style.height = '960px';
           document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><br></center>`;
@@ -97,9 +101,27 @@ chrome.runtime.onMessage.addListener(
     }
   }
 )
+
+function getTime(){
+  chrome.runtime.sendMessage(chrome.runtime.id, {subject: "how much time left"}, function(res) {
+    if(res){
+      time = res;
+      
+    } else {
+      return;
+    }
+  })
+}
+
+setInterval(getTime, 1000);
+
+
+if(!time){time = "00:00:00"}
+
 function insertMarker(){
   var marker = document.createElement('div');
-  marker.innerHTML = `<p style="text-align: center;">Time remaining: 00:00:00</p>`
+  marker.innerHTML = `<p style="text-align: center;">Time remaining: ${time}</p>`;
+  setInterval(function(){marker.getElementsByTagName('p')[0].innerHTML = `<p style="text-align: center;">Time remaining: ${time}</p>`}, 1000);
   marker.style.position = 'fixed';
   marker.style.bottom = '0';
   marker.style.width = '300px';
@@ -128,7 +150,7 @@ function insertMarker(){
   marker.addEventListener('click', enlarge);
   function enlarge(){
     marker.style.height = '150px';
-    marker.innerHTML = `<b><h4 style="text-align: center;">Study session in progress</h4></b><p style="text-align: center;">Time remaining: 00:00:00</p><p style="text-align: center;">Current Subject: ${currentSubject}</p>`
+    marker.innerHTML = `<b><h4 style="text-align: center;">Study session in progress</h4></b><p style="text-align: center;">Time remaining: ${time}</p><p style="text-align: center;">Current Subject: ${currentSubject}</p>`
     
     
     
@@ -136,7 +158,7 @@ function insertMarker(){
   marker.addEventListener('mouseout', shrink);
   function shrink(){
     marker.style.height = '50px';
-    marker.innerHTML = `<p style="text-align: center;">Time remaining: 00:00:00</p>`
+    marker.innerHTML = `<p style="text-align: center;">Time remaining: ${time}</p>`
   }
 }
 chrome.runtime.onMessage.addListener(

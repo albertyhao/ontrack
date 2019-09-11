@@ -20,7 +20,7 @@ document.getElementById("timer_clear").addEventListener('click', function(e) {
 })
 
 var countdown;
-
+console.log(countdown);
 document.getElementById("timer_start").addEventListener('click', function(e) {
   if (document.getElementById("timer_start").innerHTML == "Start" && document.querySelector('#time').innerHTML !== "00:00:00" && document.querySelector('.dropdown-select').value !== "none") {
     confirmValidity()
@@ -86,7 +86,7 @@ function startTimer() {
   var min = parseInt(time.substr(3, 2))
   var sec = parseInt(time.substr(6, 2))
 
-  if (sec != 0 || min != 0 || hr != 0) {
+  if (sec !== 0 || min !== 0 || hr !== 0) {
     sec -= 1
     if (sec < 0) {
       sec = 59

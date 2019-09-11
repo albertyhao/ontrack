@@ -335,7 +335,13 @@ chrome.runtime.onMessage.addListener(
     }
   }
 )
-
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "how much time left" && timerInterval != 0) {
+      sendResponse(time)
+    }
+  }
+)
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     if (req.timerStop) {
