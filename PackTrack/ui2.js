@@ -79,9 +79,7 @@ function confirmValidity() {
 
 function startTimer() {
   var time = document.getElementById("time").innerHTML
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {subject: "study session start"}, null);
-  });
+  
   var hr = parseInt(time.substr(0, 2))
   var min = parseInt(time.substr(3, 2))
   var sec = parseInt(time.substr(6, 2))
@@ -234,7 +232,9 @@ chrome.storage.sync.get(['subject'], function(result){
 // }
 function timerStart(){
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
-
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {subject: "study session start"}, null);
+  });
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);

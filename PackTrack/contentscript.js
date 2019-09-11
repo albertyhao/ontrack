@@ -120,7 +120,7 @@ if(!time){time = "00:00:00"}
 
 function insertMarker(){
   var marker = document.createElement('div');
-  marker.innerHTML = `<p style="text-align: center;">Time remaining: ${time}</p>`;
+  marker.innerHTML = `<p style="text-align: center; cursor: pointer;">Time remaining: ${time}</p>`;
   setInterval(function(){marker.getElementsByTagName('p')[0].innerHTML = `<p style="text-align: center;">Time remaining: ${time}</p>`}, 1000);
   marker.style.position = 'fixed';
   marker.style.bottom = '0';
@@ -158,8 +158,51 @@ function insertMarker(){
   marker.addEventListener('mouseout', shrink);
   function shrink(){
     marker.style.height = '50px';
-    marker.innerHTML = `<p style="text-align: center;">Time remaining: ${time}</p>`
+    marker.innerHTML = `<p style="text-align: center; cursor: pointer;">Time remaining: ${time}</p>`
   }
+
+  //Make the DIV element draggagle:
+  dragElement(marker);
+  marker.style.cursor = 'move';
+  function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    
+      /* otherwise, move the DIV from anywhere inside the DIV:*/
+      elmnt.onmousedown = dragMouseDown;
+  
+
+    function dragMouseDown(e) {
+      e = e || window.event;
+      e.preventDefault();
+      // get the mouse cursor position at startup:
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      // call a function whenever the cursor moves:
+      document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+      e = e || window.event;
+      e.preventDefault();
+      // calculate the new cursor position:
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      // set the element's new position:
+      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    
+    }
+
+    function closeDragElement() {
+      /* stop moving when mouse button is released:*/
+      document.onmouseup = null;
+      document.onmousemove = null;
+    }
+  }
+
 }
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
