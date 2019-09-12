@@ -20,9 +20,9 @@ document.getElementById("timer_clear").addEventListener('click', function(e) {
 })
 
 var countdown;
-
+console.log(countdown);
 document.getElementById("timer_start").addEventListener('click', function(e) {
-  if (document.getElementById("timer_start").innerHTML == "Start") {
+  if (document.getElementById("timer_start").innerHTML == "Start" && document.querySelector('#time').innerHTML !== "00:00:00" && document.querySelector('.dropdown-select').value !== "none") {
     confirmValidity()
 
     chrome.runtime.sendMessage(chrome.runtime.id,
@@ -79,12 +79,12 @@ function confirmValidity() {
 
 function startTimer() {
   var time = document.getElementById("time").innerHTML
-
+  
   var hr = parseInt(time.substr(0, 2))
   var min = parseInt(time.substr(3, 2))
   var sec = parseInt(time.substr(6, 2))
 
-  if (sec != 0 || min != 0 || hr != 0) {
+  if (sec !== 0 || min !== 0 || hr !== 0) {
     sec -= 1
     if (sec < 0) {
       sec = 59
@@ -120,18 +120,42 @@ function startTimer() {
 }
 
 function timerEnd() {
+ 
+  chrome.runtime.sendMessage(chrome.runtime.id,{timerStop: true}, null);
+  
+  document.getElementById("timer_start").innerHTML = "Start"
+  document.getElementById("timer_clear").style.display = "inline"
   document.querySelector('.dropdown-select').options[0].selected = true;
 
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
 
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
+    chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects and end session"}, null);
   });
 
   clearInterval(countdown)
-  document.getElementById("timer_start").innerHTML = "Start"
-  document.getElementById("timer_clear").style.display = "inline"
+  
+  //Code to reload every tab except the one user is on
+  var tabUrls = [];
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      tabUrls.push(tabs[i].url);
+      }
+  });
+  var currentTabNum;
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    currentTabNum = tabUrls.indexOf(tabs[0].url);
+  });
+
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      if(i === currentTabNum){
+        continue;
+      }
+      chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
+      }
+  });
 }
 
 chrome.runtime.onMessage.addListener(
@@ -152,6 +176,8 @@ chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (res
   }
 })
 
+
+//Getting customer ID for data
 chrome.storage.sync.get(['customerid'], function(result) {
 
   if (!result || Object.keys(result).length === 0) {
@@ -170,7 +196,10 @@ chrome.storage.sync.get(['customerid'], function(result) {
 
 chrome.storage.sync.get(['wlist'], function(result){
   if(!result.wlist){
-    chrome.storage.sync.set({wlist: ["www.google.com"]}, null);
+    chrome.storage.sync.set({wlist: ["www.google.com", "www.joinontrack.com", "spcs.instructure.com", "mail.google.com", "drive.google.com", "sheets.google.com", "docs.google.com", "slides.google.com", "forms.google.com"]}, null);
+  } else {
+    var $new = result.wlist.filter(i => i !== "www.netflix.com");
+    chrome.storage.sync.set({wlist: $new}, null);
   }
 })
 
@@ -188,9 +217,9 @@ function saveWhitelist(){
     })
     document.getElementById('warning').style.visibility = 'hidden';
   }
-
-
-
+  
+  
+  
 }
 
 //Code for saving subject
@@ -198,9 +227,15 @@ function saveWhitelist(){
 
 // var subjectButton = document.querySelector('#submit');
 // subjectButton.addEventListener('click', setSubject);
+
 chrome.storage.sync.get(['subject'], function(result){
-  document.querySelector('.dropdown-select').value = result.subject;
+  if(!result.subject || !document.querySelector('.dropdown-select').value){
+    chrome.storage.sync.set({subject: "none"}, null);
+  } else {
+    document.querySelector('.dropdown-select').value = result.subject;
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
+  }
+  
 })
 // function setSubject(){
 //   // chrome.storage.sync.get(['subject'], function(result){
@@ -209,16 +244,17 @@ chrome.storage.sync.get(['subject'], function(result){
 //   //   chrome.storage.sync.set({subject: $subject}, null);
 //   // })
 // chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
-//
+
 // chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
 // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 //   chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
 // });
 // }
-
 function timerStart(){
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
-
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {subject: "study session start"}, null);
+  });
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
@@ -227,9 +263,28 @@ function timerStart(){
   countdown = setInterval(startTimer, 1000)
   document.getElementById("timer_start").innerHTML = "Stop"
   document.getElementById("timer_clear").style.display = "none"
+
+  //Code to reload every tab except the one user is on
+  var tabUrls = [];
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      tabUrls.push(tabs[i].url);
+      }
+  });
+  var currentTabNum;
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    currentTabNum = tabUrls.indexOf(tabs[0].url);
+  });
+
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      if(i === currentTabNum){
+        continue;
+      }
+      chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
+      }
+  });
 }
-
-
 //Code for turning on/off extension
 
 
@@ -249,8 +304,8 @@ function timerStart(){
 //     $powerButton.innerHTML = "Turn Extension Off";
 //     chrome.storage.sync.set({on: true}, null);
 //     var final = new Date();
-//     chrome.storage.sync.set({on: true}, null);
-//     chrome.storage.sync.set({ontime: final}, null);
+//     chrome.storage.sync.set({on: true}, null);   
+//     chrome.storage.sync.set({ontime: final}, null);    
 //     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 //       chrome.tabs.sendMessage(tabs[0].id, {subject: "turn on"}, null);
 //     });
@@ -312,3 +367,97 @@ function unblockSite(){
   });
 
 }
+
+//Open menu with hamburger
+var hamburger = document.querySelector('#options');
+hamburger.addEventListener('click', openMenu);
+function openMenu(){
+  var table = document.querySelector('#table');
+  if(table.style.visibility === 'hidden'){
+    table.style.visibility = 'visible';
+  } else {
+    table.style.visibility = 'hidden';
+  }
+  
+}
+//Code for opening and closing settings menu
+var settingsButton = document.querySelector('#openSettings');
+settingsButton.addEventListener('click', openSettings);
+function openSettings(){
+  document.querySelector('#settings').style.visibility = 'visible';
+  document.querySelector('#table').style.visibility = 'hidden';
+}
+
+var exitSettings = document.querySelector('#exitSettings');
+exitSettings.addEventListener('click', exitSettingsPage);
+function exitSettingsPage(){
+  document.querySelector('#settings').style.visibility = 'hidden';
+}
+
+var $whitelist = document.querySelector('#openWhitelistPanel');
+$whitelist.addEventListener('click', openWhitelist);
+function openWhitelist(){
+  document.querySelector('#overlay').style.visibility = 'visible';
+  document.querySelector('#whitelistPanel').style.visibility = 'visible';
+  document.querySelector('#table').style.visibility = 'hidden';
+}
+
+document.querySelector('#exitWhitelistPanel').addEventListener('click', exitWhitelist);
+function exitWhitelist(){
+  document.querySelector('#table').style.visibility = 'hidden';
+  document.querySelector('#overlay').style.visibility = 'hidden';
+  document.querySelector('#whitelistPanel').style.visibility = 'hidden';
+  document.querySelector('#warning').style.visibility = 'hidden';
+  
+}
+
+//Opening and closing tutorial menu
+var openTut = document.querySelector('#openTutorial');
+openTut.addEventListener('click', openTutorial);
+function openTutorial(){
+  document.querySelector('#tutorial').style.visibility = "visible";
+}
+
+document.querySelector('#exitTutorial').addEventListener('click', closeTutorial);
+function closeTutorial(){
+  document.querySelector('#tutorial').style.visibility = "hidden";
+}
+
+//Code for grabbing settings data
+
+var $saveSettings = document.querySelector('#saveSettings');
+$saveSettings.addEventListener('click', saveSettings);
+function saveSettings(){
+  for(i=0; i<3; i++){
+    var radios = document.getElementsByName('mode');
+    var val;
+    if(radios[i].checked === true){
+      val = radios[i].value;
+    }
+    
+  }
+  chrome.storage.sync.set({mode: val}, null);
+  chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change mode", cutoff: val}, null);
+  
+  
+  
+}
+
+chrome.storage.sync.get(['mode'], function(result){
+  if(!result.mode){
+    chrome.storage.sync.set({mode: "0.4"}, null);
+  } else {
+    chrome.storage.sync.set({mode: result.mode}, null);
+    checkSetting(result.mode);
+  }
+})
+
+function checkSetting(val) {
+	var rs =document.getElementsByName('mode');
+	rs.forEach(r => {
+		if(r.value === val) {
+			r.checked = true;
+        }
+    });
+}
+
