@@ -6,6 +6,11 @@
 var stopWords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd", 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's", 'her', 'hers', 'herself', 'it', "it's", 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', "that'll", 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', "don't", 'should', "should've", 'now', 'd', 'll', 'm', 'o', 're', 've', 'y', 'ain', 'aren', "aren't", 'couldn', "couldn't", 'didn', "didn't", 'doesn', "doesn't", 'hadn', "hadn't", 'hasn', "hasn't", 'haven', "haven't", 'isn', "isn't", 'ma', 'mightn', "mightn't", 'mustn', "mustn't", 'needn', "needn't", 'shan', "shan't", 'shouldn', "shouldn't", 'wasn', "wasn't", 'weren', "weren't", 'won', "won't", 'wouldn', "wouldn't"]
 var textBookText;
 var newSubject;
+var mode;
+var simCutoff;
+if(!simCutoff){
+  simCutoff = 0.4;
+}
 // This code sets up the txtbook var in chrome local storage
 chrome.storage.local.get(['txtbook'], function(result){
   result.txtbook = "";
@@ -65,6 +70,43 @@ function setNewSubject(){
   })
 }
 
+// chrome.storage.sync.get(['mode'], function(result){
+//   console.log(result.mode);
+//     if(result.mode == "light"){
+//       simCutoff = 0.35;
+//     } else if(result.mode == "moderate"){
+//       simCutoff = 0.4;
+//     }else {
+//       simCutoff = 0.45;
+//     }
+//   console.log(simCutoff)
+// })
+// function newMode(){
+  
+//   chrome.storage.sync.get(['mode'], function(result){
+//     simCutoff = result.mode;
+//   })
+//   console.log(simCutoff)
+//   // if(mode == "light"){
+//   //   simCutoff = 0.35;
+//   // } else if(mode == "moderate"){
+//   //   simCutoff = 0.4;
+//   // } else {
+//   //   simCutoff = 0.45;
+//   //   console.log(simCutoff);
+//   // }
+// }
+
+//Code to receive mode change
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse){
+    if(req.subject == "change mode"){
+      simCutoff = req.cutoff;
+      console.log(simCutoff)
+    
+    }
+  }
+)
 // getWordsFromFile('physics.txt');
 
 chrome.runtime.onMessage.addListener(
@@ -89,17 +131,17 @@ chrome.runtime.onMessage.addListener(
         })
         // console.log(sender.tab.url.split('.').slice(-1)[0]);
         if (newSubject == "collegeApps"){
-          if (sender.tab.url.split('.').slice(-1)[0].substring(0,3) == "edu" || sim > 0.4){
+          if (sender.tab.url.includes(".edu/") || sim > simCutoff){
             sendResponse({res: false, sim: sim})
           } else {
             sendResponse({res: true, sim: sim, txt: "This ain't a college website"})
           }
         } else if(newSubject == "none"){
-            sendResponse({res: false, sim: sim})
+            sendResponse({res: "power off", sim: sim})
         } else if(newSubject == "hardBlock"){
             sendResponse({res: true, sim: sim})
         } else {
-          if (sim < 0.4) {
+          if (sim < simCutoff) {
             sendResponse({res: true, sim: sim, txt: textBookText})
           } else {
             sendResponse({res: false, sim: sim, txt: textBookText})
@@ -272,3 +314,95 @@ function getSim(str1, str2){
 //     })
 //     }
 // })
+
+//Timer Code
+var timerInterval;
+var time;
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.timer) {
+      time = req.timer
+      timerInterval = setInterval(timeCountdown, 1000)
+    }
+  }
+)
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.timeRequest && timerInterval != 0) {
+      sendResponse(time)
+    }
+  }
+)
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "how much time left" && timerInterval != 0) {
+      sendResponse(time)
+    }
+  }
+)
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.timerStop) {
+      clearInterval(timerInterval)
+      timerInterval = 0
+    }
+  }
+)
+
+function timeCountdown() {
+  console.log(time)
+
+  var hr = parseInt(time.substr(0, 2))
+  var min = parseInt(time.substr(3, 2))
+  var sec = parseInt(time.substr(6, 2))
+
+  if (sec != 0 || min != 0 || hr != 0) {
+    sec -= 1
+    if (sec < 0) {
+      sec = 59
+      min -= 1
+      if (min < 0) {
+        min = 59
+        hr -= 1
+      }
+    }
+
+    if (sec / 10 < 1) {
+      sec = "0" + String(sec)
+    } else {
+      sec = String(sec)
+    }
+
+    if (min / 10 < 1) {
+      min = "0" + String(min)
+    } else {
+      min = String(min)
+    }
+
+    if (hr / 10 < 1) {
+      hr = "0" + String(hr)
+    } else {
+      hr = String(hr)
+    }
+
+    time = hr + ":" + min + ":" + sec
+  } else {
+    clearInterval(timerInterval)
+    chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
+    
+    alert("Study session finished!");
+  }
+}
+
+console.log(simCutoff)
+console.log(newSubject)
+
+//Every time the user clicks onto a new tab, run content script
+chrome.tabs.onActivated.addListener(function(activeInfo) {
+  console.log('you just clicked onto a new tab');
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {subject: "new tab"}, null);
+  });
+});

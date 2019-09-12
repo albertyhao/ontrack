@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "PackTrack",
   "short_name": "OnTrack",
-  "version": : "2.0",
+  "version": "1.1",
   "web_accessible_resources": [
     "biology.txt",
     "history.txt",

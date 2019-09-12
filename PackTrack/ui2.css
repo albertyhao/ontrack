@@ -6,19 +6,6 @@ body {
   height: 220px;
 }
 
-.column {
-  float: left;
-  width: 33.33%;
-  text-align: center;
-  vertical-align: middle;
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
 
 h1 {
   font-family: 'Merriweather', serif;
@@ -28,26 +15,10 @@ h1 {
   color: black;
 }
 
-p {
-  font-family: 'Lato', sans-serif;
-}
 
-.packtrackicon {
-  height: 50px;
-  width: 50px;
-  text-align: center;
-}
-
-.column p {
-  font-family: 'Lato', sans-serif;
-  /*font-family: 'Merriweather', serif;*/
-  color: black;
-  font-size: 11px;
-  font-weight: 400;
-}
 
 .btn2 {
-  border: 2px solid #5dcce8;
+  border: 2px solid #736cdb;
   padding: 6px 16px;
   border-radius: 12px;
   letter-spacing: 0.06em;
@@ -55,14 +26,14 @@ p {
   text-decoration: none;
   outline: none;
   background: #fff;
-  color: #5dcce8;
+  color: #736cdb;
   font-size: 11px;
 }
 
 .btn2:hover {
-   background: #5dcce8;
+   background: #736cdb;
    color: #fff;
-   border: 2px solid #5dcce8;
+   border: 2px solid #736cdb;
    border-radius: 12px;
  }
 
@@ -141,15 +112,19 @@ p {
 
  .container {
    text-align: center;
+
  }
 
  .timer {
    text-align: center;
    font-size: 25px;
+   position: absolute;
+   top: 50px;
+   left: 80px;
  }
 
  #unblock {
-  border: 2px solid #5dcce8;
+  border: 2px solid #736cdb;
   padding: 6px 16px;
   border-radius: 12px;
   letter-spacing: 0.06em;
@@ -157,13 +132,171 @@ p {
   text-decoration: none;
   outline: none;
   background: #fff;
-  color: #5dcce8;
+  color: #736cdb;
   font-size: 11px;
  }
 
  #unblock:hover {
-  background: #5dcce8;
+  background: #736cdb;
    color: #fff;
-   border: 2px solid #5dcce8;
+   border: 2px solid #736cdb;
    border-radius: 12px;
  }
+
+#table{
+  display: table;
+  box-shadow: 0 0 1px 1px lightgray;
+  z-index: 1000000;
+  position: absolute;
+  top: 42px;
+  background-color: white;
+  width: 60%;
+  height: 10%;
+  right: 15px;
+  visibility: hidden;
+}
+.tr{
+  display: table-row;
+  cursor: pointer;
+}
+.td{
+  display: table-cell;
+  font-size: 20px;
+
+  padding: 0.5em 0.25em;
+  vertical-align: middle;
+}
+.tr:hover {
+  background-color: lightgray;
+}
+#settings {
+  z-index: 10000000000000;
+  background-color: white;
+  height: 70%;
+  width: 95%;
+  top: 17%;
+  right: 2.5%;
+  position: absolute;
+  padding: 0 1em;
+  box-sizing: border-box;
+  visibility: hidden;
+}
+
+#saveSettings {
+  position: absolute;
+  bottom: 10px;
+  right: 110px;
+  border: 2px solid #736cdb;
+  padding: 6px 16px;
+  border-radius: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: none;
+  background: #fff;
+  color: #736cdb;
+  font-size: 11px;
+}
+#saveSettings:hover {
+  background: #736cdb;
+   color: #fff;
+   border: 2px solid #736cdb;
+   border-radius: 12px;
+}
+#options:hover{
+  background-color: lightgray;
+}
+
+#whitelistPanel{
+  z-index: 1000000000000000000000000000;
+  position: absolute;
+  right: 5%;
+  top: 30%;
+  height: 40%;
+  width: 90%;
+  background-color: white;
+  visibility: hidden;
+
+
+}
+#overlay{
+  z-index: 10000000000000000000;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(30, 30, 30, 0.8);
+  visibility: hidden;
+}
+
+#tutorial {
+  z-index: 10000000000000;
+  background-color: white;
+  box-shadow: 0 0 1px 1px lightgray;
+  height: 95%;
+  width: 95%;
+  top: 20px;
+  right: 2.5%;
+  top: 2.5%;
+  position: absolute;
+  padding: 0 1em;
+  box-sizing: border-box;
+  overflow: scroll;
+  visibility: hidden;
+}
+
+#exitTutorial:hover {
+  background-color: lightgray;
+}
+
+hr{
+  color: #333333;
+}
+
+.tabs {
+  border-bottom-color: #333333;
+  margin: auto;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  border-radius: 25px;
+}
+
+.tabs-1 {
+  display: inline-block;
+  left: 0%;
+  width: 24%;
+}
+
+.tabs-2 {
+  display: inline-block;
+  left: 25%;
+  width: 24%;
+}
+
+.tabs-3 {
+  display: inline-block;
+  left: 50%;
+  width: 24%;
+}
+
+.tabs-4 {
+  display: inline-block;
+  left: 75%;
+  width: 24%;
+}
+
+#home-icon {
+  padding-bottom: 2px;
+  border-bottom: 3px solid rgb(113, 109, 218);
+}
+
+#settings-icon {
+  padding-bottom: 2px;
+  border-bottom: 3px solid rgb(255, 255, 255);
+}
+
+#whitelist-icon {
+  padding-bottom: 2px;
+  border-bottom: 3px solid rgb(255, 255, 255);
+}
