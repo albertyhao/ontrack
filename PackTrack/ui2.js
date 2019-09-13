@@ -27,10 +27,7 @@ document.getElementById("timer_start").addEventListener('click', function(e) {
 
     chrome.runtime.sendMessage(chrome.runtime.id,
       {timer: document.getElementById("time").innerHTML}, null)
-    
-      // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      //   chrome.tabs.sendMessage(tabs[0].id, {timeSet: document.getElementById("time").innerHTML}, null);
-      // });
+
     timerStart()
   } else if (document.getElementById("timer_start").innerHTML == "Stop") {
     chrome.runtime.sendMessage(chrome.runtime.id,
@@ -82,7 +79,7 @@ function confirmValidity() {
 
 function startTimer() {
   var time = document.getElementById("time").innerHTML
-  
+
   var hr = parseInt(time.substr(0, 2))
   var min = parseInt(time.substr(3, 2))
   var sec = parseInt(time.substr(6, 2))
@@ -123,9 +120,9 @@ function startTimer() {
 }
 
 function timerEnd() {
- 
+
   chrome.runtime.sendMessage(chrome.runtime.id,{timerStop: true}, null);
-  
+
   document.getElementById("timer_start").innerHTML = "Start"
   document.getElementById("timer_clear").style.display = "inline"
   document.querySelector('.dropdown-select').options[0].selected = true;
@@ -138,7 +135,7 @@ function timerEnd() {
   });
 
   clearInterval(countdown)
-  
+
   //Code to reload every tab except the one user is on
   var tabUrls = [];
   chrome.tabs.query({}, function (tabs) {
@@ -220,9 +217,9 @@ function saveWhitelist(){
     })
     document.getElementById('warning').style.visibility = 'hidden';
   }
-  
-  
-  
+
+
+
 }
 
 //Code for saving subject
@@ -238,7 +235,7 @@ chrome.storage.sync.get(['subject'], function(result){
     document.querySelector('.dropdown-select').value = result.subject;
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
   }
-  
+
 })
 // function setSubject(){
 //   // chrome.storage.sync.get(['subject'], function(result){
@@ -254,7 +251,6 @@ chrome.storage.sync.get(['subject'], function(result){
 // });
 // }
 function timerStart(){
-  console.log(document.querySelector('#time').innerHTML);
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {subject: "study session start"}, null);
@@ -308,8 +304,8 @@ function timerStart(){
 //     $powerButton.innerHTML = "Turn Extension Off";
 //     chrome.storage.sync.set({on: true}, null);
 //     var final = new Date();
-//     chrome.storage.sync.set({on: true}, null);   
-//     chrome.storage.sync.set({ontime: final}, null);    
+//     chrome.storage.sync.set({on: true}, null);
+//     chrome.storage.sync.set({ontime: final}, null);
 //     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 //       chrome.tabs.sendMessage(tabs[0].id, {subject: "turn on"}, null);
 //     });
@@ -373,47 +369,74 @@ function unblockSite(){
 }
 
 //Open menu with hamburger
-var hamburger = document.querySelector('#options');
-hamburger.addEventListener('click', openMenu);
-function openMenu(){
-  var table = document.querySelector('#table');
-  if(table.style.visibility === 'hidden'){
-    table.style.visibility = 'visible';
-  } else {
-    table.style.visibility = 'hidden';
-  }
-  
-}
+// var hamburger = document.querySelector('#options');
+// hamburger.addEventListener('click', openMenu);
+// function openMenu(){
+//   var table = document.querySelector('#table');
+//   if(table.style.visibility === 'hidden'){
+//     table.style.visibility = 'visible';
+//   } else {
+//     table.style.visibility = 'hidden';
+//   }
+//
+// }
 //Code for opening and closing settings menu
-var settingsButton = document.querySelector('#openSettings');
-settingsButton.addEventListener('click', openSettings);
-function openSettings(){
-  document.querySelector('#settings').style.visibility = 'visible';
-  document.querySelector('#table').style.visibility = 'hidden';
-}
+// var settingsButton = document.querySelector('#openSettings');
+// settingsButton.addEventListener('click', openSettings);
+// function openSettings(){
+//   document.querySelector('#settings').style.visibility = 'visible';
+//   document.querySelector('#table').style.visibility = 'hidden';
+// }
 
-var exitSettings = document.querySelector('#exitSettings');
-exitSettings.addEventListener('click', exitSettingsPage);
-function exitSettingsPage(){
-  document.querySelector('#settings').style.visibility = 'hidden';
-}
+// var exitSettings = document.querySelector('#exitSettings');
+// exitSettings.addEventListener('click', exitSettingsPage);
+// function exitSettingsPage(){
+//   document.querySelector('#settings').style.visibility = 'hidden';
+// }
 
-var $whitelist = document.querySelector('#openWhitelistPanel');
-$whitelist.addEventListener('click', openWhitelist);
-function openWhitelist(){
-  document.querySelector('#overlay').style.visibility = 'visible';
-  document.querySelector('#whitelistPanel').style.visibility = 'visible';
-  document.querySelector('#table').style.visibility = 'hidden';
-}
+document.getElementById("settingsTab").addEventListener('click', function(e) {
+  document.getElementById("settings").style.visibility = "visible";
+  document.getElementById("settings-icon").style.borderBottom = "3px solid rgb(113, 109, 218)";
+  document.getElementById("whitelistPanel").style.visibility = "hidden";
+  document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
+  document.getElementById("home").style.visibility = "hidden";
+  document.getElementById("home-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
+})
 
-document.querySelector('#exitWhitelistPanel').addEventListener('click', exitWhitelist);
-function exitWhitelist(){
-  document.querySelector('#table').style.visibility = 'hidden';
-  document.querySelector('#overlay').style.visibility = 'hidden';
-  document.querySelector('#whitelistPanel').style.visibility = 'hidden';
-  document.querySelector('#warning').style.visibility = 'hidden';
-  
-}
+// var $whitelist = document.querySelector('#openWhitelistPanel');
+// $whitelist.addEventListener('click', openWhitelist);
+// function openWhitelist(){
+//   document.querySelector('#overlay').style.visibility = 'visible';
+//   document.querySelector('#whitelistPanel').style.visibility = 'visible';
+//   document.querySelector('#table').style.visibility = 'hidden';
+// }
+//
+// document.querySelector('#exitWhitelistPanel').addEventListener('click', exitWhitelist);
+// function exitWhitelist(){
+//   document.querySelector('#table').style.visibility = 'hidden';
+//   document.querySelector('#overlay').style.visibility = 'hidden';
+//   document.querySelector('#whitelistPanel').style.visibility = 'hidden';
+//   document.querySelector('#warning').style.visibility = 'hidden';
+//
+//
+
+document.getElementById("whitelistTab").addEventListener('click', function(e) {
+  document.getElementById("settings").style.visibility = "hidden";
+  document.getElementById("settings-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
+  document.getElementById("whitelistPanel").style.visibility = "visible";
+  document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(113, 109, 218)";
+  document.getElementById("home").style.visibility = "hidden";
+  document.getElementById("home-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
+})
+
+document.getElementById("homeTab").addEventListener('click', function(e) {
+  document.getElementById("settings").style.visibility = "hidden";
+  document.getElementById("settings-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
+  document.getElementById("whitelistPanel").style.visibility = "hidden";
+  document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
+  document.getElementById("home").style.visibility = "visible";
+  document.getElementById("home-icon").style.borderBottom = "3px solid rgb(113, 109, 218)";
+})
 
 //Opening and closing tutorial menu
 var openTut = document.querySelector('#openTutorial');
@@ -438,13 +461,13 @@ function saveSettings(){
     if(radios[i].checked === true){
       val = radios[i].value;
     }
-    
+
   }
   chrome.storage.sync.set({mode: val}, null);
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change mode", cutoff: val}, null);
-  
-  
-  
+
+
+
 }
 
 chrome.storage.sync.get(['mode'], function(result){
@@ -464,4 +487,3 @@ function checkSetting(val) {
         }
     });
 }
-
