@@ -264,26 +264,26 @@ hr{
 
 .tabs-1 {
   display: inline-block;
-  left: 0%;
-  width: 24%;
+  left: 50%;
+  width: 32%;
 }
 
 .tabs-2 {
   display: inline-block;
-  left: 25%;
-  width: 24%;
+  left: 37%;
+  width: 35%;
 }
 
 .tabs-3 {
   display: inline-block;
-  left: 50%;
-  width: 24%;
+  left: 100%;
+  width: 28%;
 }
 
 .tabs-4 {
   display: inline-block;
-  left: 75%;
-  width: 24%;
+  left: 80%;
+  width: 30%;
 }
 
 #home-icon {
