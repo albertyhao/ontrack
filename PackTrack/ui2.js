@@ -27,7 +27,10 @@ document.getElementById("timer_start").addEventListener('click', function(e) {
 
     chrome.runtime.sendMessage(chrome.runtime.id,
       {timer: document.getElementById("time").innerHTML}, null)
-
+    
+      // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      //   chrome.tabs.sendMessage(tabs[0].id, {timeSet: document.getElementById("time").innerHTML}, null);
+      // });
     timerStart()
   } else if (document.getElementById("timer_start").innerHTML == "Stop") {
     chrome.runtime.sendMessage(chrome.runtime.id,
@@ -251,6 +254,7 @@ chrome.storage.sync.get(['subject'], function(result){
 // });
 // }
 function timerStart(){
+  console.log(document.querySelector('#time').innerHTML);
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {subject: "study session start"}, null);

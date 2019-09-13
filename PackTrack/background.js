@@ -344,6 +344,13 @@ chrome.runtime.onMessage.addListener(
 )
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
+    if (req.subject == "current time" && timerInterval != 0) {
+      sendResponse(time)
+    }
+  }
+)
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
     if (req.timerStop) {
       clearInterval(timerInterval)
       timerInterval = 0
@@ -392,17 +399,9 @@ function timeCountdown() {
     clearInterval(timerInterval)
     chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
     
-    alert("Study session finished!");
+    alert("Study session finished! Open the extension to unblock sites.");
   }
 }
 
 console.log(simCutoff)
 console.log(newSubject)
-
-//Every time the user clicks onto a new tab, run content script
-chrome.tabs.onActivated.addListener(function(activeInfo) {
-  console.log('you just clicked onto a new tab');
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {subject: "new tab"}, null);
-  });
-});
