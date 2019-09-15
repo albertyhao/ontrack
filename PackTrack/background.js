@@ -131,7 +131,7 @@ chrome.runtime.onMessage.addListener(
         })
         // console.log(sender.tab.url.split('.').slice(-1)[0]);
         if (newSubject == "collegeApps"){
-          if (sender.tab.url.includes(".edu/") || sim > simCutoff){
+          if (sender.tab.url.includes(".edu/") || sim > simCutoff || sender.tab.url.includes("college") || sender.tab.url.includes("university")){
             sendResponse({res: false, sim: sim})
           } else {
             sendResponse({res: true, sim: sim, txt: "This ain't a college website"})
@@ -141,10 +141,10 @@ chrome.runtime.onMessage.addListener(
         } else if(newSubject == "hardBlock"){
             sendResponse({res: true, sim: sim})
         } else {
-          if (sim < simCutoff) {
-            sendResponse({res: true, sim: sim, txt: textBookText})
-          } else {
+          if (sim > simCutoff || sender.tab.url.includes(newSubject)) {
             sendResponse({res: false, sim: sim, txt: textBookText})
+          } else {
+            sendResponse({res: true, sim: sim, txt: textBookText})
           }
         }
         

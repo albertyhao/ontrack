@@ -252,38 +252,46 @@ chrome.storage.sync.get(['subject'], function(result){
 // }
 function timerStart(){
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {subject: "study session start"}, null);
-  });
+  // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+  //   chrome.tabs.sendMessage(tabs[0].id, {subject: "study session start"}, null);
+  // });
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
+  // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+  //   chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
+  // });
+  var tabIds = [];
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      tabIds.push(tabs[i].id);
+      chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
+    }
   });
 
+  
   countdown = setInterval(startTimer, 1000)
   document.getElementById("timer_start").innerHTML = "Stop"
   document.getElementById("timer_clear").style.display = "none"
 
   //Code to reload every tab except the one user is on
-  var tabUrls = [];
-  chrome.tabs.query({}, function (tabs) {
-    for (var i = 0; i < tabs.length; i++) {
-      tabUrls.push(tabs[i].url);
-      }
-  });
-  var currentTabNum;
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    currentTabNum = tabUrls.indexOf(tabs[0].url);
-  });
+  // var tabUrls = [];
+  // chrome.tabs.query({}, function (tabs) {
+  //   for (var i = 0; i < tabs.length; i++) {
+  //     tabUrls.push(tabs[i].url);
+  //     }
+  // });
+  // var currentTabNum;
+  // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+  //   currentTabNum = tabUrls.indexOf(tabs[0].url);
+  // });
 
-  chrome.tabs.query({}, function (tabs) {
-    for (var i = 0; i < tabs.length; i++) {
-      if(i === currentTabNum){
-        continue;
-      }
-      chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
-      }
-  });
+  // chrome.tabs.query({}, function (tabs) {
+  //   for (var i = 0; i < tabs.length; i++) {
+  //     if(i === currentTabNum){
+  //       continue;
+  //     }
+  //     chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
+  //     }
+  // });
 }
 //Code for turning on/off extension
 
@@ -463,10 +471,26 @@ function saveSettings(){
     }
 
   }
+  for(i=0; i<2; i++){
+    var tradios = document.getElementsByName('timer');;
+    var tval;
+    if(tradios[i].checked === true){
+      tval = tradios[i].value;
+    }
+  }
   chrome.storage.sync.set({mode: val}, null);
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change mode", cutoff: val}, null);
-
-
+  chrome.storage.sync.set({timerWidget: tval}, null);
+  
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {subject: "timer on and off"}, null);
+  });
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      
+      chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
+      }
+  });
 
 }
 
@@ -479,11 +503,26 @@ chrome.storage.sync.get(['mode'], function(result){
   }
 })
 
+chrome.storage.sync.get(['timerWidget'], function(result){
+  if(!result.timerWidget){
+    chrome.storage.sync.set({timerWidget: "on"}, null);
+  } else {
+    chrome.storage.sync.set({timerWidget: result.timerWidget}, null);
+    checkSetting(result.timerWidget);
+  }
+})
+
 function checkSetting(val) {
-	var rs =document.getElementsByName('mode');
+  var rs =document.getElementsByName('mode');
+  var ts = document.getElementsByName('timer');
 	rs.forEach(r => {
 		if(r.value === val) {
 			r.checked = true;
+        }
+    });
+  ts.forEach(t => {
+    if(t.value === val) {
+      t.checked = true;
         }
     });
 }
