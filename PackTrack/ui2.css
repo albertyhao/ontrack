@@ -112,16 +112,15 @@ h1 {
 
  .container {
    text-align: center;
-   
+
  }
 
  .timer {
-   text-align: center;
+   
    font-size: 25px;
    position: absolute;
    top: 50px;
    left: 70px;
-   
  }
 
  #unblock {
@@ -144,8 +143,8 @@ h1 {
    border-radius: 12px;
  }
 
-#table{ 
-  display: table; 
+#table{
+  display: table;
   box-shadow: 0 0 1px 1px lightgray;
   z-index: 1000000;
   position: absolute;
@@ -156,14 +155,14 @@ h1 {
   right: 15px;
   visibility: hidden;
 }
-.tr{ 
-  display: table-row; 
+.tr{
+  display: table-row;
   cursor: pointer;
 }
-.td{ 
-  display: table-cell; 
+.td{
+  display: table-cell;
   font-size: 20px;
-  
+
   padding: 0.5em 0.25em;
   vertical-align: middle;
 }
@@ -173,10 +172,9 @@ h1 {
 #settings {
   z-index: 10000000000000;
   background-color: white;
-  box-shadow: 0 0 1px 1px lightgray;
-  height: 95%;
+  height: 70%;
   width: 95%;
-  top: 2.5%;
+  top: 17%;
   right: 2.5%;
   position: absolute;
   padding: 0 1em;
@@ -184,13 +182,10 @@ h1 {
   visibility: hidden;
 }
 
-#settings svg:hover {
-  background-color: lightgray;
-}
 #saveSettings {
   position: absolute;
   bottom: 10px;
-  right: 110px;
+  right: 115px;
   border: 2px solid #736cdb;
   padding: 6px 16px;
   border-radius: 12px;
@@ -220,9 +215,8 @@ h1 {
   height: 40%;
   width: 90%;
   background-color: white;
-  box-shadow: 0 0 1px 1px lightgray;
   visibility: hidden;
-  
+
 
 }
 #overlay{
@@ -234,9 +228,6 @@ h1 {
   width: 100%;
   background-color: rgb(30, 30, 30, 0.8);
   visibility: hidden;
-}
-#whitelistPanel svg:hover{
-  background-color: lightgray;
 }
 
 #tutorial {
@@ -263,3 +254,49 @@ hr{
   color: #333333;
 }
 
+.tabs {
+  border-bottom-color: #333333;
+  margin: auto;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  border-radius: 25px;
+}
+
+.tabs-1 {
+  display: inline-block;
+  left: 50%;
+  width: 32%;
+}
+
+.tabs-2 {
+  display: inline-block;
+  left: 37%;
+  width: 35%;
+}
+
+.tabs-3 {
+  display: inline-block;
+  left: 100%;
+  width: 28%;
+}
+
+.tabs-4 {
+  display: inline-block;
+  left: 80%;
+  width: 30%;
+}
+
+#home-icon {
+  padding-bottom: 2px;
+  border-bottom: 3px solid rgb(113, 109, 218);
+}
+
+#settings-icon {
+  padding-bottom: 2px;
+  border-bottom: 3px solid rgb(255, 255, 255);
+}
+
+#whitelist-icon {
+  padding-bottom: 2px;
+  border-bottom: 3px solid rgb(255, 255, 255);
+}
