@@ -398,8 +398,14 @@ function timeCountdown() {
   } else {
     clearInterval(timerInterval)
     chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
-    
+    chrome.storage.sync.set({subject: "none"}, null);
     alert("Study session finished! Open the extension to unblock sites.");
+    
+    chrome.tabs.query({}, function (tabs) {
+      for (var i = 0; i < tabs.length; i++) {
+        chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
+        }
+    });
   }
 }
 
