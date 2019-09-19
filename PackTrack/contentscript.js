@@ -289,6 +289,53 @@ function insertTimer(){
   //Make the DIV element draggagle:
   dragElement(timer);
   timer.style.cursor = 'move';
+}
+function insertMarkerTop(){
+  var marker = document.createElement('div');
+  marker.innerHTML = `<p style="text-align: center; cursor: pointer;">Time remaining: ${time}</p>`;
+  setInterval(function(){marker.getElementsByTagName('p')[0].innerHTML = `<p style="text-align: center;">Time remaining: ${time}</p>`}, 1000);
+  marker.style.position = 'fixed';
+  marker.style.top = '25%';
+  marker.style.width = '300px';
+  marker.style.height = '50px';
+  marker.style.backgroundColor = '#f0f0f0';
+  marker.style.left = '42%';
+  marker.style.zIndex = '100';
+  marker.style.borderTop = '4px solid #736cdb';
+  marker.style.borderLeft = '4px solid #736cdb';
+  marker.style.borderRight = '4px solid #736cdb';
+  var currentSubject;
+  document.body.appendChild(marker);
+  chrome.storage.sync.get(['subject'], function(result){
+    if(result.subject == "none"){
+      currentSubject = "None";
+    } else if(result.subject == "biology"){
+      currentSubject = "Biology";
+    } else if(result.subject == "history"){
+      currentSubject = "American History"
+    } else if(result.subject == "collegeApps"){
+      currentSubject = "College Apps"
+    } else {
+      currentSubject = "General Studying"
+    }
+  })
+  marker.addEventListener('click', enlarge);
+  function enlarge(){
+    marker.style.height = '150px';
+    marker.innerHTML = `<b><h4 style="text-align: center;">Study session in progress</h4></b><p style="text-align: center;">Time remaining: ${time}</p><p style="text-align: center;">Current Subject: ${currentSubject}</p>`
+    
+    
+    
+  }
+  marker.addEventListener('mouseout', shrink);
+  function shrink(){
+    marker.style.height = '50px';
+    marker.innerHTML = `<p style="text-align: center; cursor: pointer;">Time remaining: ${time}</p>`
+  }
+
+  //Make the DIV element draggagle:
+  dragElement(marker);
+  marker.style.cursor = 'move';
   function dragElement(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     
@@ -420,121 +467,14 @@ function insertMarkerTop(){
     }
   }
 }
-// function insertMarkerBottom(){
-//   var marker = document.createElement('div');
-//   marker.innerHTML = `<p style="text-align: center; cursor: move;">Time remaining: ${time}</p>`;
-//   setInterval(function(){marker.getElementsByTagName('p')[0].innerHTML = `<p style="text-align: center;">Time remaining: ${time}</p>`}, 1000);
-//   marker.style.position = 'fixed';
-//   marker.style.bottom = '0';
-//   marker.style.width = '300px';
-//   marker.style.height = '50px';
-//   marker.style.backgroundColor = '#f0f0f0';
-//   marker.style.left = '42%';
-//   marker.style.zIndex = '100';
-//   marker.style.borderTop = '4px solid #736cdb';
-//   marker.style.borderLeft = '4px solid #736cdb';
-//   marker.style.borderRight = '4px solid #736cdb';
-//   var currentSubject;
-//   document.body.appendChild(marker);
 
-//   chrome.storage.sync.get(['subject'], function(result){
-//     if(result.subject == "none"){
-//       currentSubject = "None";
-//     } else if(result.subject == "biology"){
-//       currentSubject = "Biology";
-//     } else if(result.subject == "history"){
-//       currentSubject = "American History"
-//     } else if(result.subject == "collegeApps"){
-//       currentSubject = "College Apps"
-//     } else {
-//       currentSubject = "General Studying"
-//     }
-//   })
-//   marker.addEventListener('click', enlarge);
-//   function enlarge(){
-//     marker.style.height = '150px';
-//     marker.innerHTML = `<b><h4 style="text-align: center;">Study session in progress</h4></b><p style="text-align: center;">Time remaining: ${time}</p><p style="text-align: center;">Current Subject: ${currentSubject}</p>`
-    
-    
-    
-//   }
-//   marker.addEventListener('mouseout', shrink);
-//   function shrink(){
-//     marker.style.height = '50px';
-//     marker.innerHTML = `<p style="text-align: center; cursor: move;">Time remaining: ${time}</p>`
-//   }
-
-//   //Make the DIV element draggagle:
-//   dragElement(marker);
-//   marker.style.cursor = 'move';
-//   function dragElement(elmnt) {
-//     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    
-//       /* otherwise, move the DIV from anywhere inside the DIV:*/
-//       elmnt.onmousedown = dragMouseDown;
-  
-
-//     function dragMouseDown(e) {
-//       e = e || window.event;
-//       e.preventDefault();
-//       // get the mouse cursor position at startup:
-//       pos3 = e.clientX;
-//       pos4 = e.clientY;
-//       document.onmouseup = closeDragElement;
-//       // call a function whenever the cursor moves:
-//       document.onmousemove = elementDrag;
-//     }
-
-//     function elementDrag(e) {
-//       e = e || window.event;
-//       e.preventDefault();
-//       // calculate the new cursor position:
-//       pos1 = pos3 - e.clientX;
-//       pos2 = pos4 - e.clientY;
-//       pos3 = e.clientX;
-//       pos4 = e.clientY;
-//       // set the element's new position:
-//       elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-//       elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-    
-//     }
-
-//     function closeDragElement() {
-//       /* stop moving when mouse button is released:*/
-//       document.onmouseup = null;
-//       document.onmousemove = null;
-//     }
-//   }
-
-// }
-// chrome.runtime.onMessage.addListener(
-//   function(req, sender, sendResponse) {
-//     if (req.subject == "study session start") {
-//       console.log('hello');
-//       insertMarker();
-      
-//     }
-//   }
-// )
-// chrome.runtime.onMessage.addListener(
-//   function(req, sender, sendResponse){
-//     if(req.subject == "turn on"){
-//       power = true;
-//       console.log("extension on")
-//       scrapeUserSite();
-//     } else {
-//       power = false;
-//       console.log("extension off")
-//       location.reload();
-//     }
-//   }
-// )
-// console.log('did it get this far?')
 if(!timerOrNot){
   timerOrNot = "on";
 }
+
 scrapeUserSite();
 console.log(timerOrNot)
+
 chrome.storage.sync.get(['timerWidget'], function(result){
   timerOrNot = result.timerWidget;
   console.log(timerOrNot)

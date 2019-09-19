@@ -406,8 +406,12 @@ function timeCountdown() {
         chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
         }
     });
+    
+    alert("Study session finished!");
   }
 }
 
 console.log(simCutoff)
 console.log(newSubject)
+
+
