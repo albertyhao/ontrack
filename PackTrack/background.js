@@ -121,7 +121,8 @@ chrome.runtime.onMessage.addListener(
           return;
         }
         // console.log('ploopsim');
-        var sim = getSim(req.txt, textBookText)
+        var sim = getSim(JSON.stringify(req.txt), textBookText)
+        console.log(req.txt);
         chrome.storage.sync.get(['customerid', 'subject'], function(result){
           // console.log(result);
           // console.log(req.site)
@@ -398,16 +399,10 @@ function timeCountdown() {
   } else {
     clearInterval(timerInterval)
     chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
-    chrome.storage.sync.set({subject: "none"}, null);
+    
     alert("Study session finished! Open the extension to unblock sites.");
     
-    chrome.tabs.query({}, function (tabs) {
-      for (var i = 0; i < tabs.length; i++) {
-        chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
-        }
-    });
     
-    alert("Study session finished!");
   }
 }
 
@@ -415,3 +410,9 @@ console.log(simCutoff)
 console.log(newSubject)
 
 
+// browser.runtime.onMessage.addListener(message => {
+//   console.log("background: onMessage", message);
+
+//   // Add this line:
+//   return Promise.resolve("Dummy response to keep the console quiet");
+// });

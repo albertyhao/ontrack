@@ -76,7 +76,7 @@ function scrapeUserSite() {
     )
     .filter(q => q.length);
   siteText = t.join(' ');
-
+  console.log(siteText)
   chrome.storage.sync.get(['qblock'], function(result){
     if(!result.qblock){
       $qblock = [];
@@ -93,6 +93,7 @@ function scrapeUserSite() {
       // console.log(whitelist);
     }
       chrome.runtime.sendMessage(chrome.runtime.id, {txt: siteText}, function(response) {
+       
         if(!response) return;
         if (response.res && response.res !== "power off" && whitelist.every(function(site){return site !== location.hostname}) && $qblock.every(function(site){return site !== location.hostname}) ) {
           // Blokc this crup
@@ -111,6 +112,7 @@ function scrapeUserSite() {
           insertMarkerTop();
           
         } else if(response.res == "power off"){
+          
           console.log('power off');
         } else {
           if(timerOrNot == "on"){
@@ -127,25 +129,21 @@ function scrapeUserSite() {
     })
 }
 
-
-
 window.onblur = function(e) {
   // console.log(e);
   var final = new Date();
   var diff = final - load;
-  chrome.runtime.sendMessage(chrome.runtime.id, {time: diff, site: location.href}, null);
+  try {
+    chrome.runtime.sendMessage(chrome.runtime.id, {time: diff, site: location.href}, null);
+  } catch(ex) {
+
+  }
+  
 }
-
-
-
-
 
 window.onfocus = function(e) {
   load = new Date ();
 }
-
-
-
 
 
 
@@ -196,14 +194,19 @@ chrome.runtime.onMessage.addListener(
 )
 
 function getTime(){
-  chrome.runtime.sendMessage(chrome.runtime.id, {subject: "how much time left"}, function(res) {
-    if(res){
-      time = res;
-      
-    } else {
-      return;
-    }
-  })
+  try {
+    chrome.runtime.sendMessage(chrome.runtime.id, {subject: "how much time left"}, function(res) {
+      if(res){
+        time = res;
+        
+      } else {
+        return;
+      }
+    })
+  }
+  catch(ex) {
+  
+  }
 }
 
 setInterval(getTime, 1000);
@@ -275,10 +278,10 @@ function insertTimer(){
     return;
   }
   var countdownNumberEl = document.getElementById('countdown-number');
-	var countdown = seconds;
+  var countdown = seconds;
   countdownNumberEl.textContent = countdown;
 
-	var x = setInterval(function() {
+  var x = setInterval(function() {
     if(--countdown === 0) {
       clearInterval(x);
       document.getElementsByTagName('circle')[0].style.stroke = 'lightgray';
@@ -289,6 +292,44 @@ function insertTimer(){
   //Make the DIV element draggagle:
   dragElement(timer);
   timer.style.cursor = 'move';
+  function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    
+      /* otherwise, move the DIV from anywhere inside the DIV:*/
+      elmnt.onmousedown = dragMouseDown;
+  
+
+    function dragMouseDown(e) {
+      e = e || window.event;
+      e.preventDefault();
+      // get the mouse cursor position at startup:
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      // call a function whenever the cursor moves:
+      document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+      e = e || window.event;
+      e.preventDefault();
+      // calculate the new cursor position:
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      // set the element's new position:
+      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    
+    }
+
+    function closeDragElement() {
+      /* stop moving when mouse button is released:*/
+      document.onmouseup = null;
+      document.onmousemove = null;
+    }
+  }
 }
 function insertMarkerTop(){
   var marker = document.createElement('div');
@@ -479,3 +520,4 @@ chrome.storage.sync.get(['timerWidget'], function(result){
   timerOrNot = result.timerWidget;
   console.log(timerOrNot)
 })
+

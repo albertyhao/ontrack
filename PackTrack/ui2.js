@@ -1,3 +1,11 @@
+var tabIds = [];
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      tabIds.push(tabs[i].id);
+      chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
+    }
+  });
+  
 document.addEventListener('keypress', function(e) {
   if (document.getElementById("timer_start").innerHTML == "Start") {
     var nums = "0123456789"
@@ -136,26 +144,26 @@ function timerEnd() {
 
   clearInterval(countdown)
 
-  //Code to reload every tab except the one user is on
-  // var tabUrls = [];
-  // chrome.tabs.query({}, function (tabs) {
-  //   for (var i = 0; i < tabs.length; i++) {
-  //     tabUrls.push(tabs[i].url);
-  //     }
-  // });
-  // var currentTabNum;
-  // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-  //   currentTabNum = tabUrls.indexOf(tabs[0].url);
-  // });
+  // Code to reload every tab except the one user is on
+  var tabUrls = [];
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      tabUrls.push(tabs[i].url);
+      }
+  });
+  var currentTabNum;
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    currentTabNum = tabUrls.indexOf(tabs[0].url);
+  });
 
-  // chrome.tabs.query({}, function (tabs) {
-  //   for (var i = 0; i < tabs.length; i++) {
-  //     if(i === currentTabNum){
-  //       continue;
-  //     }
-  //     chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
-  //     }
-  // });
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      if(i === currentTabNum){
+        continue;
+      }
+      chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
+      }
+  });
 }
 
 chrome.runtime.onMessage.addListener(
