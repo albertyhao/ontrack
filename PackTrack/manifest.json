@@ -7,7 +7,8 @@
     "biology.txt",
     "history.txt",
     "physics.txt",
-    "collegeApps.txt"
+    "collegeApps.txt",
+    "bio2.txt"
   ],
   "description": "OnTrack's PackTrack",
   "icons": {

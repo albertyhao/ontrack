@@ -18,7 +18,7 @@ chrome.storage.sync.set({on: false}, null);
 // });
 
 function getWordsFromFile(fileToLoad) {
-  
+
   var xhr = new XMLHttpRequest();
   // document.getElementById('console').innerHTML = text2;
 
@@ -34,11 +34,11 @@ function getWordsFromFile(fileToLoad) {
 
 
     textBookText = result;
-   
+
     chrome.storage.local.set({txtbook: textBookText}, null);
 
-    
-    
+
+
 
   });
 
@@ -53,7 +53,7 @@ function setNewSubject(){
     if(newSubject == "physics"){
       getWordsFromFile("physics.txt");
     } else if(newSubject == "biology"){
-      getWordsFromFile("biology.txt");
+      getWordsFromFile("bio2.txt");
       // console.log(textBookText);
     } else if(newSubject == "history"){
       getWordsFromFile("history.txt");
@@ -85,7 +85,7 @@ chrome.runtime.onMessage.addListener(
           // console.log(req.site)
           var xhr = new XMLHttpRequest();
           xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&sim=${sim}&subject=${result.subject}&loadsimtime=${req.loadsimtime}`);
-          xhr.send(); 
+          xhr.send();
         })
         // console.log(sender.tab.url.split('.').slice(-1)[0]);
         if (newSubject == "collegeApps"){
@@ -105,7 +105,7 @@ chrome.runtime.onMessage.addListener(
             sendResponse({res: false, sim: sim, txt: textBookText})
           }
         }
-        
+
       }
       doSim();
     }
@@ -133,9 +133,9 @@ chrome.runtime.onMessage.addListener(
 //         }
 //       }
 //       doSim();
-        
+
 //     }
-    
+
 //   });
 
 chrome.runtime.onMessage.addListener(
@@ -146,7 +146,7 @@ chrome.runtime.onMessage.addListener(
 			// console.log(result)
   			var xhr = new XMLHttpRequest();
   			xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&time=${encodeURIComponent(req.time)}`);
- 			xhr.send(); 
+ 			xhr.send();
 		})
 	}
   	else if (req.site) {
@@ -154,7 +154,7 @@ chrome.runtime.onMessage.addListener(
 			// console.log(result)
   			var xhr = new XMLHttpRequest();
   			xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}`);
- 			xhr.send(); 
+ 			xhr.send();
 		})
   	}
 })
@@ -175,7 +175,7 @@ function genFreq(string) {
   // }
 
   // var betterString = cleanSentences.join(" ");
-  
+
   var wordArray = string.split(" ");
   var termFreqDict = {};
   for(i=0; i < wordArray.length; i++) {
@@ -249,7 +249,7 @@ function getSim(str1, str2){
       }
     // console.log('SIM SIM', sim)
     return sim
-} 
+}
 
 
 // chrome.runtime.onMessage.addListener(
@@ -260,7 +260,7 @@ function getSim(str1, str2){
 //       console.log(result)
 //         var xhr = new XMLHttpRequest();
 //         xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&time=${req.time}`);
-//         xhr.send(); 
+//         xhr.send();
 //     })
 //   }
 //     else if (req.site) {
@@ -268,7 +268,7 @@ function getSim(str1, str2){
 //       // console.log(result)
 //         var xhr = new XMLHttpRequest();
 //         xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}`);
-//       xhr.send(); 
+//       xhr.send();
 //     })
 //     }
 // })
