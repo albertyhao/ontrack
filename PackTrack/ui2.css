@@ -116,11 +116,11 @@ h1 {
  }
 
  .timer {
-   text-align: center;
+   
    font-size: 25px;
    position: absolute;
    top: 50px;
-   left: 80px;
+   left: 70px;
  }
 
  #unblock {
@@ -185,7 +185,7 @@ h1 {
 #saveSettings {
   position: absolute;
   bottom: 10px;
-  right: 110px;
+  right: 115px;
   border: 2px solid #736cdb;
   padding: 6px 16px;
   border-radius: 12px;
@@ -264,26 +264,26 @@ hr{
 
 .tabs-1 {
   display: inline-block;
-  left: 0%;
-  width: 24%;
+  left: 50%;
+  width: 32%;
 }
 
 .tabs-2 {
   display: inline-block;
-  left: 25%;
-  width: 24%;
+  left: 37%;
+  width: 35%;
 }
 
 .tabs-3 {
   display: inline-block;
-  left: 50%;
-  width: 24%;
+  left: 100%;
+  width: 28%;
 }
 
 .tabs-4 {
   display: inline-block;
-  left: 75%;
-  width: 24%;
+  left: 80%;
+  width: 30%;
 }
 
 #home-icon {

@@ -131,7 +131,7 @@ chrome.runtime.onMessage.addListener(
         })
         // console.log(sender.tab.url.split('.').slice(-1)[0]);
         if (newSubject == "collegeApps"){
-          if (sender.tab.url.includes(".edu/") || sim > simCutoff){
+          if (sender.tab.url.includes(".edu/") || sim > simCutoff || sender.tab.url.includes("college") || sender.tab.url.includes("university")){
             sendResponse({res: false, sim: sim})
           } else {
             sendResponse({res: true, sim: sim, txt: "This ain't a college website"})
@@ -141,10 +141,10 @@ chrome.runtime.onMessage.addListener(
         } else if(newSubject == "hardBlock"){
             sendResponse({res: true, sim: sim})
         } else {
-          if (sim < simCutoff) {
-            sendResponse({res: true, sim: sim, txt: textBookText})
-          } else {
+          if (sim > simCutoff || sender.tab.url.includes(newSubject)) {
             sendResponse({res: false, sim: sim, txt: textBookText})
+          } else {
+            sendResponse({res: true, sim: sim, txt: textBookText})
           }
         }
         
@@ -344,6 +344,13 @@ chrome.runtime.onMessage.addListener(
 )
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
+    if (req.subject == "current time" && timerInterval != 0) {
+      sendResponse(time)
+    }
+  }
+)
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
     if (req.timerStop) {
       clearInterval(timerInterval)
       timerInterval = 0
@@ -391,6 +398,14 @@ function timeCountdown() {
   } else {
     clearInterval(timerInterval)
     chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
+    chrome.storage.sync.set({subject: "none"}, null);
+    alert("Study session finished! Open the extension to unblock sites.");
+    
+    chrome.tabs.query({}, function (tabs) {
+      for (var i = 0; i < tabs.length; i++) {
+        chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
+        }
+    });
     
     alert("Study session finished!");
   }
@@ -399,10 +414,4 @@ function timeCountdown() {
 console.log(simCutoff)
 console.log(newSubject)
 
-//Every time the user clicks onto a new tab, run content script
-chrome.tabs.onActivated.addListener(function(activeInfo) {
-  console.log('you just clicked onto a new tab');
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {subject: "new tab"}, null);
-  });
-});
+
