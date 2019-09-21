@@ -77,7 +77,7 @@ function scrapeUserSite() {
     )
     .filter(q => q.length);
   siteText = t.join(' ');
-  console.log(siteText)
+  
   chrome.storage.sync.get(['qblock'], function(result){
     if(!result.qblock){
       $qblock = [];
@@ -114,7 +114,7 @@ function scrapeUserSite() {
           
         } else if(response.res == "power off"){
           
-          console.log('power off');
+          // console.log('power off');
         } else {
           if(timerOrNot == "on"){
             insertTimer();
@@ -124,7 +124,8 @@ function scrapeUserSite() {
           
         }
   
-        console.log(response.sim);
+        // 
+        
         // console.log(response.txt);
       })
     })
@@ -186,10 +187,10 @@ chrome.runtime.onMessage.addListener(
     if (req.subject == "timer on and off") {
       chrome.storage.sync.get(['timerWidget'], function(result){
         timerOrNot = result.timerWidget;
-        console.log(timerOrNot)
+        // console.log(timerOrNot)
       })
       
-      console.log(timerOrNot);
+      // console.log(timerOrNot);
     }
   }
 )
@@ -229,7 +230,7 @@ function getCurrentTime(){
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "current time"}, function(res) {
     if(res){
       setTime = res;
-      console.log(setTime)
+      // console.log(setTime)
     } else {
       return;
     }
@@ -238,21 +239,21 @@ function getCurrentTime(){
 }
 getCurrentTime();
 function insertTimer(){
-  console.log(setTime);
+  
   var $10hrs = setTime.substr(0,1);
-  console.log($10hrs)
+ 
   var $hrs = setTime.substr(1,1);
-  console.log($hrs)
+  
   var $10min = setTime.substr(3,1);
-  console.log($10min);
+
   var $min = setTime.substr(4,1);
-  console.log($min);
+ 
   var $10sec = setTime.substr(6,1);
-  console.log($10sec * 10);
+ 
   var $sec = setTime.substr(7,1);
-  console.log($sec);
+  
   var seconds = parseInt($10hrs * 36000) + parseInt($hrs * 3600) + parseInt($10min * 600) + parseInt($min * 60) + parseInt($10sec * 10) + parseInt($sec);
-  console.log(seconds);
+  
   var timer = document.createElement('div');
   timer.id = "countdown";
   timer.innerHTML = `
@@ -515,10 +516,10 @@ if(!timerOrNot){
 }
 
 scrapeUserSite();
-console.log(timerOrNot)
+
 
 chrome.storage.sync.get(['timerWidget'], function(result){
   timerOrNot = result.timerWidget;
-  console.log(timerOrNot)
+  
 })
 

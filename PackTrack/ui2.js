@@ -1,10 +1,4 @@
-var tabIds = [];
-  chrome.tabs.query({}, function (tabs) {
-    for (var i = 0; i < tabs.length; i++) {
-      tabIds.push(tabs[i].id);
-      chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
-    }
-  });
+
 
 document.addEventListener('keypress', function(e) {
   if (document.getElementById("timer_start").innerHTML == "Start") {
@@ -550,17 +544,17 @@ function saveSettings(){
     }
   }
 
-  for(i=0; i<2; i++){
-    var eb = document.getElementsByName('enhanced');;
-    var ebval;
-    if(eb[i].checked === true){
-      ebval = eb[i].value;
-    }
-  }
+  // for(i=0; i<2; i++){
+  //   var eb = document.getElementsByName('enhanced');;
+  //   var ebval;
+  //   if(eb[i].checked === true){
+  //     ebval = eb[i].value;
+  //   }
+  // }
   chrome.storage.sync.set({mode: val}, null);
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change mode", cutoff: val}, null);
   chrome.storage.sync.set({timerWidget: tval}, null);
-  chrome.storage.sync.set({enhanced: ebval}, null);
+  // chrome.storage.sync.set({enhanced: ebval}, null);
   
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {subject: "timer on and off"}, null);
@@ -595,7 +589,7 @@ chrome.storage.sync.get(['timerWidget'], function(result){
 function checkSetting(val) {
   var rs =document.getElementsByName('mode');
   var ts = document.getElementsByName('timer');
-  var eb = document.getElementsByName('enhanced');
+  // var eb = document.getElementsByName('enhanced');
 	rs.forEach(r => {
 		if(r.value === val) {
 			r.checked = true;
@@ -606,14 +600,14 @@ function checkSetting(val) {
       t.checked = true;
         }
     });
-  eb.forEach(e => {
-    if(e.value === val) {
-      e.checked = true;
-        }
-    });
+  // eb.forEach(e => {
+  //   if(e.value === val) {
+  //     e.checked = true;
+  //       }
+  //   });
 }
 
-document.querySelector("#enhancedWarning").addEventListener('click', warning);
-function warning(){
-  alert("The enhanced block mode will not allow you to stop your study session before time is up. Proceed with caution!")
-}
+// document.querySelector("#enhancedWarning").addEventListener('click', warning);
+// function warning(){
+//   alert("The enhanced block mode will not allow you to stop your study session before time is up. Proceed with caution!")
+// }

@@ -102,7 +102,7 @@ chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse){
     if(req.subject == "change mode"){
       simCutoff = req.cutoff;
-      console.log(simCutoff)
+      // console.log(simCutoff)
     
     }
   }
@@ -122,7 +122,7 @@ chrome.runtime.onMessage.addListener(
         }
         // console.log('ploopsim');
         var sim = getSim(JSON.stringify(req.txt), textBookText)
-        console.log(req.txt);
+        // console.log(req.txt);
         chrome.storage.sync.get(['customerid', 'subject'], function(result){
           // console.log(result);
           // console.log(req.site)
@@ -360,7 +360,7 @@ chrome.runtime.onMessage.addListener(
 )
 
 function timeCountdown() {
-  console.log(time)
+  // console.log(time)
 
   var hr = parseInt(time.substr(0, 2))
   var min = parseInt(time.substr(3, 2))
@@ -406,8 +406,8 @@ function timeCountdown() {
   }
 }
 
-console.log(simCutoff)
-console.log(newSubject)
+// console.log(simCutoff)
+// console.log(newSubject)
 
 
 // browser.runtime.onMessage.addListener(message => {
