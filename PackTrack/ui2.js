@@ -5,7 +5,7 @@ var tabIds = [];
       chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
     }
   });
-  
+
 document.addEventListener('keypress', function(e) {
   if (document.getElementById("timer_start").innerHTML == "Start") {
     var nums = "0123456789"
@@ -130,7 +130,16 @@ function startTimer() {
 function timerEnd() {
 
   chrome.runtime.sendMessage(chrome.runtime.id,{timerStop: true}, null);
-
+  document.querySelector(".container").innerHTML = `<div class = "dropdown">
+  <select class = "dropdown-select">
+    <option value="none">None</option>
+    <!-- <option value="physics">Physics</option> -->
+    <option value="biology">Biology</option>
+    <option value="history">American History</option>
+    <option value="collegeApps">College Apps</option>
+    <option value="hardBlock">General Studying</option>
+  </select>
+</div>`;
   document.getElementById("timer_start").innerHTML = "Start"
   document.getElementById("timer_clear").style.display = "inline"
   document.querySelector('.dropdown-select').options[0].selected = true;
@@ -164,6 +173,11 @@ function timerEnd() {
       chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
       }
   });
+  //Code to enable enhanced block selection
+  var ebnodes = document.getElementsByName('enhanced');
+  for(i=0; i<2; i++){
+    ebnodes[i].disabled = false;
+  }
 }
 
 chrome.runtime.onMessage.addListener(
@@ -174,13 +188,38 @@ chrome.runtime.onMessage.addListener(
   }
 )
 
+
+
 chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (resp) {
   if (resp) {
     document.getElementById("time").innerHTML = resp;
 
     countdown = setInterval(startTimer, 1000)
+    //Checks whether enhanced block is on
+    chrome.storage.sync.get(['enhanced'], function(result){
+      enhancedMode = result.enhanced;
+    })
+    if(enhancedMode == "on"){
+      document.getElementById("timer_start").disabled = true;
+    } else {
+      document.getElementById("timer_start").disabled = false;
+    }
     document.getElementById("timer_start").innerHTML = "Stop"
     document.getElementById("timer_clear").style.display = "none"
+    document.getElementById("selection").innerHTML = "Study session in progress"
+    chrome.storage.sync.get(['subject'], function(result){
+      var currentSubject;
+      if(result.subject == "biology"){
+        currentSubject = "Biology";
+      } else if(result.subject == "history"){
+        currentSubject = "American History";
+      } else if(result.subject == "collegeApps"){
+        currentSubject = "College Apps"
+      } else {
+        currentSubject = "General Studying"
+      }
+      document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">${currentSubject}</h1>`
+    })
   }
 })
 
@@ -279,7 +318,26 @@ function timerStart(){
   countdown = setInterval(startTimer, 1000)
   document.getElementById("timer_start").innerHTML = "Stop"
   document.getElementById("timer_clear").style.display = "none"
-
+  document.getElementById("selection").innerHTML = "Study session in progress"
+  chrome.storage.sync.get(['subject'], function(result){
+    var currentSubject;
+    if(result.subject == "biology"){
+      currentSubject = "Biology";
+    } else if(result.subject == "history"){
+      currentSubject = "American History";
+    } else if(result.subject == "collegeApps"){
+      currentSubject = "College Apps"
+    } else {
+      currentSubject = "General Studying"
+    }
+    document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">${currentSubject}</h1>`
+  })
+  
+  //Code to make enhanced block unclickable
+  var ebnodes = document.getElementsByName('enhanced');
+  for(i=0; i<2; i++){
+    ebnodes[i].disabled = true;
+  }
   //Code to reload every tab except the one user is on
   // var tabUrls = [];
   // chrome.tabs.query({}, function (tabs) {
@@ -467,6 +525,11 @@ function closeTutorial(){
 }
 
 //Code for grabbing settings data
+var enhancedMode;
+if(!enhancedMode){
+  enhancedMode = "off"
+  chrome.storage.sync.set({enhanced: "off"}, null);
+}
 
 var $saveSettings = document.querySelector('#saveSettings');
 $saveSettings.addEventListener('click', saveSettings);
@@ -486,9 +549,18 @@ function saveSettings(){
       tval = tradios[i].value;
     }
   }
+
+  for(i=0; i<2; i++){
+    var eb = document.getElementsByName('enhanced');;
+    var ebval;
+    if(eb[i].checked === true){
+      ebval = eb[i].value;
+    }
+  }
   chrome.storage.sync.set({mode: val}, null);
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change mode", cutoff: val}, null);
   chrome.storage.sync.set({timerWidget: tval}, null);
+  chrome.storage.sync.set({enhanced: ebval}, null);
   
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {subject: "timer on and off"}, null);
@@ -523,6 +595,7 @@ chrome.storage.sync.get(['timerWidget'], function(result){
 function checkSetting(val) {
   var rs =document.getElementsByName('mode');
   var ts = document.getElementsByName('timer');
+  var eb = document.getElementsByName('enhanced');
 	rs.forEach(r => {
 		if(r.value === val) {
 			r.checked = true;
@@ -533,4 +606,14 @@ function checkSetting(val) {
       t.checked = true;
         }
     });
+  eb.forEach(e => {
+    if(e.value === val) {
+      e.checked = true;
+        }
+    });
+}
+
+document.querySelector("#enhancedWarning").addEventListener('click', warning);
+function warning(){
+  alert("The enhanced block mode will not allow you to stop your study session before time is up. Proceed with caution!")
 }

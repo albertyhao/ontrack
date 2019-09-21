@@ -6,6 +6,7 @@ var power = false;
 var time;
 var setTime;
 var timerOrNot;
+var oghtml = document.body.innerHTML;
 function injectStyle(){
   var style = `
   
@@ -102,7 +103,7 @@ function scrapeUserSite() {
               document.styleSheets[i].disabled=true;
           }
           document.write('<!DOCTYPE html><html><head></head><body></body></html>');
-          
+          window.document.title = "Off Task!"
           document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";
           document.body.style.height = '100vh';
           document.body.style.margin = '0';
