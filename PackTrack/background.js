@@ -102,7 +102,7 @@ chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse){
     if(req.subject == "change mode"){
       simCutoff = req.cutoff;
-      console.log(simCutoff)
+      // console.log(simCutoff)
     
     }
   }
@@ -121,7 +121,8 @@ chrome.runtime.onMessage.addListener(
           return;
         }
         // console.log('ploopsim');
-        var sim = getSim(req.txt, textBookText)
+        var sim = getSim(JSON.stringify(req.txt), textBookText)
+        // console.log(req.txt);
         chrome.storage.sync.get(['customerid', 'subject'], function(result){
           // console.log(result);
           // console.log(req.site)
@@ -359,7 +360,7 @@ chrome.runtime.onMessage.addListener(
 )
 
 function timeCountdown() {
-  console.log(time)
+  // console.log(time)
 
   var hr = parseInt(time.substr(0, 2))
   var min = parseInt(time.substr(3, 2))
@@ -398,20 +399,20 @@ function timeCountdown() {
   } else {
     clearInterval(timerInterval)
     chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
-    chrome.storage.sync.set({subject: "none"}, null);
+    
     alert("Study session finished! Open the extension to unblock sites.");
     
-    chrome.tabs.query({}, function (tabs) {
-      for (var i = 0; i < tabs.length; i++) {
-        chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
-        }
-    });
     
-    alert("Study session finished!");
   }
 }
 
-console.log(simCutoff)
-console.log(newSubject)
+// console.log(simCutoff)
+// console.log(newSubject)
 
 
+// browser.runtime.onMessage.addListener(message => {
+//   console.log("background: onMessage", message);
+
+//   // Add this line:
+//   return Promise.resolve("Dummy response to keep the console quiet");
+// });
