@@ -530,3 +530,13 @@ function closeTab(){
 }
 
 setTimeout(closeTab, 5000);
+console.log('content script loaded')
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "take away timer") {
+      var c = document.querySelector('#countdown');
+      document.body.removeChild(c);
+    }
+  }
+)

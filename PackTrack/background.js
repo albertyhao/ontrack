@@ -400,8 +400,18 @@ function timeCountdown() {
     clearInterval(timerInterval)
     chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
     
-    alert("Study session finished! Open the extension to unblock sites.");
-    
+    chrome.storage.sync.set({subject: "none"}, null);
+    chrome.storage.sync.get(['subject'], function(result){
+      console.log(result.subject);
+    })
+    chrome.tabs.query({}, function(tabs) {
+      for(var i=0; i < tabs.length; i++){
+        chrome.tabs.sendMessage(tabs[i].id, {subject: "take away timer"}, null);
+      }
+        
+     });
+  
+    alert("Study session completed!")
     
   }
 }
