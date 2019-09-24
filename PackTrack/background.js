@@ -416,3 +416,21 @@ function timeCountdown() {
 //   // Add this line:
 //   return Promise.resolve("Dummy response to keep the console quiet");
 // });
+
+function closeTabs(){
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      if(tabs[i].title == "Off Task!"){
+        chrome.tabs.remove(tabs[i].id, null);
+      }
+    }
+  });
+}
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "close tab") {
+      closeTabs();
+    }
+  }
+)

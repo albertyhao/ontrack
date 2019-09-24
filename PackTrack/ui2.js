@@ -141,37 +141,34 @@ function timerEnd() {
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
 
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects and end session"}, null);
-  });
 
   clearInterval(countdown)
 
   // Code to reload every tab except the one user is on
-  var tabUrls = [];
+  var tabIds = [];
   chrome.tabs.query({}, function (tabs) {
     for (var i = 0; i < tabs.length; i++) {
-      tabUrls.push(tabs[i].url);
-      }
+      tabIds.push(tabs[i].id);
+      chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
+    }
   });
-  var currentTabNum;
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    currentTabNum = tabUrls.indexOf(tabs[0].url);
-  });
-
-  chrome.tabs.query({}, function (tabs) {
-    for (var i = 0; i < tabs.length; i++) {
-      if(i === currentTabNum){
-        continue;
-      }
-      chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
-      }
-  });
-  //Code to enable enhanced block selection
-  var ebnodes = document.getElementsByName('enhanced');
-  for(i=0; i<2; i++){
-    ebnodes[i].disabled = false;
-  }
+  
+//   chrome.tabs.query({}, function (tabs) {
+//     for (var i = 0; i < tabs.length; i++) {
+//       if(tabs[i].title == "Off Task!"){
+//         chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
+//       } else {
+//         var c = document.querySelector('#countdown');
+//         document.body.removeChild(c);
+//       }
+      
+//       }
+//   });
+//   //Code to enable enhanced block selection
+//   var ebnodes = document.getElementsByName('enhanced');
+//   for(i=0; i<2; i++){
+//     ebnodes[i].disabled = false;
+//   }
 }
 
 chrome.runtime.onMessage.addListener(
@@ -291,6 +288,8 @@ chrome.storage.sync.get(['subject'], function(result){
 //   chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
 // });
 // }
+
+
 function timerStart(){
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
   // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -307,6 +306,8 @@ function timerStart(){
       chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
     }
   });
+  
+
 
   
   countdown = setInterval(startTimer, 1000)
@@ -328,10 +329,10 @@ function timerStart(){
   })
   
   //Code to make enhanced block unclickable
-  var ebnodes = document.getElementsByName('enhanced');
-  for(i=0; i<2; i++){
-    ebnodes[i].disabled = true;
-  }
+  // var ebnodes = document.getElementsByName('enhanced');
+  // for(i=0; i<2; i++){
+  //   ebnodes[i].disabled = true;
+  // }
   //Code to reload every tab except the one user is on
   // var tabUrls = [];
   // chrome.tabs.query({}, function (tabs) {
