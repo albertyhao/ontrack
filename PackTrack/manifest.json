@@ -9,7 +9,7 @@
     "physics.txt",
     "collegeApps.txt"
   ],
-  "description": "The first smart productivity tool. Get sh*t done.",
+  "description": "The first smart productivity tool.",
   "icons": {
     "16": "packtrack16.png",
     "48": "packtrack48.png",
