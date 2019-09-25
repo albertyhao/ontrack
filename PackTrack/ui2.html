@@ -20,8 +20,7 @@
        <div class="timer">
           <h2 id="time">00:00:00</h2>
       </div>
-
-       <p style="font-size: 15px; text-align: center; position: relative; margin-top: -15px;">Select a subject to focus on</p>
+       <p id="selection" style="font-size: 15px; text-align: center; position: relative; margin-top: -15px;">Select a subject to focus on</p>
        <svg id="openTutorial" style="position: absolute; top: 91px; left: 15px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12" y2="17"></line></svg>
 
        <div class="container">
@@ -73,7 +72,7 @@
 
    <!--Settings Menu-->
    <div id="settings">
-     <h3 style="text-align: center;font-family: system-ui, sans-serif !important; font-size: 16px;">Settings</h1>
+     <h3 style="text-align: center;font-family: system-ui, sans-serif !important; font-size: 16px;">Settings</h3>
      <h3>Block Mode</h3>
      <input name="mode" type="radio" value="0.35"><span>Light</span>
      <input checked name="mode" type="radio" value="0.4"><span>Moderate</span>
@@ -81,6 +80,9 @@
      <h3>Timer Widget</h3>
      <input checked name="timer" type="radio" value="on"><span>On</span>
      <input name="timer" type="radio" value="off"><span>Off</span>
+     <h3>Enhanced Block</h3><svg id="enhancedWarning" style="position: absolute; left: 43%; top: 58%; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ee0d0d" stroke-width="3" stroke-linecap="square" stroke-linejoin="arcs"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12" y2="17"></line></svg>
+     <input name="enhanced" type="radio" value="on"><span>On</span>
+     <input checked name="enhanced" type="radio" value="off"><span>Off</span>
      <button id="saveSettings">Save</button>
    </div>
    <div id="overlay"></div>
