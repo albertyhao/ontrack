@@ -400,8 +400,19 @@ function timeCountdown() {
     clearInterval(timerInterval)
     chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
     
-    alert("Study session finished! Open the extension to unblock sites.");
-    
+    chrome.storage.sync.set({subject: "none"}, null);
+    chrome.storage.sync.get(['subject'], function(result){
+      
+    })
+    chrome.tabs.query({}, function(tabs) {
+      for(var i=0; i < tabs.length; i++){
+        chrome.tabs.sendMessage(tabs[i].id, {subject: "take away timer"}, null);
+      }
+        
+     });
+     setNewSubject();
+  
+    alert("Study session completed!")
     
   }
 }
@@ -416,3 +427,21 @@ function timeCountdown() {
 //   // Add this line:
 //   return Promise.resolve("Dummy response to keep the console quiet");
 // });
+
+function closeTabs(){
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      if(tabs[i].title == "Off Task!"){
+        chrome.tabs.remove(tabs[i].id, null);
+      }
+    }
+  });
+}
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "close tab") {
+      closeTabs();
+    }
+  }
+)

@@ -98,12 +98,10 @@ function scrapeUserSite() {
         if(!response) return;
         if (response.res && response.res !== "power off" && whitelist.every(function(site){return site !== location.hostname}) && $qblock.every(function(site){return site !== location.hostname}) ) {
           // Blokc this crup
-          var cant = document.styleSheets.length
-          for(var i=0;i<cant;i++){
-              document.styleSheets[i].disabled=true;
-          }
+          
           document.write('<!DOCTYPE html><html><head></head><body></body></html>');
           window.document.title = "Off Task!"
+          
           document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";
           document.body.style.height = '100vh';
           document.body.style.margin = '0';
@@ -111,9 +109,12 @@ function scrapeUserSite() {
           document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><br></center>`;
           
           insertMarkerTop();
+          //Code to delete tab
+          
           
         } else if(response.res == "power off"){
-          
+          var t = document.querySelector('#countdown');
+          document.body.removeChild(t);
           // console.log('power off');
         } else {
           if(timerOrNot == "on"){
@@ -523,3 +524,19 @@ chrome.storage.sync.get(['timerWidget'], function(result){
   
 })
 
+
+function closeTab(){
+  chrome.runtime.sendMessage(chrome.runtime.id, {subject: "close tab"}, null);
+}
+
+setTimeout(closeTab, 5000);
+
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "take away timer") {
+      var c = document.querySelector('#countdown');
+      document.body.removeChild(c);
+    }
+  }
+)

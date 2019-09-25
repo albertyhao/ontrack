@@ -22,7 +22,7 @@ document.getElementById("timer_clear").addEventListener('click', function(e) {
 })
 
 var countdown;
-console.log(countdown);
+
 document.getElementById("timer_start").addEventListener('click', function(e) {
   if (document.getElementById("timer_start").innerHTML == "Start" && document.querySelector('#time').innerHTML !== "00:00:00" && document.querySelector('.dropdown-select').value !== "none") {
     confirmValidity()
@@ -141,37 +141,39 @@ function timerEnd() {
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
 
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects and end session"}, null);
-  });
 
   clearInterval(countdown)
 
   // Code to reload every tab except the one user is on
-  var tabUrls = [];
+  var tabIds = [];
   chrome.tabs.query({}, function (tabs) {
     for (var i = 0; i < tabs.length; i++) {
-      tabUrls.push(tabs[i].url);
-      }
+      tabIds.push(tabs[i].id);
+      chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
+    }
   });
-  var currentTabNum;
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    currentTabNum = tabUrls.indexOf(tabs[0].url);
-  });
-
-  chrome.tabs.query({}, function (tabs) {
-    for (var i = 0; i < tabs.length; i++) {
-      if(i === currentTabNum){
-        continue;
-      }
-      chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
-      }
-  });
-  //Code to enable enhanced block selection
+  
+//   chrome.tabs.query({}, function (tabs) {
+//     for (var i = 0; i < tabs.length; i++) {
+//       if(tabs[i].title == "Off Task!"){
+//         chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
+//       } else {
+//         var c = document.querySelector('#countdown');
+//         document.body.removeChild(c);
+//       }
+      
+//       }
+//   });
+//   //Code to enable enhanced block selection
   var ebnodes = document.getElementsByName('enhanced');
   for(i=0; i<2; i++){
     ebnodes[i].disabled = false;
   }
+
+  document.getElementById("timer_start").disabled = false;
+  document.getElementById("timer_start").style.visibility = 'visible';
+  document.querySelector('#enhancedWarning').style.display = 'block';
+
 }
 
 chrome.runtime.onMessage.addListener(
@@ -190,14 +192,20 @@ chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (res
 
     countdown = setInterval(startTimer, 1000)
     //Checks whether enhanced block is on
+    var enhancedMode;
     chrome.storage.sync.get(['enhanced'], function(result){
       enhancedMode = result.enhanced;
+      if(enhancedMode == "on"){
+        document.getElementById("timer_start").disabled = true;
+        document.getElementById("timer_start").style.visibility = 'hidden';
+        
+      } else {
+        document.getElementById("timer_start").disabled = false;
+        document.getElementById("timer_start").style.visibility = 'visible';
+      }
     })
-    if(enhancedMode == "on"){
-      document.getElementById("timer_start").disabled = true;
-    } else {
-      document.getElementById("timer_start").disabled = false;
-    }
+    document.getElementsByName('enhanced').forEach(e => e.disabled = true);
+    document.querySelector('#enhancedWarning').style.display = 'none';
     document.getElementById("timer_start").innerHTML = "Stop"
     document.getElementById("timer_clear").style.display = "none"
     document.getElementById("selection").innerHTML = "Study session in progress"
@@ -291,7 +299,10 @@ chrome.storage.sync.get(['subject'], function(result){
 //   chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
 // });
 // }
+
+
 function timerStart(){
+  
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
   // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
   //   chrome.tabs.sendMessage(tabs[0].id, {subject: "study session start"}, null);
@@ -307,6 +318,8 @@ function timerStart(){
       chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
     }
   });
+  
+
 
   
   countdown = setInterval(startTimer, 1000)
@@ -326,12 +339,32 @@ function timerStart(){
     }
     document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">${currentSubject}</h1>`
   })
+
+  document.getElementsByName('enhanced').forEach(e => e.disabled = true);
+  document.querySelector('#enhancedWarning').style.display = 'none';
+  
+  
+  //Checks whether enhanced block is on
+  var enhancedMode;
+  chrome.storage.sync.get(['enhanced'], function(result){
+    enhancedMode = result.enhanced;
+    if(enhancedMode == "on"){
+      document.getElementById("timer_start").disabled = true;
+      document.getElementById("timer_start").style.visibility = 'hidden';
+      
+    } else {
+      document.getElementById("timer_start").disabled = false;
+      document.getElementById("timer_start").style.visibility = 'visible';
+    }
+  })
+  
+  
   
   //Code to make enhanced block unclickable
-  var ebnodes = document.getElementsByName('enhanced');
-  for(i=0; i<2; i++){
-    ebnodes[i].disabled = true;
-  }
+  // var ebnodes = document.getElementsByName('enhanced');
+  // for(i=0; i<2; i++){
+  //   ebnodes[i].disabled = true;
+  // }
   //Code to reload every tab except the one user is on
   // var tabUrls = [];
   // chrome.tabs.query({}, function (tabs) {
@@ -390,24 +423,6 @@ function timerStart(){
 
 
 
-// Code for enhanced blocking mode
-// chrome.storage.sync.set({blist: []}, null);
-// var $button = document.querySelector('#superBlock');
-//      $button.addEventListener('click', toggleSuperBlock);
-//      function toggleSuperBlock(){
-//        if($button.innerText == 'Turn on enhanced mode!'){
-//         $button.innerText = "Turn off enhanced mode!";
-//         chrome.storage.sync.get(['blist'], function(result){
-//           var $blacklist = result.blist;
-//           $blacklist.push('extensions');
-//           chrome.storage.sync.set({blist: $blacklist}, null);
-//         })
-
-//        } else {
-//          $button.innerText = "Turn on enhanced mode!";
-//        }
-
-//      }
 
 //code for unblocking current site
 chrome.storage.sync.set({qblock: []}, null);
@@ -519,11 +534,6 @@ function closeTutorial(){
 }
 
 //Code for grabbing settings data
-var enhancedMode;
-if(!enhancedMode){
-  enhancedMode = "off"
-  chrome.storage.sync.set({enhanced: "off"}, null);
-}
 
 var $saveSettings = document.querySelector('#saveSettings');
 $saveSettings.addEventListener('click', saveSettings);
@@ -544,17 +554,19 @@ function saveSettings(){
     }
   }
 
-  // for(i=0; i<2; i++){
-  //   var eb = document.getElementsByName('enhanced');;
-  //   var ebval;
-  //   if(eb[i].checked === true){
-  //     ebval = eb[i].value;
-  //   }
-  // }
+  for(i=0; i<2; i++){
+    var eb = document.getElementsByName('enhanced');;
+    var ebval;
+    if(eb[i].checked === true){
+      ebval = eb[i].value;
+    
+    }
+  }
   chrome.storage.sync.set({mode: val}, null);
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change mode", cutoff: val}, null);
   chrome.storage.sync.set({timerWidget: tval}, null);
-  // chrome.storage.sync.set({enhanced: ebval}, null);
+  
+  chrome.storage.sync.set({enhanced: ebval}, null);
   
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {subject: "timer on and off"}, null);
@@ -573,7 +585,7 @@ chrome.storage.sync.get(['mode'], function(result){
     chrome.storage.sync.set({mode: "0.4"}, null);
   } else {
     chrome.storage.sync.set({mode: result.mode}, null);
-    checkSetting(result.mode);
+    checkSetting1(result.mode);
   }
 })
 
@@ -582,32 +594,55 @@ chrome.storage.sync.get(['timerWidget'], function(result){
     chrome.storage.sync.set({timerWidget: "on"}, null);
   } else {
     chrome.storage.sync.set({timerWidget: result.timerWidget}, null);
-    checkSetting(result.timerWidget);
+    checkSetting2(result.timerWidget);
   }
 })
 
-function checkSetting(val) {
+chrome.storage.sync.get(['enhanced'], function(result){
+  
+  if(!result.enhanced){
+    chrome.storage.sync.set({enhanced: "off"}, null);
+  } else {
+    chrome.storage.sync.set({enhanced: result.enhanced}, null);
+    checkSetting3(result.enhanced);
+  }
+})
+
+function checkSetting1(val) {
   var rs =document.getElementsByName('mode');
-  var ts = document.getElementsByName('timer');
-  // var eb = document.getElementsByName('enhanced');
+  
 	rs.forEach(r => {
 		if(r.value === val) {
 			r.checked = true;
         }
     });
+}
+
+function checkSetting2(val) {
+ 
+  var ts = document.getElementsByName('timer');
+
+
   ts.forEach(t => {
     if(t.value === val) {
       t.checked = true;
         }
     });
-  // eb.forEach(e => {
-  //   if(e.value === val) {
-  //     e.checked = true;
-  //       }
-  //   });
+
 }
 
-// document.querySelector("#enhancedWarning").addEventListener('click', warning);
-// function warning(){
-//   alert("The enhanced block mode will not allow you to stop your study session before time is up. Proceed with caution!")
-// }
+function checkSetting3(val) {
+  
+  var eb = document.getElementsByName('enhanced');
+	
+  eb.forEach(e => {
+    if(e.value === val) {
+      e.checked = true;
+        }
+    });
+}
+
+document.querySelector("#enhancedWarning").addEventListener('click', warning);
+function warning(){
+  alert("The enhanced block mode will not allow you to stop your study session before time is up. Proceed with caution!")
+}
