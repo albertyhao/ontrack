@@ -402,7 +402,7 @@ function timeCountdown() {
     
     chrome.storage.sync.set({subject: "none"}, null);
     chrome.storage.sync.get(['subject'], function(result){
-      console.log(result.subject);
+      
     })
     chrome.tabs.query({}, function(tabs) {
       for(var i=0; i < tabs.length; i++){
@@ -410,6 +410,7 @@ function timeCountdown() {
       }
         
      });
+     setNewSubject();
   
     alert("Study session completed!")
     

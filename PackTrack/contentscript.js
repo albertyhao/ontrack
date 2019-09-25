@@ -530,7 +530,7 @@ function closeTab(){
 }
 
 setTimeout(closeTab, 5000);
-console.log('content script loaded')
+
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
