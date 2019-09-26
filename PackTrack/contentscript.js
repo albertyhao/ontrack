@@ -77,7 +77,7 @@ function scrapeUserSite() {
     )
     .filter(q => q.length);
   siteText = t.join(' ');
-  
+  console.log(siteText)
   chrome.storage.sync.get(['qblock'], function(result){
     if(!result.qblock){
       $qblock = [];
@@ -93,8 +93,8 @@ function scrapeUserSite() {
     } else {
       // console.log(whitelist);
     }
-      chrome.runtime.sendMessage(chrome.runtime.id, {txt: siteText}, function(response) {
-       
+      chrome.runtime.sendMessage(chrome.runtime.id, {subject: "check sim", txt: siteText}, function(response) {
+        
         if(!response) return;
         if (response.res && response.res !== "power off" && whitelist.every(function(site){return site !== location.hostname}) && $qblock.every(function(site){return site !== location.hostname}) ) {
           // Blokc this crup
@@ -120,7 +120,8 @@ function scrapeUserSite() {
           if(timerOrNot == "on"){
             insertTimer();
           } else {
-            //nothing
+            var t = document.querySelector('#countdown');
+            document.body.removeChild(t);
           }
           
         }
