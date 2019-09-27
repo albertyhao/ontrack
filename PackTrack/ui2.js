@@ -330,12 +330,22 @@ function timerStart(){
     var currentSubject;
     if(result.subject == "biology"){
       currentSubject = "Biology";
-    } else if(result.subject == "history"){
-      currentSubject = "American History";
+    } else if(result.subject == "physics"){
+      currentSubject = "Physics"
     } else if(result.subject == "collegeApps"){
       currentSubject = "College Apps"
+    } else if(result.subject == "chemistry"){
+      currentSubject = "Chemistry"
+    } else if(result.subject == "history"){
+      currentSubject = "American History"
+    } else if(result.subject == "economics"){
+      currentSubject = "Economics"
+    } else if(result.subject == "calculus"){
+      currentSubject = "Calculus"
+    } else if(result.subject == "linearAlgebra"){
+      currentSubject = "Linear Algebra"
     } else {
-      currentSubject = "General Studying"
+      currentSubject = "Whitelist";
     }
     document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">${currentSubject}</h1>`
   })
