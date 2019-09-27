@@ -9,7 +9,7 @@ var newSubject;
 var mode;
 var simCutoff;
 if(!simCutoff){
-  simCutoff = 0.4;
+  simCutoff = 0.35;
 }
 // This code sets up the txtbook var in chrome local storage
 chrome.storage.local.get(['txtbook'], function(result){
@@ -21,7 +21,7 @@ var bioWords = ['biological', 'biology', 'cell', 'cells', 'dna', 'energy', 'evol
 var economicWords =  ['macro','micro','utility','resource','allocation','right','left','shift','cost', 'demand', 'economic', 'economists', 'economy', 'goods', 'income', 'labor', 'market', 'neoclassical', 'output', 'policy', 'price', 'production', 'resources', 'supply', 'theory', 'trade', 'unemployment', 'unemployed', 'account', 'banks', 'capital', 'crisis', 'financial', 'companies', 'competition', 'consumers', 'firm', 'monopoly', 'power', 'employer', 'money', 'plan', 'purchase', 'quantity', 'retirement', 'service', 'services', 'tax', 'velocity', 'willing', 'curve', 'equilibrium', 'rate', 'revenue', 'taxation', 'cuts', 'gdp', 'growth', 'elasticity', 'revenues', 'side', 'taxes', 'federal', 'interest','aggregate', 'funds', 'recession', 'growth', 'oligopoly', 'perfect competition', 'monopolistic', 'deadweight', 'excise', 'marginal', 'benefit'];
 var linearWords = ['matrix', 'matrices', 'row', 'operation', 'column','invertible','elementary','inverse','determinant','transpose','augment','identity','solution','equation','linear algebra','vector','scalar','echelon','row reduced','gaussian','elimination','eigen','dual','cramer','infinite','finite', 'Ax=b','add','subtract','multiply','singular','nonsingular','symmetric','skew','rectangular','triangular'];
 var calcWords = ['area', 'under', 'calculus', 'curve', 'derivative', 'differential', 'displaystyle', 'dx', 'function', 'infinitesimal', 'infinitesimals', 'input', 'integral', 'leibniz', 'limit', 'newton', 'slope', 'squaring', 'equation', 'equations','limit', 'graph', 'theorem', 'substitution', 'interval', 'continuity', 'continous', 'intermediate value theorem', 'product', 'quotient', 'average', 'instantaneous', 'secant', 'change', 'infinite', 'infinity', 'proof','sum', 'cos(', 'sin(', 'tan(', 'ln(', 'function', `L'`, 'extrema', 'test', 'concave','convex','concavity','inflection','second','first','polar','parametric','relative','absolute','local','global','maximum', 'minimum', 'exponent', 'logarithm', 'tangent','sine','cosine','chain rule','related rate', 'volume', 'summation'];
-var chemWords = ['chemistry','gas','mole','state','solid','liquid','solution','reaction','pressure','volume','temperature','energy','work','enthalpy','entropy','endothermic','exothermic','molecule','solution','compound','ion','']
+var chemWords = ['chemistry','chemical','gas','mole','state','solid','liquid','solution','reaction','pressure','volume','temperature','energy','work','enthalpy','entropy','endothermic','exothermic','molecule','solution','compound','ion','acid','atom','covalent','charge','polymer','metal','halogen','periodic table','transition','oxidation','reduction','cloud','configuration','valence','electron','proton','neutron','heat','specific','joule','group','nucleus','orbital','subshell','ionization','lewis','structure','octet','pair','phase','decomposition','displacement','single','double','precipitate','molality','molarity','density','base','conjugate','weak','strong','reactant','product','conservation','matter','redox','capacity','calorimeter']
 // function getWordsFromFile(fileToLoad) {
   
 //   var xhr = new XMLHttpRequest();
