@@ -22,6 +22,7 @@ document.getElementById("timer_clear").addEventListener('click', function(e) {
 })
 
 var countdown;
+var originalSubject;
 
 document.getElementById("timer_start").addEventListener('click', function(e) {
   if (document.getElementById("timer_start").innerHTML == "Start" && document.querySelector('#time').innerHTML !== "00:00:00" && document.querySelector('.dropdown-select').value !== "none") {
@@ -117,7 +118,70 @@ function startTimer() {
 
     document.getElementById("time").innerHTML = hr + ":" + min + ":" + sec
   } else {
-    timerEnd()
+    document.querySelector(".container").innerHTML = '<h1 style="color: #736cdb; text-align: center; font-size: 20px;">Break</h1>'
+    document.getElementById("time").innerHTML = "00:05:00"
+    clearInterval(countdown)
+    countdown = setInterval(breakStart, 1000);
+  }
+}
+
+function breakStart() {
+  var time = document.getElementById("time").innerHTML
+
+  var hr = parseInt(time.substr(0, 2))
+  var min = parseInt(time.substr(3, 2))
+  var sec = parseInt(time.substr(6, 2))
+
+  if (sec !== 0 || min !== 0 || hr !== 0) {
+    sec -= 1
+    if (sec < 0) {
+      sec = 59
+      min -= 1
+      if (min < 0) {
+        min = 59
+        hr -= 1
+      }
+    }
+
+    if (sec / 10 < 1) {
+      sec = "0" + String(sec)
+    } else {
+      sec = String(sec)
+    }
+
+    if (min / 10 < 1) {
+      min = "0" + String(min)
+    } else {
+      min = String(min)
+    }
+
+    if (hr / 10 < 1) {
+      hr = "0" + String(hr)
+    } else {
+      hr = String(hr)
+    }
+
+    document.getElementById("time").innerHTML = hr + ":" + min + ":" + sec
+  } else {
+    clearInterval(countdown)
+    chrome.runtime.sendMessage(chrome.runtime.id, {ogSubject: true}, function(resp) {
+      var currentSubject;
+      if(resp.subject == "biology"){
+        currentSubject = "Biology";
+      } else if(resp.subject == "history"){
+        currentSubject = "American History";
+      } else if(resp.subject == "collegeApps"){
+        currentSubject = "College Apps"
+      } else if(resp.subject == "none" || result.subject == "") {
+        currentSubject = "Break"
+      } else {
+        currentSubject = "General Studying"
+      }
+
+      document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">${currentSubject}</h1>`
+    })
+    // document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">${originalSubject}</h1>`
+    countdown = setInterval(startTimer, 1000);
   }
 }
 
@@ -152,7 +216,7 @@ function timerEnd() {
       chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
     }
   });
-  
+
 //   chrome.tabs.query({}, function (tabs) {
 //     for (var i = 0; i < tabs.length; i++) {
 //       if(tabs[i].title == "Off Task!"){
@@ -161,7 +225,7 @@ function timerEnd() {
 //         var c = document.querySelector('#countdown');
 //         document.body.removeChild(c);
 //       }
-      
+
 //       }
 //   });
 //   //Code to enable enhanced block selection
@@ -184,8 +248,6 @@ chrome.runtime.onMessage.addListener(
   }
 )
 
-
-
 chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (resp) {
   if (resp) {
     document.getElementById("time").innerHTML = resp;
@@ -198,7 +260,7 @@ chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (res
       if(enhancedMode == "on"){
         document.getElementById("timer_start").disabled = true;
         document.getElementById("timer_start").style.visibility = 'hidden';
-        
+
       } else {
         document.getElementById("timer_start").disabled = false;
         document.getElementById("timer_start").style.visibility = 'visible';
@@ -217,9 +279,12 @@ chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (res
         currentSubject = "American History";
       } else if(result.subject == "collegeApps"){
         currentSubject = "College Apps"
+      } else if(result.subject == "none" || result.subject == "") {
+        currentSubject = "Break"
       } else {
         currentSubject = "General Studying"
       }
+
       document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">${currentSubject}</h1>`
     })
   }
@@ -302,7 +367,7 @@ chrome.storage.sync.get(['subject'], function(result){
 
 
 function timerStart(){
-  
+
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
   // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
   //   chrome.tabs.sendMessage(tabs[0].id, {subject: "study session start"}, null);
@@ -318,10 +383,10 @@ function timerStart(){
       chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
     }
   });
-  
 
 
-  
+
+
   countdown = setInterval(startTimer, 1000)
   document.getElementById("timer_start").innerHTML = "Stop"
   document.getElementById("timer_clear").style.display = "none"
@@ -352,8 +417,8 @@ function timerStart(){
 
   document.getElementsByName('enhanced').forEach(e => e.disabled = true);
   document.querySelector('#enhancedWarning').style.display = 'none';
-  
-  
+
+
   //Checks whether enhanced block is on
   var enhancedMode;
   chrome.storage.sync.get(['enhanced'], function(result){
@@ -361,15 +426,15 @@ function timerStart(){
     if(enhancedMode == "on"){
       document.getElementById("timer_start").disabled = true;
       document.getElementById("timer_start").style.visibility = 'hidden';
-      
+
     } else {
       document.getElementById("timer_start").disabled = false;
       document.getElementById("timer_start").style.visibility = 'visible';
     }
   })
-  
-  
-  
+
+
+
   //Code to make enhanced block unclickable
   // var ebnodes = document.getElementsByName('enhanced');
   // for(i=0; i<2; i++){
@@ -569,15 +634,15 @@ function saveSettings(){
     var ebval;
     if(eb[i].checked === true){
       ebval = eb[i].value;
-    
+
     }
   }
   chrome.storage.sync.set({mode: val}, null);
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change mode", cutoff: val}, null);
   chrome.storage.sync.set({timerWidget: tval}, null);
-  
+
   chrome.storage.sync.set({enhanced: ebval}, null);
-  
+
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {subject: "timer on and off"}, null);
   });
@@ -610,7 +675,7 @@ chrome.storage.sync.get(['timerWidget'], function(result){
 })
 
 chrome.storage.sync.get(['enhanced'], function(result){
-  
+
   if(!result.enhanced){
     chrome.storage.sync.set({enhanced: "off"}, null);
   } else {
@@ -621,7 +686,7 @@ chrome.storage.sync.get(['enhanced'], function(result){
 
 function checkSetting1(val) {
   var rs =document.getElementsByName('mode');
-  
+
 	rs.forEach(r => {
 		if(r.value === val) {
 			r.checked = true;
@@ -630,7 +695,7 @@ function checkSetting1(val) {
 }
 
 function checkSetting2(val) {
- 
+
   var ts = document.getElementsByName('timer');
 
 
@@ -643,9 +708,9 @@ function checkSetting2(val) {
 }
 
 function checkSetting3(val) {
-  
+
   var eb = document.getElementsByName('enhanced');
-	
+
   eb.forEach(e => {
     if(e.value === val) {
       e.checked = true;

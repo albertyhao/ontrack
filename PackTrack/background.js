@@ -42,8 +42,8 @@ var chemWords = ['chemistry','gas','mole','state','solid','liquid','solution','r
    
 //     chrome.storage.local.set({txtbook: textBookText}, null);
 
-    
-    
+
+
 
 //   });
 
@@ -71,8 +71,10 @@ function setNewSubject(){
       subjectWords = linearWords;
     } else if(newSubject == 'collegeApps'){
       subjectWords = collegeWords;
-    } else {
+    } else if(newSubject == 'break'){
       // console.log('help me plz')
+    } else {
+      
     }
   })
 }
@@ -89,7 +91,7 @@ function setNewSubject(){
 //   console.log(simCutoff)
 // })
 // function newMode(){
-  
+
 //   chrome.storage.sync.get(['mode'], function(result){
 //     simCutoff = result.mode;
 //   })
@@ -110,7 +112,7 @@ chrome.runtime.onMessage.addListener(
     if(req.subject == "change mode"){
       simCutoff = req.cutoff;
       // console.log(simCutoff)
-    
+
     }
   }
 )
@@ -250,9 +252,9 @@ chrome.runtime.onMessage.addListener(
 //         }
 //       }
 //       doSim();
-        
+
 //     }
-    
+
 //   });
 
 chrome.runtime.onMessage.addListener(
@@ -263,7 +265,7 @@ chrome.runtime.onMessage.addListener(
 			// console.log(result)
   			var xhr = new XMLHttpRequest();
   			xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&time=${encodeURIComponent(req.time)}`);
- 			xhr.send(); 
+ 			xhr.send();
 		})
 	}
   	else if (req.site) {
@@ -271,7 +273,7 @@ chrome.runtime.onMessage.addListener(
 			// console.log(result)
   			var xhr = new XMLHttpRequest();
   			xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}`);
- 			xhr.send(); 
+ 			xhr.send();
 		})
   	}
 })
@@ -379,7 +381,7 @@ chrome.runtime.onMessage.addListener(
 //       console.log(result)
 //         var xhr = new XMLHttpRequest();
 //         xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&time=${req.time}`);
-//         xhr.send(); 
+//         xhr.send();
 //     })
 //   }
 //     else if (req.site) {
@@ -387,19 +389,22 @@ chrome.runtime.onMessage.addListener(
 //       // console.log(result)
 //         var xhr = new XMLHttpRequest();
 //         xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}`);
-//       xhr.send(); 
+//       xhr.send();
 //     })
 //     }
 // })
 
 //Timer Code
 var timerInterval;
+var originalTime;
 var time;
+var originalSubject;
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     if (req.timer) {
       time = req.timer
+      originalTime = req.timer
       timerInterval = setInterval(timeCountdown, 1000)
     }
   }
@@ -431,6 +436,13 @@ chrome.runtime.onMessage.addListener(
     if (req.timerStop) {
       clearInterval(timerInterval)
       timerInterval = 0
+    }
+  }
+)
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.ogSubject) {
+      sendResponse({subject: originalSubject})
     }
   }
 )
@@ -473,23 +485,87 @@ function timeCountdown() {
 
     time = hr + ":" + min + ":" + sec
   } else {
-    clearInterval(timerInterval)
-    chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
-    
-    chrome.storage.sync.set({subject: "none"}, null);
     chrome.storage.sync.get(['subject'], function(result){
-      
+      originalSubject = result.subject;
     })
-    chrome.tabs.query({}, function(tabs) {
-      for(var i=0; i < tabs.length; i++){
-        chrome.tabs.sendMessage(tabs[i].id, {subject: "take away timer"}, null);
+
+    clearInterval(timerInterval)
+    //chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
+
+    chrome.storage.sync.set({subject: "break"}, null);
+
+    // chrome.tabs.query({}, function(tabs) {
+    //   for(var i=0; i < tabs.length; i++){
+    //     chrome.tabs.sendMessage(tabs[i].id, {subject: "take away timer"}, null);
+    //   }
+    //
+    //  });
+    setNewSubject();
+
+    // alert("Break time")
+
+    time = "00:05:00";
+    timerInterval = setInterval(breakTimer, 1000)
+
+  }
+}
+
+function breakTimer() {
+  // Start a break timer here
+
+  var hr = parseInt(time.substr(0, 2))
+  var min = parseInt(time.substr(3, 2))
+  var sec = parseInt(time.substr(6, 2))
+
+  if (sec != 0 || min != 0 || hr != 0) {
+    sec -= 1
+    if (sec < 0) {
+      sec = 59
+      min -= 1
+      if (min < 0) {
+        min = 59
+        hr -= 1
       }
-        
-     });
-     setNewSubject();
-  
-    alert("Study session completed!")
-    
+    }
+
+    if (sec / 10 < 1) {
+      sec = "0" + String(sec)
+    } else {
+      sec = String(sec)
+    }
+
+    if (min / 10 < 1) {
+      min = "0" + String(min)
+    } else {
+      min = String(min)
+    }
+
+    if (hr / 10 < 1) {
+      hr = "0" + String(hr)
+    } else {
+      hr = String(hr)
+    }
+
+    time = hr + ":" + min + ":" + sec
+  } else {
+    clearInterval(timerInterval)
+    //chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: false}, null)
+
+    chrome.storage.sync.set({subject: originalSubject}, null);
+    // chrome.storage.sync.get(['subject'], function(result){
+    //
+    // })
+    // chrome.tabs.query({}, function(tabs) {
+    //   for(var i=0; i < tabs.length; i++){
+    //     chrome.tabs.sendMessage(tabs[i].id, {subject: "take away timer"}, null);
+    //   }
+    //
+    //  });
+    setNewSubject();
+
+    time = originalTime;
+    timerInterval = setInterval(timeCountdown, 1000)
+
   }
 }
 
