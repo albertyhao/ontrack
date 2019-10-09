@@ -118,10 +118,13 @@ function startTimer() {
 
     document.getElementById("time").innerHTML = hr + ":" + min + ":" + sec
   } else {
-    document.querySelector(".container").innerHTML = '<h1 style="color: #736cdb; text-align: center; font-size: 20px;">Break</h1>'
-    document.getElementById("time").innerHTML = "00:05:00"
-    clearInterval(countdown)
-    countdown = setInterval(breakStart, 1000);
+     
+    // document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">Break</h1>`
+ 
+    
+    // document.getElementById("time").innerHTML = "00:05:00"
+    // clearInterval(countdown)
+    // countdown = setInterval(breakStart, 1000);
   }
 }
 
@@ -172,11 +175,25 @@ function breakStart() {
         currentSubject = "American History";
       } else if(resp.subject == "collegeApps"){
         currentSubject = "College Apps"
-      } else if(resp.subject == "none" || result.subject == "") {
+      } else if(resp.subject == "break") {
         currentSubject = "Break"
-      } else {
-        currentSubject = "General Studying"
+      } else if(resp.subject == "whitelist"){
+        currentSubject = "Whitelist";
+      } else if(resp.subject == "physics"){
+        currentSubject = "Physics"
+      } else if(resp.subject == "chemistry") {
+        currentSubject = "Chemistry"
+      } else if(resp.subject == "economics"){
+        currentSubject = "Economics"
+      } else if(resp.subject == "calculus"){
+        currentSubject = "Calculus"
+      } else if(resp.subject == "linearAlgebra") {
+        currentSubject = "Linear Algebra"
+      } 
+      else {
+        
       }
+
 
       document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">${currentSubject}</h1>`
     })
@@ -188,16 +205,22 @@ function breakStart() {
 function timerEnd() {
 
   chrome.runtime.sendMessage(chrome.runtime.id,{timerStop: true}, null);
-  document.querySelector(".container").innerHTML = `<div class = "dropdown">
-  <select class = "dropdown-select">
-    <option value="none">None</option>
-    <!-- <option value="physics">Physics</option> -->
-    <option value="biology">Biology</option>
-    <option value="history">American History</option>
-    <option value="collegeApps">College Apps</option>
-    <option value="hardBlock">General Studying</option>
-  </select>
-</div>`;
+  document.querySelector(".container").innerHTML = `
+  <div class = "dropdown">
+           <select class = "dropdown-select">
+             <option value="none">None</option>
+             <option value="physics">Physics</option>
+             <option value="biology">Biology</option>
+             <option value="chemistry">Chemistry</option>
+             <option value="history">American History</option>
+             <option value="economics">Economics</option>
+             <option value="calculus">Calculus</option>
+             <option value="linearAlgebra">Linear Algebra</option>
+             <option value="collegeApps">College Apps</option>
+             <option value="whitelist">Whitelist</option>
+           </select>
+         </div>
+  `;
   document.getElementById("timer_start").innerHTML = "Start"
   document.getElementById("timer_clear").style.display = "inline"
   document.querySelector('.dropdown-select').options[0].selected = true;
@@ -248,8 +271,21 @@ chrome.runtime.onMessage.addListener(
   }
 )
 
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.breakTimer) {
+      document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">Break</h1>`
+ 
+    
+      document.getElementById("time").innerHTML = "00:05:00"
+      clearInterval(countdown)
+      countdown = setInterval(breakStart, 1000);
+    }
+  }
+)
+
 chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (resp) {
-  if (resp) {
+  if (resp && resp !== "00:00:00") {
     document.getElementById("time").innerHTML = resp;
 
     countdown = setInterval(startTimer, 1000)
@@ -279,12 +315,24 @@ chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (res
         currentSubject = "American History";
       } else if(result.subject == "collegeApps"){
         currentSubject = "College Apps"
-      } else if(result.subject == "none" || result.subject == "") {
+      } else if(result.subject == "break") {
         currentSubject = "Break"
-      } else {
-        currentSubject = "General Studying"
+      } else if(result.subject == "whitelist"){
+        currentSubject = "Whitelist";
+      } else if(result.subject == "physics"){
+        currentSubject = "Physics"
+      } else if(result.subject == "chemistry") {
+        currentSubject = "Chemistry"
+      } else if(result.subject == "economics"){
+        currentSubject = "Economics"
+      } else if(result.subject == "calculus"){
+        currentSubject = "Calculus"
+      } else if(result.subject == "linearAlgebra") {
+        currentSubject = "Linear Algebra"
+      } 
+      else {
+        
       }
-
       document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">${currentSubject}</h1>`
     })
   }
@@ -351,20 +399,6 @@ chrome.storage.sync.get(['subject'], function(result){
   }
 
 })
-// function setSubject(){
-//   // chrome.storage.sync.get(['subject'], function(result){
-//   //   var $subject = result.subject;
-//   //   $subject = document.querySelector('.dropdown-select').value;
-//   //   chrome.storage.sync.set({subject: $subject}, null);
-//   // })
-// chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
-
-// chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
-// chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-//   chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
-// });
-// }
-
 
 function timerStart(){
 
@@ -461,41 +495,6 @@ function timerStart(){
   //     }
   // });
 }
-//Code for turning on/off extension
-
-
-
-// var $powerButton = document.querySelector('#power');
-// chrome.storage.sync.get(['on'], function(result){
-//   if(result.on === false){
-//     $powerButton.innerHTML = "Turn Extension On";
-//   } else {
-//     $powerButton.innerHTML = "Turn Extension Off";
-
-//   }
-// })
-// $powerButton.addEventListener('click', powerOnOff);
-// function powerOnOff(){
-//   if($powerButton.innerText == "Turn Extension On"){
-//     $powerButton.innerHTML = "Turn Extension Off";
-//     chrome.storage.sync.set({on: true}, null);
-//     var final = new Date();
-//     chrome.storage.sync.set({on: true}, null);
-//     chrome.storage.sync.set({ontime: final}, null);
-//     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-//       chrome.tabs.sendMessage(tabs[0].id, {subject: "turn on"}, null);
-//     });
-//   } else {
-//     $powerButton.innerHTML = "Turn Extension On";
-//     var final = new Date();
-//     chrome.storage.sync.set({on: false}, null);
-//     chrome.storage.sync.set({offtime: final}, null);
-//     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-//       chrome.tabs.sendMessage(tabs[0].id, {subject: "turn off"}, null);
-//     });
-//   }
-// }
-
 
 
 
@@ -526,32 +525,6 @@ function unblockSite(){
 
 }
 
-//Open menu with hamburger
-// var hamburger = document.querySelector('#options');
-// hamburger.addEventListener('click', openMenu);
-// function openMenu(){
-//   var table = document.querySelector('#table');
-//   if(table.style.visibility === 'hidden'){
-//     table.style.visibility = 'visible';
-//   } else {
-//     table.style.visibility = 'hidden';
-//   }
-//
-// }
-//Code for opening and closing settings menu
-// var settingsButton = document.querySelector('#openSettings');
-// settingsButton.addEventListener('click', openSettings);
-// function openSettings(){
-//   document.querySelector('#settings').style.visibility = 'visible';
-//   document.querySelector('#table').style.visibility = 'hidden';
-// }
-
-// var exitSettings = document.querySelector('#exitSettings');
-// exitSettings.addEventListener('click', exitSettingsPage);
-// function exitSettingsPage(){
-//   document.querySelector('#settings').style.visibility = 'hidden';
-// }
-
 document.getElementById("settingsTab").addEventListener('click', function(e) {
   document.getElementById("settings").style.visibility = "visible";
   document.getElementById("settings-icon").style.borderBottom = "3px solid rgb(113, 109, 218)";
@@ -560,23 +533,6 @@ document.getElementById("settingsTab").addEventListener('click', function(e) {
   document.getElementById("home").style.visibility = "hidden";
   document.getElementById("home-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
 })
-
-// var $whitelist = document.querySelector('#openWhitelistPanel');
-// $whitelist.addEventListener('click', openWhitelist);
-// function openWhitelist(){
-//   document.querySelector('#overlay').style.visibility = 'visible';
-//   document.querySelector('#whitelistPanel').style.visibility = 'visible';
-//   document.querySelector('#table').style.visibility = 'hidden';
-// }
-//
-// document.querySelector('#exitWhitelistPanel').addEventListener('click', exitWhitelist);
-// function exitWhitelist(){
-//   document.querySelector('#table').style.visibility = 'hidden';
-//   document.querySelector('#overlay').style.visibility = 'hidden';
-//   document.querySelector('#whitelistPanel').style.visibility = 'hidden';
-//   document.querySelector('#warning').style.visibility = 'hidden';
-//
-//
 
 document.getElementById("whitelistTab").addEventListener('click', function(e) {
   document.getElementById("settings").style.visibility = "hidden";
@@ -613,6 +569,7 @@ function closeTutorial(){
 var $saveSettings = document.querySelector('#saveSettings');
 $saveSettings.addEventListener('click', saveSettings);
 function saveSettings(){
+  var i;
   for(i=0; i<3; i++){
     var radios = document.getElementsByName('mode');
     var val;
@@ -630,22 +587,37 @@ function saveSettings(){
   }
 
   for(i=0; i<2; i++){
-    var eb = document.getElementsByName('enhanced');;
+    var eb = document.getElementsByName('enhanced');
     var ebval;
     if(eb[i].checked === true){
       ebval = eb[i].value;
 
     }
   }
+  
+  for(i=0; i<2; i++){
+    var p = document.getElementsByName('pomodoro');
+    var pval;
+    if(p[i].checked === true){
+      pval = p[i].value;
+    }
+  }
   chrome.storage.sync.set({mode: val}, null);
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change mode", cutoff: val}, null);
+
   chrome.storage.sync.set({timerWidget: tval}, null);
 
   chrome.storage.sync.set({enhanced: ebval}, null);
 
+  chrome.storage.sync.set({timer: pval}, null);
+  chrome.runtime.sendMessage(chrome.runtime.id, {subject: "pomodoro", value: pval}, null);
+
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {subject: "timer on and off"}, null);
   });
+
+
+
   var tabIds = [];
   chrome.tabs.query({}, function (tabs) {
     for (var i = 0; i < tabs.length; i++) {
@@ -684,6 +656,16 @@ chrome.storage.sync.get(['enhanced'], function(result){
   }
 })
 
+chrome.storage.sync.get(['timer'], function(result){
+
+  if(!result.timer){
+    chrome.storage.sync.set({timer: "normal"}, null);
+  } else {
+    chrome.storage.sync.set({timer: result.timer}, null);
+    checkSetting4(result.timer);
+  }
+})
+
 function checkSetting1(val) {
   var rs =document.getElementsByName('mode');
 
@@ -714,6 +696,16 @@ function checkSetting3(val) {
   eb.forEach(e => {
     if(e.value === val) {
       e.checked = true;
+        }
+    });
+}
+
+function checkSetting4(val) {
+  var ps =document.getElementsByName('pomodoro');
+
+	ps.forEach(p => {
+		if(p.value === val) {
+			p.checked = true;
         }
     });
 }

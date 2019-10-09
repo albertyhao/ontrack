@@ -9,7 +9,7 @@ var newSubject;
 var mode;
 var simCutoff;
 if(!simCutoff){
-  simCutoff = 0.35;
+  simCutoff = 0.2;
 }
 // This code sets up the txtbook var in chrome local storage
 chrome.storage.local.get(['txtbook'], function(result){
@@ -22,6 +22,7 @@ var economicWords =  ['macro','micro','utility','resource','allocation','right',
 var linearWords = ['matrix', 'matrices', 'row', 'operation', 'column','invertible','elementary','inverse','determinant','transpose','augment','identity','solution','equation','linear algebra','vector','scalar','echelon','row reduced','gaussian','elimination','eigen','dual','cramer','infinite','finite', 'Ax=b','add','subtract','multiply','singular','nonsingular','symmetric','skew','rectangular','triangular'];
 var calcWords = ['area', 'under', 'calculus', 'curve', 'derivative', 'differential', 'displaystyle', 'dx', 'function', 'infinitesimal', 'infinitesimals', 'input', 'integral', 'leibniz', 'limit', 'newton', 'slope', 'squaring', 'equation', 'equations','limit', 'graph', 'theorem', 'substitution', 'interval', 'continuity', 'continous', 'intermediate value theorem', 'product', 'quotient', 'average', 'instantaneous', 'secant', 'change', 'infinite', 'infinity', 'proof','sum', 'cos(', 'sin(', 'tan(', 'ln(', 'function', `L'`, 'extrema', 'test', 'concave','convex','concavity','inflection','second','first','polar','parametric','relative','absolute','local','global','maximum', 'minimum', 'exponent', 'logarithm', 'tangent','sine','cosine','chain rule','related rate', 'volume', 'summation'];
 var chemWords = ['chemistry','chemical','gas','mole','state','solid','liquid','solution','reaction','pressure','volume','temperature','energy','work','enthalpy','entropy','endothermic','exothermic','molecule','solution','compound','ion','acid','atom','covalent','charge','polymer','metal','halogen','periodic table','transition','oxidation','reduction','cloud','configuration','valence','electron','proton','neutron','heat','specific','joule','group','nucleus','orbital','subshell','ionization','lewis','structure','octet','pair','phase','decomposition','displacement','single','double','precipitate','molality','molarity','density','base','conjugate','weak','strong','reactant','product','conservation','matter','redox','capacity','calorimeter']
+var historyWords = ['american', 'americans', 'army', 'british', 'colonies', 'congress', 'government', 'nation', 'quaker','native',  'north', 'party', 'president', 'rights', 'slavery', 'slaves', 'south', 'states', 'union', 'united', 'war', 'women', 'americas', 'culture', 'indian', 'indians', 'iroquois', 'tribe', 'america', 'became', 'britain', 'colonial', 'colonists', 'colony', 'england', 'english', 'florida', 'land', 'population', 'settlers', 'spain', 'spanish', 'bay', 'canada', 'colonization', 'columbia', 'empire', 'established', 'hudson', 'kingdom', 'overseas', 'quebec', 'rupert', 'boston', 'loyalists', 'parliament', 'patriots', 'revolution', 'york', 'french', 'hamilton', 'mount', 'vernon', 'virginia', 'washington', 'black', 'cotton', 'enslaved', 'free', 'slave', 'trade', 'white', 'battle', 'force', 'fort', 'navy', 'royal', 'ship', 'ships', 'era', 'federalist', 'federalists', 'feelings', 'good', 'jacksonian', 'madison', 'monroe', 'national', 'political', 'presidential', 'republican', 'tour', 'would', 'confederacy', 'confederate', 'southern', 'african', 'blacks',  'civil', 'former', 'freedmen', 'johnson', 'radical', 'radicals', 'reconstruction', 'republicans', 'state', 'vote', 'whites', 'abortion', 'carter', 'conservative', 'crisis', 'economic', 'ford', 'military', 'nixon', 'policy', 'reagan', 'soviet', 'vietnam', 'activists', 'alabama', 'bus', 'freedom', 'kennedy', 'king', 'local', 'malcolm', 'march', 'mississippi', 'montgomery', 'movement', 'nonviolence', 'nonviolent', 'police', 'public', 'registration', 'school', 'segregation',  'students', 'voter', 'voting', 'pennsylvania', 'new york', 'carolina', 'tobacco', 'plantation', 'master', 'liberty'];
 // function getWordsFromFile(fileToLoad) {
   
 //   var xhr = new XMLHttpRequest();
@@ -79,32 +80,7 @@ function setNewSubject(){
   })
 }
 
-// chrome.storage.sync.get(['mode'], function(result){
-//   console.log(result.mode);
-//     if(result.mode == "light"){
-//       simCutoff = 0.35;
-//     } else if(result.mode == "moderate"){
-//       simCutoff = 0.4;
-//     }else {
-//       simCutoff = 0.45;
-//     }
-//   console.log(simCutoff)
-// })
-// function newMode(){
 
-//   chrome.storage.sync.get(['mode'], function(result){
-//     simCutoff = result.mode;
-//   })
-//   console.log(simCutoff)
-//   // if(mode == "light"){
-//   //   simCutoff = 0.35;
-//   // } else if(mode == "moderate"){
-//   //   simCutoff = 0.4;
-//   // } else {
-//   //   simCutoff = 0.45;
-//   //   console.log(simCutoff);
-//   // }
-// }
 
 //Code to receive mode change
 chrome.runtime.onMessage.addListener(
@@ -137,7 +113,8 @@ chrome.runtime.onMessage.addListener(
       }
     }
     var sim = num/(subjectWords.length);
-    console.log(siteText);
+    console.log(sender.tab.url)
+    console.log(siteText.split(' ').length);
     console.log(num)
     console.log(sim)
     chrome.storage.sync.get(['customerid', 'subject'], function(result){
@@ -152,7 +129,7 @@ chrome.runtime.onMessage.addListener(
       } else {
         sendResponse({res: true, sim: sim, txt: "This ain't a college website"})
       }
-  } else if(newSubject == "none"){
+  } else if(newSubject == "none" || newSubject == "break"){
       sendResponse({res: "power off", sim: sim})
   } else if(newSubject == "whitelist"){
       sendResponse({res: true, sim: sim})
@@ -413,6 +390,7 @@ chrome.runtime.onMessage.addListener(
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     if (req.timeRequest && timerInterval != 0) {
+      
       sendResponse(time)
     }
   }
@@ -443,6 +421,19 @@ chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     if (req.ogSubject) {
       sendResponse({subject: originalSubject})
+    }
+  }
+)
+var pomodoro;
+if(!pomodoro){
+  pomodoro = "normal";
+}
+console.log(pomodoro)
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "pomodoro") {
+      pomodoro = req.value;
+      console.log(pomodoro)
     }
   }
 )
@@ -492,20 +483,30 @@ function timeCountdown() {
     clearInterval(timerInterval)
     //chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
 
-    chrome.storage.sync.set({subject: "break"}, null);
 
-    // chrome.tabs.query({}, function(tabs) {
-    //   for(var i=0; i < tabs.length; i++){
-    //     chrome.tabs.sendMessage(tabs[i].id, {subject: "take away timer"}, null);
-    //   }
-    //
-    //  });
+    if(pomodoro == "normal"){
+      chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
+      chrome.storage.sync.set({subject: "none"}, null);
+      alert("Study session complete!")
+    } else {
+      chrome.runtime.sendMessage(chrome.runtime.id, {breakTimer: true}, null)
+      chrome.storage.sync.set({subject: "break"}, null);
+      alert("Break time")
+
+      time = "00:00:20";
+      timerInterval = setInterval(breakTimer, 1000)
+    }
+    
+
+    chrome.tabs.query({}, function(tabs) {
+      for(var i=0; i < tabs.length; i++){
+        chrome.tabs.sendMessage(tabs[i].id, {subject: "take away timer"}, null);
+      }
+    
+     });
     setNewSubject();
 
-    // alert("Break time")
-
-    time = "00:05:00";
-    timerInterval = setInterval(breakTimer, 1000)
+    
 
   }
 }
@@ -562,6 +563,14 @@ function breakTimer() {
     //
     //  });
     setNewSubject();
+    var tabIds = [];
+    chrome.tabs.query({}, function (tabs) {
+      for (var i = 0; i < tabs.length; i++) {
+        tabIds.push(tabs[i].id);
+        chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
+      }
+    });
+    
 
     time = originalTime;
     timerInterval = setInterval(timeCountdown, 1000)
