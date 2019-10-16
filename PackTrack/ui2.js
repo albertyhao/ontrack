@@ -571,11 +571,12 @@ function saveSettings(){
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {subject: "timer on and off"}, null);
   });
+  var tabIds = [];
   chrome.tabs.query({}, function (tabs) {
     for (var i = 0; i < tabs.length; i++) {
-      
-      chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
-      }
+      tabIds.push(tabs[i].id);
+      chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
+    }
   });
 
 }

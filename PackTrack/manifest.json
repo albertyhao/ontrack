@@ -51,5 +51,5 @@
     "default_icon": "packtrack16.png",
     "default_popup": "ui2.html"
   },
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; script-src 'self' 'unsafe-eval' https://nathan.qoom.io;"
 }
