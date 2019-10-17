@@ -93,7 +93,7 @@ function scrapeUserSite() {
     } else {
       // console.log(whitelist);
     }
-      chrome.runtime.sendMessage(chrome.runtime.id, {txt: siteText}, function(response) {
+      chrome.runtime.sendMessage(chrome.runtime.id, {txt: siteText, subject: "check sim"}, function(response) {
        
         if(!response) return;
         if (response.res && response.res !== "power off" && whitelist.every(function(site){return site !== location.hostname}) && $qblock.every(function(site){return site !== location.hostname}) ) {
