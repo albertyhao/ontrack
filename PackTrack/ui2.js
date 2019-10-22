@@ -596,7 +596,7 @@ function saveSettings(){
 
 chrome.storage.sync.get(['mode'], function(result){
   if(!result.mode){
-    chrome.storage.sync.set({mode: "0.4"}, null);
+    chrome.storage.sync.set({mode: "0.2"}, null);
   } else {
     chrome.storage.sync.set({mode: result.mode}, null);
     checkSetting1(result.mode);
