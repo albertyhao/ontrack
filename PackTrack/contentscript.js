@@ -150,26 +150,26 @@ window.onfocus = function(e) {
 
 
 
-chrome.runtime.onMessage.addListener(
-  function(req, sender, sendResponse) {
-    if (req.subject == "change subjects") {
-      // console.log("got it")
-      getCurrentTime();
-      scrapeUserSite();
-    }
-  }
-)
+// chrome.runtime.onMessage.addListener(
+//   function(req, sender, sendResponse) {
+//     if (req.subject == "change subjects") {
+//       // console.log("got it")
+//       getCurrentTime();
+//       scrapeUserSite();
+//     }
+//   }
+// )
 
-chrome.runtime.onMessage.addListener(
-  function(req, sender, sendResponse) {
-    if (req.subject == "change subjects and end session") {
-      // console.log("got it")
-      location.reload();
-      scrapeUserSite();
+// chrome.runtime.onMessage.addListener(
+//   function(req, sender, sendResponse) {
+//     if (req.subject == "change subjects and end session") {
+//       // console.log("got it")
+//       location.reload();
+//       scrapeUserSite();
       
-    }
-  }
-)
+//     }
+//   }
+// )
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
