@@ -1,13 +1,21 @@
+document.getElementById('time').addEventListener('click', timeInput);
 
-
-document.addEventListener('keypress', function(e) {
-  if (document.getElementById("timer_start").innerHTML == "Start") {
-    var nums = "0123456789"
-    if (nums.includes(e.key)) {
-      addNumToTimer(parseInt(e.key))
+function timeInput(){
+  document.addEventListener('keypress', function(e) {
+    if (document.getElementById("timer_start").innerHTML == "Start") {
+      var nums = "0123456789"
+      if (nums.includes(e.key)) {
+        addNumToTimer(parseInt(e.key))
+      }
     }
-  }
-})
+  })
+
+  document.getElementById('time').style.border = '2px solid #736cdb';
+  document.getElementById('time').style.borderRadius = '10px';
+  document.getElementById('time').style.padding = '1px';
+  document.getElementById('time').style.color = 'gray';
+}
+
 
 function addNumToTimer(n) {
   var time = document.getElementById("time").innerHTML
@@ -81,7 +89,7 @@ function confirmValidity() {
 
 function startTimer() {
   var time = document.getElementById("time").innerHTML
-
+  
   var hr = parseInt(time.substr(0, 2))
   var min = parseInt(time.substr(3, 2))
   var sec = parseInt(time.substr(6, 2))
@@ -127,11 +135,15 @@ function timerEnd() {
   document.querySelector(".container").innerHTML = `<div class = "dropdown">
   <select class = "dropdown-select">
     <option value="none">None</option>
-    <!-- <option value="physics">Physics</option> -->
+    <option value="physics">Physics</option>
     <option value="biology">Biology</option>
+    <option value="chemistry">Chemistry</option>
     <option value="history">American History</option>
+    <option value="economics">Economics</option>
+    <option value="calculus">Calculus</option>
+    <option value="linearAlgebra">Linear Algebra</option>
     <option value="collegeApps">College Apps</option>
-    <option value="hardBlock">General Studying</option>
+    <option value="whitelist">Whitelist</option>
   </select>
 </div>`;
   document.getElementById("timer_start").innerHTML = "Start"
@@ -302,7 +314,8 @@ chrome.storage.sync.get(['subject'], function(result){
 
 
 function timerStart(){
-  
+  document.getElementById('time').style.border = 'none';
+  document.getElementById('time').style.color = 'black';
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
   // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
   //   chrome.tabs.sendMessage(tabs[0].id, {subject: "study session start"}, null);
