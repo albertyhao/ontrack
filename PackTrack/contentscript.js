@@ -120,11 +120,12 @@ function scrapeUserSite() {
           if(timerOrNot == "on"){
             insertTimer();
           } else {
-            //nothing
+            var t = document.querySelector('#countdown');
+            document.body.removeChild(t);
           }
           
         }
-  
+
         // 
         
         // console.log(response.txt);

@@ -24,6 +24,7 @@ function setNewSubject(){
   //Getting subject from chrome storage
   chrome.storage.sync.get(['subject'], function(result){
     newSubject = result.subject;
+    console.log(newSubject)
     // console.log(newSubject);
     if(newSubject == "physics"){
       subjectWords = physicsWords;
@@ -48,6 +49,8 @@ function setNewSubject(){
     }
   })
 }
+
+setNewSubject();
 
 
 
@@ -76,6 +79,7 @@ chrome.runtime.onMessage.addListener(
     }
     
     var num = 0;
+    console.log(subjectWords);
     for(var i=0; i < subjectWords.length; i++){
       if(siteText.includes(subjectWords[i]) === true){
         num += 1;
@@ -86,7 +90,7 @@ chrome.runtime.onMessage.addListener(
     // console.log(siteText.split(' ').length);
     // console.log(num)
     // console.log(sim)
-    console.log(subjectWords)
+    
     chrome.storage.sync.get(['customerid', 'subject'], function(result){
       
       var xhr = new XMLHttpRequest();
