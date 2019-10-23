@@ -24,7 +24,7 @@ function setNewSubject(){
   //Getting subject from chrome storage
   chrome.storage.sync.get(['subject'], function(result){
     newSubject = result.subject;
-    console.log(newSubject)
+    // console.log(newSubject)
     // console.log(newSubject);
     if(newSubject == "physics"){
       subjectWords = physicsWords;
@@ -42,8 +42,6 @@ function setNewSubject(){
       subjectWords = linearWords;
     } else if(newSubject == 'collegeApps'){
       subjectWords = collegeWords;
-    } else if(newSubject == 'break'){
-      // console.log('help me plz')
     } else {
       
     }
@@ -79,7 +77,7 @@ chrome.runtime.onMessage.addListener(
     }
     
     var num = 0;
-    console.log(subjectWords);
+    // console.log(subjectWords);
     for(var i=0; i < subjectWords.length; i++){
       if(siteText.includes(subjectWords[i]) === true){
         num += 1;
@@ -103,7 +101,7 @@ chrome.runtime.onMessage.addListener(
       } else {
         sendResponse({res: true, sim: sim, txt: "This ain't a college website"})
       }
-  } else if(newSubject == "none" || newSubject == "break"){
+  } else if(newSubject == "none"){
       sendResponse({res: "power off", sim: sim})
   } else if(newSubject == "whitelist"){
       sendResponse({res: true, sim: sim})

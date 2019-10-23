@@ -229,8 +229,6 @@ chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (res
         currentSubject = "American History";
       } else if(result.subject == "collegeApps"){
         currentSubject = "College Apps"
-      } else if(result.subject == "break") {
-        currentSubject = "Break"
       } else if(result.subject == "whitelist"){
         currentSubject = "Whitelist";
       } else if(result.subject == "physics"){
@@ -362,8 +360,6 @@ function timerStart(){
         currentSubject = "American History";
       } else if(result.subject == "collegeApps"){
         currentSubject = "College Apps"
-      } else if(result.subject == "break") {
-        currentSubject = "Break"
       } else if(result.subject == "whitelist"){
         currentSubject = "Whitelist";
       } else if(result.subject == "physics"){
