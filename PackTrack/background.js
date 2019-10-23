@@ -86,7 +86,7 @@ chrome.runtime.onMessage.addListener(
     // console.log(siteText.split(' ').length);
     // console.log(num)
     // console.log(sim)
-    
+    console.log(subjectWords)
     chrome.storage.sync.get(['customerid', 'subject'], function(result){
       
       var xhr = new XMLHttpRequest();
