@@ -684,5 +684,5 @@ function checkSetting3(val) {
 
 document.querySelector("#enhancedWarning").addEventListener('click', warning);
 function warning(){
-  alert("The enhanced block mode will not allow you to stop your study session before time is up. Proceed with caution!")
+  alert("The enhanced block mode force you to finish your study session by taking away the stop button. Proceed with caution!")
 }

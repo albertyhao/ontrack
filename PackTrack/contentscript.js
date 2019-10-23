@@ -117,7 +117,7 @@ function scrapeUserSite() {
           document.body.removeChild(t);
           // console.log('power off');
         } else {
-          if(timerOrNot == "on"){
+          if(timerOrNot == "on" || !document.querySelector('#countdown')){
             insertTimer();
           } else {
             var t = document.querySelector('#countdown');
@@ -177,6 +177,17 @@ chrome.runtime.onMessage.addListener(
     if (req.subject == "unblock") {
       
       location.reload();
+      
+      
+    }
+  }
+)
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "state change") {
+      
+      scrapeUserSite();
       
       
     }

@@ -24,7 +24,7 @@ function setNewSubject(){
   //Getting subject from chrome storage
   chrome.storage.sync.get(['subject'], function(result){
     newSubject = result.subject;
-    // console.log(newSubject)
+    console.log(newSubject)
     // console.log(newSubject);
     if(newSubject == "physics"){
       subjectWords = physicsWords;
@@ -43,7 +43,7 @@ function setNewSubject(){
     } else if(newSubject == 'collegeApps'){
       subjectWords = collegeWords;
     } else {
-      
+      subjectWords = [];
     }
   })
 }
@@ -284,3 +284,13 @@ chrome.runtime.onMessage.addListener(
     }
   }
 )
+
+//Listen for when a Tab changes state
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+  if(changeInfo && changeInfo.status == "complete"){
+      chrome.tabs.sendMessage(tabId, {subject: "state change"}, function(response) {
+          
+      });
+
+  }
+});
