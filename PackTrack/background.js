@@ -106,7 +106,7 @@ chrome.runtime.onMessage.addListener(
   } else if(newSubject == "whitelist"){
       sendResponse({res: true, sim: sim})
   } else {
-    if (sim > simCutoff || sender.tab.url.includes(newSubject)) {
+    if (sim > simCutoff || sender.tab.url.includes(newSubject.toLowerCase())) {
       sendResponse({res: false, sim: sim})
     } else {
       sendResponse({res: true, sim: sim})
