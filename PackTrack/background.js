@@ -24,7 +24,7 @@ function setNewSubject(){
   //Getting subject from chrome storage
   chrome.storage.sync.get(['subject'], function(result){
     newSubject = result.subject;
-    console.log(newSubject)
+    // console.log(newSubject)
     // console.log(newSubject);
     if(newSubject == "physics"){
       subjectWords = physicsWords;

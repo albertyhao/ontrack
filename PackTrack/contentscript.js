@@ -110,7 +110,7 @@ for(i=0;i<100;i++){
   common.push(ranked[i].key)
 }
 
-console.log(common);
+// console.log(common);
 
 
 
