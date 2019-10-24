@@ -77,7 +77,43 @@ function scrapeUserSite() {
     )
     .filter(q => q.length);
   siteText = t.join(' ');
-  
+
+  //Algorithm that returns most common words on each site
+  var text = "";
+  var stopWords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd", 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's", 'her', 'hers', 'herself', 'it', "it's", 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', "that'll", 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', "don't", 'should', "should've", 'now', 'd', 'll', 'm', 'o', 're', 've', 'y', 'ain', 'aren', "aren't", 'couldn', "couldn't", 'didn', "didn't", 'doesn', "doesn't", 'hadn', "hadn't", 'hasn', "hasn't", 'haven', "haven't", 'isn', "isn't", 'ma', 'mightn', "mightn't", 'mustn', "mustn't", 'needn', "needn't", 'shan', "shan't", 'shouldn', "shouldn't", 'wasn', "wasn't", 'weren', "weren't", 'won', "won't", 'wouldn', "wouldn't"];
+  for( var i = 0; i < siteText.length; i++ ){
+    if( !(siteText[i] == '\n' || siteText[i] == '\r') ){
+      text += siteText[i]; 
+      text = text.toLowerCase();
+    }
+  }
+  text = text.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ");
+  var words = text.split(' ');
+  var dict = [];
+  var usedWords = [];
+  for(i=0; i<words.length; i++){
+    if(!usedWords || !usedWords.includes(words[i])){
+    dict.push({key: words[i], value: 1})
+    usedWords.push(words[i])
+    
+   } else {
+    var repeat = dict.findIndex(d => d.key == words[i])
+    dict[repeat].value += 1;
+    
+  }
+    
+}
+var ranked = dict.sort((a, b) => (a.value > b.value) ? -1 : 1);
+ranked = ranked.filter(r => !stopWords.includes(r.key));
+var common = [];
+for(i=0;i<100;i++){
+  common.push(ranked[i].key)
+}
+
+// console.log(common);
+
+
+
   chrome.storage.sync.get(['qblock'], function(result){
     if(!result.qblock){
       $qblock = [];
@@ -117,14 +153,15 @@ function scrapeUserSite() {
           document.body.removeChild(t);
           // console.log('power off');
         } else {
-          if(timerOrNot == "on"){
+          if(timerOrNot == "on" && document.body.contains(document.querySelector('#countdown')) === false){
             insertTimer();
           } else {
-            //nothing
+            var t = document.querySelector('#countdown');
+            document.body.removeChild(t);
           }
           
         }
-  
+
         // 
         
         // console.log(response.txt);
@@ -176,6 +213,17 @@ chrome.runtime.onMessage.addListener(
     if (req.subject == "unblock") {
       
       location.reload();
+      
+      
+    }
+  }
+)
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "state change") {
+      
+      scrapeUserSite();
       
       
     }

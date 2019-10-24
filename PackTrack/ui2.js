@@ -229,8 +229,21 @@ chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (res
         currentSubject = "American History";
       } else if(result.subject == "collegeApps"){
         currentSubject = "College Apps"
-      } else {
-        currentSubject = "General Studying"
+      } else if(result.subject == "whitelist"){
+        currentSubject = "Whitelist";
+      } else if(result.subject == "physics"){
+        currentSubject = "Physics"
+      } else if(result.subject == "chemistry") {
+        currentSubject = "Chemistry"
+      } else if(result.subject == "economics"){
+        currentSubject = "Economics"
+      } else if(result.subject == "calculus"){
+        currentSubject = "Calculus"
+      } else if(result.subject == "linearAlgebra") {
+        currentSubject = "Linear Algebra"
+      } 
+      else {
+        
       }
       document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">${currentSubject}</h1>`
     })
@@ -341,15 +354,28 @@ function timerStart(){
   document.getElementById("selection").innerHTML = "Study session in progress"
   chrome.storage.sync.get(['subject'], function(result){
     var currentSubject;
-    if(result.subject == "biology"){
-      currentSubject = "Biology";
-    } else if(result.subject == "history"){
-      currentSubject = "American History";
-    } else if(result.subject == "collegeApps"){
-      currentSubject = "College Apps"
-    } else {
-      currentSubject = "General Studying"
-    }
+      if(result.subject == "biology"){
+        currentSubject = "Biology";
+      } else if(result.subject == "history"){
+        currentSubject = "American History";
+      } else if(result.subject == "collegeApps"){
+        currentSubject = "College Apps"
+      } else if(result.subject == "whitelist"){
+        currentSubject = "Whitelist";
+      } else if(result.subject == "physics"){
+        currentSubject = "Physics"
+      } else if(result.subject == "chemistry") {
+        currentSubject = "Chemistry"
+      } else if(result.subject == "economics"){
+        currentSubject = "Economics"
+      } else if(result.subject == "calculus"){
+        currentSubject = "Calculus"
+      } else if(result.subject == "linearAlgebra") {
+        currentSubject = "Linear Algebra"
+      } 
+      else {
+        
+      }
     document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">${currentSubject}</h1>`
   })
 
@@ -658,5 +684,5 @@ function checkSetting3(val) {
 
 document.querySelector("#enhancedWarning").addEventListener('click', warning);
 function warning(){
-  alert("The enhanced block mode will not allow you to stop your study session before time is up. Proceed with caution!")
+  alert("The enhanced block mode force you to finish your study session by taking away the stop button. Proceed with caution!")
 }

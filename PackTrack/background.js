@@ -24,6 +24,7 @@ function setNewSubject(){
   //Getting subject from chrome storage
   chrome.storage.sync.get(['subject'], function(result){
     newSubject = result.subject;
+    // console.log(newSubject)
     // console.log(newSubject);
     if(newSubject == "physics"){
       subjectWords = physicsWords;
@@ -41,13 +42,13 @@ function setNewSubject(){
       subjectWords = linearWords;
     } else if(newSubject == 'collegeApps'){
       subjectWords = collegeWords;
-    } else if(newSubject == 'break'){
-      // console.log('help me plz')
     } else {
-      
+      subjectWords = [];
     }
   })
 }
+
+setNewSubject();
 
 
 
@@ -71,11 +72,12 @@ chrome.runtime.onMessage.addListener(
     for( var i = 0; i < text.length; i++ ){
       if( !(text[i] == '\n' || text[i] == '\r') ){
         siteText += text[i]; 
-        siteText = siteText.toLowerCase();
+        
       }
     }
-    
+    siteText = siteText.toLowerCase();
     var num = 0;
+    // console.log(subjectWords);
     for(var i=0; i < subjectWords.length; i++){
       if(siteText.includes(subjectWords[i]) === true){
         num += 1;
@@ -99,12 +101,12 @@ chrome.runtime.onMessage.addListener(
       } else {
         sendResponse({res: true, sim: sim, txt: "This ain't a college website"})
       }
-  } else if(newSubject == "none" || newSubject == "break"){
+  } else if(newSubject == "none"){
       sendResponse({res: "power off", sim: sim})
   } else if(newSubject == "whitelist"){
       sendResponse({res: true, sim: sim})
   } else {
-    if (sim > simCutoff || sender.tab.url.includes(newSubject)) {
+    if (sim > simCutoff || sender.tab.url.includes(newSubject.toLowerCase())) {
       sendResponse({res: false, sim: sim})
     } else {
       sendResponse({res: true, sim: sim})
@@ -282,3 +284,13 @@ chrome.runtime.onMessage.addListener(
     }
   }
 )
+
+//Listen for when a Tab changes state
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+  if(changeInfo && changeInfo.status == "complete"){
+      chrome.tabs.sendMessage(tabId, {subject: "state change"}, function(response) {
+          
+      });
+
+  }
+});
