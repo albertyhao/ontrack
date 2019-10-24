@@ -72,10 +72,10 @@ chrome.runtime.onMessage.addListener(
     for( var i = 0; i < text.length; i++ ){
       if( !(text[i] == '\n' || text[i] == '\r') ){
         siteText += text[i]; 
-        siteText = siteText.toLowerCase();
+        
       }
     }
-    
+    siteText = siteText.toLowerCase();
     var num = 0;
     // console.log(subjectWords);
     for(var i=0; i < subjectWords.length; i++){
