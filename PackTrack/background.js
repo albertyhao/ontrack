@@ -85,9 +85,10 @@ chrome.runtime.onMessage.addListener(
     }
     var sim = num/(subjectWords.length);
     // console.log(sender.tab.url)
-    // console.log(siteText.split(' ').length);
+    // // console.log(siteText.split(' ').length);
     // console.log(num)
     // console.log(sim)
+    // console.log(simCutoff)
     
     chrome.storage.sync.get(['customerid', 'subject'], function(result){
       
