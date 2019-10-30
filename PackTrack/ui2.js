@@ -280,6 +280,8 @@ chrome.storage.sync.get(['wlist'], function(result){
 document.getElementById('wlistSite').addEventListener('click', saveWhitelist);
 
 function saveWhitelist(){
+  
+  
   if(document.querySelector('#whitelist').value.split('.').length < 2){
     document.getElementById('warning').style.visibility = 'visible';
   } else {
@@ -466,7 +468,21 @@ function timerStart(){
 //code for unblocking current site
 chrome.storage.sync.set({qblock: []}, null);
 var $unblock = document.querySelector('#unblock');
-$unblock.addEventListener('click', unblockSite);
+$unblock.addEventListener('click', unblockGoodSite);
+
+function unblockGoodSite(){
+  //Makes request for site text from content script and then makes request to background to check similarity
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {subject: "site text"}, function(response){
+      var siteText = response.text;
+      chrome.runtime.sendMessage(chrome.runtime.id, {subject: "check sim for unblock"}, function(response) {
+        if(response.sim > 0.1){
+          unblockSite();
+        }
+      })
+    });
+  });
+}
 
 function unblockSite(){
   var getLocation = function(href){
@@ -685,4 +701,83 @@ function checkSetting3(val) {
 document.querySelector("#enhancedWarning").addEventListener('click', warning);
 function warning(){
   alert("The enhanced block mode force you to finish your study session by taking away the stop button. Proceed with caution!")
+}
+
+
+
+//Welcome page js
+
+chrome.storage.sync.get(['welcomed'], function(result){
+  if(!result.welcomed){
+    chrome.storage.sync.set({welcomed: "no"});
+  } else {
+    chrome.storage.sync.set({welcomed: result.welcomed});
+  }
+})
+
+var welcomed;
+
+chrome.storage.sync.get(['welcomed'], function(result){
+  welcomed = result.welcomed;
+  if(welcomed == 'no'){
+    document.querySelector('#welcomeModal').style.visibility = 'visible';
+  } else {
+    document.querySelector('#welcomeModal').style.visibility = 'hidden';
+    
+  }
+})
+
+
+
+document.querySelector('#skipInfo').addEventListener('click', skipPage);
+function skipPage(){
+  
+  document.querySelector('#welcomeModal').style.visibility = 'hidden';
+  chrome.storage.sync.set({welcomed: "yes"})
+}
+
+document.querySelector('#user').addEventListener('blur', submitValidity);
+document.querySelector('#mail').addEventListener('blur', submitValidity);
+
+function submitValidity(){
+  var $username = document.getElementById('user');
+  var $email = document.getElementById('mail');
+  if($username.value.length > 1 && $email.value.length > 10 && $email.value.includes('@')){
+    injectWelcomeStyle();
+    document.querySelector('#submitInfo').addEventListener('click', postInfo);
+    function postInfo(){
+      chrome.storage.sync.set({welcomed: "yes"});
+      chrome.storage.sync.set({name: $username.value});
+      chrome.storage.sync.set({email: $email.value})
+      document.querySelector('#welcomeModal').style.visibility = 'hidden';
+    }
+    
+  }
+}
+
+function injectWelcomeStyle(){
+  var style = `
+  #submitInfo {
+    border: 2px solid #736cdb;
+    padding: 6px 16px;
+    border-radius: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    outline: none;
+    background: #fff;
+    color: #736cdb;
+    font-size: 11px;
+  }
+
+  #submitInfo:hover {
+    background: #736cdb;
+    color: #fff;
+    border: 2px solid #736cdb;
+    border-radius: 12px;
+  }
+  `
+var s = document.createElement('style')
+s.innerHTML = style;
+document.head.appendChild(s)
 }

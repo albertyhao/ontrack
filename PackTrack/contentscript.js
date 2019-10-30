@@ -572,3 +572,26 @@ chrome.runtime.onMessage.addListener(
 if(document.querySelectorAll('#countdown').length > 1){
   document.body.removeChild(document.querySelectorAll('#countdown')[0]);
 }
+
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "site text") {
+      var tags = Array.from(document.querySelectorAll('*'));
+      var f = tags.filter(t => !['script', 'meta', 'link', 'input', 'html', 'body', 'head', 'style', 'img', 'iframe'].includes(t.tagName.toLowerCase()));
+      var t = f.map(
+          e => Array.from(e.childNodes)
+           .filter(c => c.nodeName === "#text")
+        )
+        .filter(x => x.length)
+        .map(r =>
+          r.map(w => w.textContent.trim())
+          .filter(a => a && a.length > 10)
+        )
+        .filter(q => q.length);
+      var text = t.join(' ');
+      sendResponse({text: text})
+      
+    }
+  }
+)

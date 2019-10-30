@@ -301,3 +301,103 @@ hr{
   padding-bottom: 2px;
   border-bottom: 3px solid rgb(255, 255, 255);
 }
+
+#welcome {
+  text-align:center;
+  border: 2px solid #736cdb; 
+  background-color: #fff;
+  z-index: 100000000000000000000000000;
+  position:absolute;
+  height:60%;
+  width:95%;
+  top:20%;
+  left:2.5%;
+}
+
+#welcomeModal {
+  position:absolute;
+  height:100%;
+  width:100%;
+  top:0;
+  left:0;
+  background-color: rgba(100,100,100,0.5);
+  z-index: 100000000000;
+  visibility: hidden;
+}
+ 
+#welcome input {
+  height: 3em;
+  width: 15em;
+  border-width: 2px 2px 2px 0px;
+  border-style: solid;
+  border-color: #736cdb;
+  -webkit-appearance: none;
+  outline: none;
+}
+
+#welcome input::-webkit-input-placeholder {
+  font-size: 15px;
+  text-align: center;
+}
+
+#username {
+  width: 18em;
+  height: 3em;
+  
+  display: block;
+  margin:auto;
+}
+
+#email {
+  width: 18em;
+  height: 3em;
+  
+  display: block;
+  margin:auto;
+}
+
+#username svg, #email svg {
+  vertical-align: middle;
+  border: 2px solid gray;
+  border-radius: 7px 0px 0px 7px;
+  padding: 2px;
+  position: relative;
+  bottom: 4%;
+}
+
+#skipInfo {
+  border: 2px solid #736cdb;
+  padding: 6px 16px;
+  border-radius: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: none;
+  background: #fff;
+  color: #736cdb;
+  font-size: 11px;
+}
+
+#skipInfo:hover {
+  background: #736cdb;
+  color: #fff;
+  border: 2px solid #736cdb;
+  border-radius: 12px;
+}
+
+#welcome h1 {
+  font-size: 20px;
+}
+
+#submitInfo {
+  border: 2px solid #bbb;
+  padding: 6px 16px;
+  border-radius: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: none;
+  background: #fff;
+  color: #bbb;
+  font-size: 11px;
+}
