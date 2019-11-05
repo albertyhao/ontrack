@@ -475,11 +475,15 @@ function unblockGoodSite(){
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {subject: "site text"}, function(response){
       var siteText = response.text;
-      chrome.runtime.sendMessage(chrome.runtime.id, {subject: "check sim for unblock"}, function(response) {
+
+      chrome.runtime.sendMessage(chrome.runtime.id, {subject: "check sim for unblock", txt: siteText}, function(response) {
+        console.log(response)
         if(response.sim > 0.1){
           unblockSite();
         }
       })
+
+
     });
   });
 }
