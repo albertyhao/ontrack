@@ -1,21 +1,21 @@
 document.getElementById('time').addEventListener('click', timeInput);
-
-function timeInput(){
-  document.addEventListener('keypress', function(e) {
-    if (document.getElementById("timer_start").innerHTML == "Start") {
-      var nums = "0123456789"
-      if (nums.includes(e.key)) {
-        addNumToTimer(parseInt(e.key))
-      }
+var clicked = "no";
+document.addEventListener('keypress', function(e) {
+  if (document.getElementById("timer_start").innerHTML == "Start" && clicked == "yes") {
+    var nums = "0123456789"
+    if (nums.includes(e.key)) {
+      addNumToTimer(parseInt(e.key))
     }
-  })
+  }
+})
+function timeInput(){
+  clicked = "yes"
 
   document.getElementById('time').style.border = '2px solid #736cdb';
   document.getElementById('time').style.borderRadius = '10px';
   document.getElementById('time').style.padding = '1px';
   document.getElementById('time').style.color = 'gray';
 }
-
 
 function addNumToTimer(n) {
   var time = document.getElementById("time").innerHTML
