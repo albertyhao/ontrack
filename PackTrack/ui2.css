@@ -6,7 +6,6 @@ body {
   height: 220px;
 }
 
-
 h1 {
   font-family: 'Merriweather', serif;
   font-size: 15px;
@@ -15,7 +14,10 @@ h1 {
   color: black;
 }
 
-
+h2 {
+  outline: none;
+  display:inline;
+}
 
 .btn2 {
   border: 2px solid #736cdb;

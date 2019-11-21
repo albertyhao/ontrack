@@ -126,10 +126,10 @@ chrome.runtime.onMessage.addListener(
     // console.log(sim)
     // console.log(simCutoff)
     
-    chrome.storage.sync.get(['customerid', 'subject'], function(result){
-      
+    chrome.storage.sync.get(['customerid', 'subject', 'email', 'name'], function(result){
+      console.log(result.subject);
       var xhr = new XMLHttpRequest();
-      xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&sim=${sim}&subject=${result.subject}&loadsimtime=${req.loadsimtime}`);
+      xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&sim=${sim}&subject=${result.subject}&loadsimtime=${req.loadsimtime}&name=${result.name}&email=${result.email}`);
       xhr.send(); 
     })
     if (newSubject == "collegeApps"){
@@ -200,6 +200,7 @@ chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     if (req.timer) {
       time = req.timer
+      console.log(time)
       timerInterval = setInterval(timeCountdown, 1000)
     }
   }

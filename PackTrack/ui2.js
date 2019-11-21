@@ -1,42 +1,50 @@
-document.getElementById('time').addEventListener('click', timeInput);
 
-function timeInput(){
-  document.addEventListener('keypress', function(e) {
-    if (document.getElementById("timer_start").innerHTML == "Start") {
-      var nums = "0123456789"
-      if (nums.includes(e.key)) {
-        addNumToTimer(parseInt(e.key))
-      }
+const timervalue = '00:00:00';
+const timerElements = Array.from(document.querySelectorAll(".timerDigit"));
+timerElements.forEach((t, i) => {
+  // t.addEventListener('click', timeInput);
+  t.setAttribute("contenteditable", true);
+
+  t.addEventListener('keydown', function(e){
+    
+    if('0123456789'.includes(e.key)) {
+      t.innerHTML = '0';
+      setTimeout(function() {
+        if(i < timerElements.length - 1) timerElements[i+1].focus();
+      }, 0)
+      
+      return;
     }
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    e.stopPropagation();
+    return false;
+
   })
+});
 
-  document.getElementById('time').style.border = '2px solid #736cdb';
-  document.getElementById('time').style.borderRadius = '10px';
-  document.getElementById('time').style.padding = '1px';
-  document.getElementById('time').style.color = 'gray';
-}
+// function timeInput(){
 
-
-function addNumToTimer(n) {
-  var time = document.getElementById("time").innerHTML
-  time = time.replace(":", "").replace(":", "");
-  time = time.substr(1) + n;
-  time = time.substr(0, 2) + ":" + time.substr(2, 2) + ":" + time.substr(4, 2)
-  document.getElementById("time").innerHTML = time
-}
+//   document.getElementById('time').style.border = '2px solid #736cdb';
+//   document.getElementById('time').style.borderRadius = '10px';
+//   document.getElementById('time').style.padding = '1px';
+//   document.getElementById('time').style.color = 'gray';
+// }
 
 document.getElementById("timer_clear").addEventListener('click', function(e) {
-  document.getElementById("time").innerHTML = "00:00:00"
+  timerElements.forEach(t => t.innerHTML = "0");
 })
 
 var countdown;
 
 document.getElementById("timer_start").addEventListener('click', function(e) {
-  if (document.getElementById("timer_start").innerHTML == "Start" && document.querySelector('#time').innerHTML !== "00:00:00" && document.querySelector('.dropdown-select').value !== "none") {
+  var timeSend = timerElements[0].innerHTML +":"+ timerElements[1].innerHTML +":"+ timerElements[2].innerHTML 
+  console.log(timeSend)
+  if (document.getElementById("timer_start").innerHTML == "Start" && timeSend !== "00:00:00" && document.querySelector('.dropdown-select').value !== "none") {
     confirmValidity()
-
+    console.log("msg sent")
     chrome.runtime.sendMessage(chrome.runtime.id,
-      {timer: document.getElementById("time").innerHTML}, null)
+      {timer: timeSend}, null)
 
     timerStart()
   } else if (document.getElementById("timer_start").innerHTML == "Stop") {
@@ -48,11 +56,10 @@ document.getElementById("timer_start").addEventListener('click', function(e) {
 })
 
 function confirmValidity() {
-  var time = document.getElementById("time").innerHTML
 
-  var hr = parseInt(time.substr(0, 2))
-  var min = parseInt(time.substr(3, 2))
-  var sec = parseInt(time.substr(6, 2))
+  var hr = parseInt(timerElements[0].innerHTML)
+  var min = parseInt(timerElements[1].innerHTML)
+  var sec = parseInt(timerElements[2].innerHTML)
 
   if (sec > 59) {
     var add = Math.floor(sec / 60)
@@ -84,15 +91,16 @@ function confirmValidity() {
     hr = String(hr)
   }
 
-  document.getElementById("time").innerHTML = hr + ":" + min + ":" + sec
+  timerElements[0].innerHTML = hr;
+  timerElements[1].innerHTML = min;
+  timerElements[2].innerHTML = sec;
+  
 }
 
 function startTimer() {
-  var time = document.getElementById("time").innerHTML
-  
-  var hr = parseInt(time.substr(0, 2))
-  var min = parseInt(time.substr(3, 2))
-  var sec = parseInt(time.substr(6, 2))
+  var hr = parseInt(timerElements[0].innerHTML)
+  var min = parseInt(timerElements[1].innerHTML)
+  var sec = parseInt(timerElements[2].innerHTML)
 
   if (sec !== 0 || min !== 0 || hr !== 0) {
     sec -= 1
@@ -123,7 +131,9 @@ function startTimer() {
       hr = String(hr)
     }
 
-    document.getElementById("time").innerHTML = hr + ":" + min + ":" + sec
+    timerElements[0].innerHTML = hr;
+    timerElements[1].innerHTML = min;
+    timerElements[2].innerHTML = sec;
   } else {
     timerEnd()
   }
@@ -200,8 +210,11 @@ chrome.runtime.onMessage.addListener(
 
 chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (resp) {
   if (resp) {
-    document.getElementById("time").innerHTML = resp;
-
+    var p = resp.split(':');
+    timerElements[0].innerHTML = p[0];
+    timerElements[1].innerHTML = p[1];
+    timerElements[2].innerHTML = p[2];
+    
     countdown = setInterval(startTimer, 1000)
     //Checks whether enhanced block is on
     var enhancedMode;
@@ -329,8 +342,8 @@ chrome.storage.sync.get(['subject'], function(result){
 
 
 function timerStart(){
-  document.getElementById('time').style.border = 'none';
-  document.getElementById('time').style.color = 'black';
+  // document.getElementById('time').style.border = 'none';
+  // document.getElementById('time').style.color = 'black';
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
   // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
   //   chrome.tabs.sendMessage(tabs[0].id, {subject: "study session start"}, null);
