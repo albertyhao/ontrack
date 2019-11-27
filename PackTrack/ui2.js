@@ -1,17 +1,22 @@
 
 const timervalue = '00:00:00';
 const timerElements = Array.from(document.querySelectorAll(".timerDigit"));
+
 timerElements.forEach((t, i) => {
   // t.addEventListener('click', timeInput);
   t.setAttribute("contenteditable", true);
 
-  t.addEventListener('keydown', function(e){
+  t.addEventListener('keydown', function(f){
     
-    if('0123456789'.includes(e.key)) {
-      t.innerHTML = '0';
-      setTimeout(function() {
-        if(i < timerElements.length - 1) timerElements[i+1].focus();
-      }, 0)
+    if('0123456789'.includes(f.key)) {
+      t.innerHTML = "0"
+      t.addEventListener('keydown', function(e){
+        setTimeout(function() {
+          if(i < timerElements.length - 1) timerElements[i+1].focus();
+        }, 0)
+        t.innerHTML = f.key;
+      });
+      
       
       return;
     }
