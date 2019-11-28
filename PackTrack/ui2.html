@@ -8,7 +8,17 @@
  </head>
  <body>
 
-
+  
+  <div id="welcomeModal">
+    <div id="welcome">
+      <h1>Welcome to OnTrack!</h1><br>
+      <div id="username"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><input id="user" type="text" placeholder="Name"></div>
+      <br><br>
+      <div id="email"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg><input id="mail" type="text" placeholder="Email"></div>
+      <br><br>
+      <button id="skipInfo">Skip</button>&nbsp&nbsp<button id="submitInfo">Submit</button>
+    </div>
+  </div>
   <img src="ontrackLogo.png" style="position: relative; transform: scale(0.27); right: 50%; margin-top: -40%;">
   <!--<svg id="options" style="position: absolute; top: 18px; right: 10px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>-->
 
@@ -17,11 +27,15 @@
 
    <div id="tab-area">
      <div id="home">
+       <!-- <svg id="editTimer" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#736cdb" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon></svg> -->
        <div class="timer">
-          <h2 id="time">00:00:00</h2>
+         <input class="timerDigit" maxlength="2" id="time1" placeholder="00"><h4 class="timeMod"><sub>&nbsph</sub></h4>
+         <input class="timerDigit" maxlength="2" id="time1" placeholder="00"><h4 class="timeMod"><sub>&nbspm</sub></h4>
+         <input class="timerDigit" maxlength="2" id="time1" placeholder="00"><h4 class="timeMod"><sub>&nbsps</sub></h4>
+          <!-- <h2 class="timerDigit" id="time1">00</h2><h2>:</h2><h2 class="timerDigit" id="time2">00</h2><h2>:</h2><h2 class="timerDigit" id="time3">00</h2> -->
       </div>
        <p id="selection" style="font-size: 15px; text-align: center; position: relative; margin-top: -15px;">Select a subject to focus on</p>
-       <svg id="openTutorial" style="position: absolute; top: 91px; left: 15px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12" y2="17"></line></svg>
+       <svg id="openTutorial" style="position: absolute; top: 20px; left: 15px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12" y2="17"></line></svg>
 
        <div class="container">
         <div class = "dropdown">
@@ -38,6 +52,7 @@
             <option value="whitelist">Whitelist</option>
           </select>
         </div>
+        <svg id="subjectReq" style="visibility:hidden;position:absolute;top:44.5%;left:76%"xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12" y2="16"></line></svg>
 
          <!-- <br>
          <br> -->
@@ -99,10 +114,12 @@
   <!--Tutorial Menu-->
   <div id="tutorial">
     <svg id="exitTutorial" style="position: absolute; top: 5px; right: 5px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-    <h3 style="text-align: center; font-size: 18px;">Tutorial</h3>
-    
-    <h3>Starting a new study session</h3>
-    <p>To start a new study session, simply set a time and a focus and click <b>Start</b>. The timer is displayed in hours:minutes:seconds so if you want to study for an hour and 5 minutes, simply type "10500". Next, set a focus and click the start button to begin your study session. During this period, we will block any sites unrelated to your selected focus. </p>
+
+    <h1 style="text-align: center;">Tutorial</h1>
+    <br>
+    <h3>Starting a new study sessionssss</h3>
+    <p>To start a new study session, simply set a time and a focus and click <b>Start</b>. Simply enter the number of hours, minutes, and seconds you want to study for in the boxes. Next, set a focus and click the start button to begin your study session. During this period, we will block any sites unrelated to your selected focus. </p>
+
     <h3>Whitelisting</h3>
     <p>Whitelisting allows you to set a list of sites that you don't want to be blocked. You should whitelist school sites like Canvas or Schoolloop. To add a whitelist site, click the page icon at the bottom and select <b>Whitelist</b>. Next, type in the full url (ex. mail.google.com, drive.google.com, www.google.com) into the text input and click <b>Add</b>. </p>
     <h3>Subjects</h3>

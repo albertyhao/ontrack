@@ -1,42 +1,106 @@
-document.getElementById('time').addEventListener('click', timeInput);
-var clicked = "no";
-document.addEventListener('keypress', function(e) {
-  if (document.getElementById("timer_start").innerHTML == "Start" && clicked == "yes") {
-    var nums = "0123456789"
-    if (nums.includes(e.key)) {
-      addNumToTimer(parseInt(e.key))
+
+
+// const timervalue = '00:00:00';
+const timerElements = Array.from(document.querySelectorAll(".timerDigit"));
+
+// timerElements.forEach((t, i) => {
+//   // t.addEventListener('click', timeInput);
+//   t.setAttribute("contenteditable", true);
+
+//   t.addEventListener('keydown', function(f){
+    
+//     if('0123456789'.includes(f.key)) {
+//       t.innerHTML = "0"
+//       t.addEventListener('keydown', function(e){
+//         setTimeout(function() {
+//           if(i < timerElements.length - 1) timerElements[i+1].focus();
+//         }, 0)
+//         t.innerHTML = f.key;
+//       });
+//    })
+// });     
+
+timerElements.forEach(t => {
+  t.addEventListener('focus', numbersOnly);
+  function numbersOnly() {
+    document.addEventListener('keydown',function(e){
+      if(e.key === "Backspace"){
+        
+      } else if(!'0123456789'.includes(e.key)){
+        t.blur();
+      }
+    })
+  }
+})
+
+      
+//       return;
+//     }
+//     e.preventDefault();
+//     e.stopImmediatePropagation();
+//     e.stopPropagation();
+//     return false;
+
+//   })
+// });
+
+// function timeInput(){
+
+//   document.getElementById('time').style.border = '2px solid #736cdb';
+//   document.getElementById('time').style.borderRadius = '10px';
+//   document.getElementById('time').style.padding = '1px';
+//   document.getElementById('time').style.color = 'gray';
+// }
+// document.querySelector('#editTimer').style.visibility = 'hidden';
+// document.querySelector('.timer').addEventListener('mouseover', revealEdit);
+// function revealEdit(){
+//   document.querySelector('#editTimer').style.visibility = 'visible';
+//   timerElements.forEach(t => {
+//     t.style.color = 'lightgray';
+//   })
+// }
+// document.querySelector('.timer').addEventListener('mouseout', hideEdit);
+// function hideEdit(){
+//   document.querySelector('#editTimer').style.visibility = 'hidden';
+// }
+timerElements.forEach(t => {
+  t.addEventListener('click', byePlaceholder);
+  function byePlaceholder(){
+    t.removeAttribute('placeholder');
+  }
+  t.addEventListener('blur', addPlaceholder);
+  function addPlaceholder(){
+    
+    t.setAttribute('placeholder', '00');
+    if(t.value.length < 2 && t.value.length > 0){
+      t.value = "0" + t.value;
+    } else if(t.value.length < 1){
+      t.value = "00"
     }
   }
 })
-function timeInput(){
-  clicked = "yes"
-
-  document.getElementById('time').style.border = '2px solid #736cdb';
-  document.getElementById('time').style.borderRadius = '10px';
-  document.getElementById('time').style.padding = '1px';
-  document.getElementById('time').style.color = 'gray';
-}
-
-function addNumToTimer(n) {
-  var time = document.getElementById("time").innerHTML
-  time = time.replace(":", "").replace(":", "");
-  time = time.substr(1) + n;
-  time = time.substr(0, 2) + ":" + time.substr(2, 2) + ":" + time.substr(4, 2)
-  document.getElementById("time").innerHTML = time
-}
 
 document.getElementById("timer_clear").addEventListener('click', function(e) {
-  document.getElementById("time").innerHTML = "00:00:00"
+  timerElements.forEach(t => t.value = "00");
 })
 
 var countdown;
 
 document.getElementById("timer_start").addEventListener('click', function(e) {
-  if (document.getElementById("timer_start").innerHTML == "Start" && document.querySelector('#time').innerHTML !== "00:00:00" && document.querySelector('.dropdown-select').value !== "none") {
+ 
+  var timeSend = timerElements[0].value +":"+ timerElements[1].value +":"+ timerElements[2].value 
+  console.log(timeSend)
+  if (document.getElementById("timer_start").innerHTML == "Start" && timeSend !== "00:00:00" && document.querySelector('.dropdown-select').value !== "none") {
     confirmValidity()
-
+    console.log("msg sent")
     chrome.runtime.sendMessage(chrome.runtime.id,
-      {timer: document.getElementById("time").innerHTML}, null)
+      {timer: timeSend}, null)
+
+  timerElements.forEach(t => {
+    t.style.border = '1.5px inset';
+    t.setAttribute('disabled', true);
+    
+  })
 
     timerStart()
   } else if (document.getElementById("timer_start").innerHTML == "Stop") {
@@ -45,14 +109,26 @@ document.getElementById("timer_start").addEventListener('click', function(e) {
 
     timerEnd()
   }
+
+
+
+  var subjectDrop = document.getElementsByClassName("dropdown-select")[0];
+    if(subjectDrop.value ==="none"){
+      document.getElementById("subjectReq").style.visibility = "visible";
+    }
+
+subjectDrop.addEventListener('change', checkSubjectStatus);
+  function checkSubjectStatus(){
+    if(subjectDrop.value !== "none"){
+      document.getElementById("subjectReq").style.visibility = "hidden";
+    }
+  }
 })
-
 function confirmValidity() {
-  var time = document.getElementById("time").innerHTML
 
-  var hr = parseInt(time.substr(0, 2))
-  var min = parseInt(time.substr(3, 2))
-  var sec = parseInt(time.substr(6, 2))
+  var hr = parseInt(timerElements[0].value)
+  var min = parseInt(timerElements[1].value)
+  var sec = parseInt(timerElements[2].value)
 
   if (sec > 59) {
     var add = Math.floor(sec / 60)
@@ -84,15 +160,16 @@ function confirmValidity() {
     hr = String(hr)
   }
 
-  document.getElementById("time").innerHTML = hr + ":" + min + ":" + sec
+  timerElements[0].value = hr;
+  timerElements[1].value = min;
+  timerElements[2].value = sec;
+  
 }
 
 function startTimer() {
-  var time = document.getElementById("time").innerHTML
-  
-  var hr = parseInt(time.substr(0, 2))
-  var min = parseInt(time.substr(3, 2))
-  var sec = parseInt(time.substr(6, 2))
+  var hr = parseInt(timerElements[0].value)
+  var min = parseInt(timerElements[1].value)
+  var sec = parseInt(timerElements[2].value)
 
   if (sec !== 0 || min !== 0 || hr !== 0) {
     sec -= 1
@@ -123,14 +200,21 @@ function startTimer() {
       hr = String(hr)
     }
 
-    document.getElementById("time").innerHTML = hr + ":" + min + ":" + sec
+    timerElements[0].value = hr;
+    timerElements[1].value = min;
+    timerElements[2].value = sec;
   } else {
     timerEnd()
   }
 }
 
 function timerEnd() {
-
+  timerElements.forEach(t => {
+    t.style.border = '2px solid #736cdb';
+    t.removeAttribute('disabled');
+    t.value = "";
+    t.setAttribute("placeholder", "00");
+  })
   chrome.runtime.sendMessage(chrome.runtime.id,{timerStop: true}, null);
   document.querySelector(".container").innerHTML = `<div class = "dropdown">
   <select class = "dropdown-select">
@@ -186,6 +270,11 @@ function timerEnd() {
   document.getElementById("timer_start").style.visibility = 'visible';
   document.querySelector('#enhancedWarning').style.display = 'block';
 
+  timerElements.forEach(t => {
+    if(t.value === ''){
+      t.value = "00";
+    }
+  })
 }
 
 chrome.runtime.onMessage.addListener(
@@ -200,8 +289,16 @@ chrome.runtime.onMessage.addListener(
 
 chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (resp) {
   if (resp) {
-    document.getElementById("time").innerHTML = resp;
-
+    var p = resp.split(':');
+    timerElements[0].value = p[0];
+    timerElements[1].value = p[1];
+    timerElements[2].value = p[2];
+    timerElements.forEach(t => {
+      t.style.border = '1.5px inset';
+      t.setAttribute('disabled', true);
+     
+    })
+    
     countdown = setInterval(startTimer, 1000)
     //Checks whether enhanced block is on
     var enhancedMode;
@@ -280,6 +377,8 @@ chrome.storage.sync.get(['wlist'], function(result){
 document.getElementById('wlistSite').addEventListener('click', saveWhitelist);
 
 function saveWhitelist(){
+  
+  
   if(document.querySelector('#whitelist').value.split('.').length < 2){
     document.getElementById('warning').style.visibility = 'visible';
   } else {
@@ -327,8 +426,8 @@ chrome.storage.sync.get(['subject'], function(result){
 
 
 function timerStart(){
-  document.getElementById('time').style.border = 'none';
-  document.getElementById('time').style.color = 'black';
+  // document.getElementById('time').style.border = 'none';
+  // document.getElementById('time').style.color = 'black';
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
   // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
   //   chrome.tabs.sendMessage(tabs[0].id, {subject: "study session start"}, null);
@@ -466,7 +565,25 @@ function timerStart(){
 //code for unblocking current site
 chrome.storage.sync.set({qblock: []}, null);
 var $unblock = document.querySelector('#unblock');
-$unblock.addEventListener('click', unblockSite);
+$unblock.addEventListener('click', unblockGoodSite);
+
+function unblockGoodSite(){
+  //Makes request for site text from content script and then makes request to background to check similarity
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {subject: "site text"}, function(response){
+      var siteText = response.text;
+
+      chrome.runtime.sendMessage(chrome.runtime.id, {subject: "check sim for unblock", txt: siteText}, function(response) {
+        console.log(response)
+        if(response.sim > 0.1){
+          unblockSite();
+        }
+      })
+
+
+    });
+  });
+}
 
 function unblockSite(){
   var getLocation = function(href){
@@ -685,4 +802,81 @@ function checkSetting3(val) {
 document.querySelector("#enhancedWarning").addEventListener('click', warning);
 function warning(){
   alert("The enhanced block mode force you to finish your study session by taking away the stop button. Proceed with caution!")
+}
+
+//Welcome page js
+
+chrome.storage.sync.get(['welcomed'], function(result){
+  if(!result.welcomed){
+    chrome.storage.sync.set({welcomed: "no"});
+  } else {
+    chrome.storage.sync.set({welcomed: result.welcomed});
+  }
+})
+
+var welcomed;
+
+chrome.storage.sync.get(['welcomed'], function(result){
+  welcomed = result.welcomed;
+  if(welcomed == 'no'){
+    document.querySelector('#welcomeModal').style.visibility = 'visible';
+  } else {
+    document.querySelector('#welcomeModal').style.visibility = 'hidden';
+    
+  }
+})
+
+
+
+document.querySelector('#skipInfo').addEventListener('click', skipPage);
+function skipPage(){
+  
+  document.querySelector('#welcomeModal').style.visibility = 'hidden';
+  chrome.storage.sync.set({welcomed: "yes"})
+}
+
+document.querySelector('#user').addEventListener('blur', submitValidity);
+document.querySelector('#mail').addEventListener('blur', submitValidity);
+
+function submitValidity(){
+  var $username = document.getElementById('user');
+  var $email = document.getElementById('mail');
+  if($username.value.length > 1 && $email.value.length > 10 && $email.value.includes('@')){
+    injectWelcomeStyle();
+    document.querySelector('#submitInfo').addEventListener('click', postInfo);
+    function postInfo(){
+      chrome.storage.sync.set({welcomed: "yes"});
+      chrome.storage.sync.set({name: $username.value});
+      chrome.storage.sync.set({email: $email.value})
+      document.querySelector('#welcomeModal').style.visibility = 'hidden';
+    }
+    
+  }
+}
+
+function injectWelcomeStyle(){
+  var style = `
+  #submitInfo {
+    border: 2px solid #736cdb;
+    padding: 6px 16px;
+    border-radius: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    outline: none;
+    background: #fff;
+    color: #736cdb;
+    font-size: 11px;
+  }
+
+  #submitInfo:hover {
+    background: #736cdb;
+    color: #fff;
+    border: 2px solid #736cdb;
+    border-radius: 12px;
+  }
+  `
+var s = document.createElement('style')
+s.innerHTML = style;
+document.head.appendChild(s)
 }
