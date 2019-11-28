@@ -88,11 +88,6 @@ document.getElementById("timer_clear").addEventListener('click', function(e) {
 var countdown;
 
 document.getElementById("timer_start").addEventListener('click', function(e) {
-  timerElements.forEach(t => {
-    if(t.value === ''){
-      t.value = "00";
-    }
-  })
  
   var timeSend = timerElements[0].value +":"+ timerElements[1].value +":"+ timerElements[2].value 
   console.log(timeSend)
@@ -276,6 +271,11 @@ function timerEnd() {
   document.getElementById("timer_start").style.visibility = 'visible';
   document.querySelector('#enhancedWarning').style.display = 'block';
 
+  timerElements.forEach(t => {
+    if(t.value === ''){
+      t.value = "00";
+    }
+  })
 }
 
 chrome.runtime.onMessage.addListener(
