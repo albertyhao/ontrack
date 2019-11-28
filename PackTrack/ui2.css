@@ -6,13 +6,35 @@ body {
   height: 220px;
 }
 
-
 h1 {
   font-family: 'Merriweather', serif;
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 1px;
   color: black;
+}
+.timerDigit, .timeMod {
+  outline: none;
+  display:inline-block;
+}
+
+.timerDigit {
+  font-size: 33px;
+  max-width: 1.7em;
+  max-height: 3.5em;
+  padding: 0!important;
+  border: 2px solid #736cdb;
+  position:relative;
+  border-radius: 8px;
+  text-align: center;
+ 
+
+  padding: 0;
+  
+  overflow: hidden;
+}
+::-webkit-input-placeholder {
+  text-align: center;
 }
 
 .btn2 {
@@ -28,12 +50,12 @@ h1 {
   font-size: 11px;
 }
 
-.btn2:hover {
+/* .btn2:hover {
    background: #736cdb;
    color: #fff;
    border: 2px solid #736cdb;
    border-radius: 12px;
- }
+ } */
 
  .dropdown {
    display: inline-block;
@@ -117,8 +139,22 @@ h1 {
 
    font-size: 25px;
    position: absolute;
-   top: 50px;
-   left: 70px;
+   top: 70px;
+   left: 43px;
+   height: 10%;
+ }
+
+ /* .timer:hover {
+  border: 2px solid #736cdb;
+  border-radius: 10px;
+  padding: 1px;
+ } */
+
+ #editTimer {
+   position:absolute;
+   left: 46.5%;
+   bottom: 74%;
+   z-index: 10000000000000000000;
  }
  
 
@@ -298,4 +334,104 @@ hr{
 #whitelist-icon {
   padding-bottom: 2px;
   border-bottom: 3px solid rgb(255, 255, 255);
+}
+
+#welcome {
+  text-align:center;
+  border: 2px solid #736cdb; 
+  background-color: #fff;
+  z-index: 100000000000000000000000000;
+  position:absolute;
+  height:60%;
+  width:95%;
+  top:20%;
+  left:2.5%;
+}
+
+#welcomeModal {
+  position:absolute;
+  height:100%;
+  width:100%;
+  top:0;
+  left:0;
+  background-color: rgba(100,100,100,0.5);
+  z-index: 100000000000;
+  visibility: hidden;
+}
+ 
+#welcome input {
+  height: 3em;
+  width: 15em;
+  border-width: 2px 2px 2px 0px;
+  border-style: solid;
+  border-color: #736cdb;
+  -webkit-appearance: none;
+  outline: none;
+}
+
+#welcome input::-webkit-input-placeholder {
+  font-size: 15px;
+  text-align: center;
+}
+
+#username {
+  width: 18em;
+  height: 3em;
+  
+  display: block;
+  margin:auto;
+}
+
+#email {
+  width: 18em;
+  height: 3em;
+  
+  display: block;
+  margin:auto;
+}
+
+#username svg, #email svg {
+  vertical-align: middle;
+  border: 2px solid gray;
+  border-radius: 7px 0px 0px 7px;
+  padding: 2px;
+  position: relative;
+  bottom: 4%;
+}
+
+#skipInfo {
+  border: 2px solid #736cdb;
+  padding: 6px 16px;
+  border-radius: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: none;
+  background: #fff;
+  color: #736cdb;
+  font-size: 11px;
+}
+
+#skipInfo:hover {
+  background: #736cdb;
+  color: #fff;
+  border: 2px solid #736cdb;
+  border-radius: 12px;
+}
+
+#welcome h1 {
+  font-size: 20px;
+}
+
+#submitInfo {
+  border: 2px solid #bbb;
+  padding: 6px 16px;
+  border-radius: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: none;
+  background: #fff;
+  color: #bbb;
+  font-size: 11px;
 }
