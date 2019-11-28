@@ -1,32 +1,49 @@
 
-const timervalue = '00:00:00';
+// const timervalue = '00:00:00';
 const timerElements = Array.from(document.querySelectorAll(".timerDigit"));
 
-timerElements.forEach((t, i) => {
-  // t.addEventListener('click', timeInput);
-  t.setAttribute("contenteditable", true);
+// timerElements.forEach((t, i) => {
+//   // t.addEventListener('click', timeInput);
+//   t.setAttribute("contenteditable", true);
 
-  t.addEventListener('keydown', function(f){
+//   t.addEventListener('keydown', function(f){
     
-    if('0123456789'.includes(f.key)) {
-      t.innerHTML = "0"
-      t.addEventListener('keydown', function(e){
-        setTimeout(function() {
-          if(i < timerElements.length - 1) timerElements[i+1].focus();
-        }, 0)
-        t.innerHTML = f.key;
-      });
-      
-      
-      return;
-    }
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    e.stopPropagation();
-    return false;
+//     if('0123456789'.includes(f.key)) {
+//       t.innerHTML = "0"
+//       t.addEventListener('keydown', function(e){
+//         setTimeout(function() {
+//           if(i < timerElements.length - 1) timerElements[i+1].focus();
+//         }, 0)
+//         t.innerHTML = f.key;
+//       });
+//    })
+// });     
 
-  })
-});
+timerElements.forEach(t => {
+  t.addEventListener('focus', numbersOnly);
+  function numbersOnly() {
+    document.addEventListener('keydown',function(e){
+      if(e.key === "Backspace"){
+        
+      } else if(!'0123456789'.includes(e.key)){
+        t.blur();
+      }
+    })
+  }
+})
+
+      
+//       return;
+//     }
+//     e.preventDefault();
+//     e.stopImmediatePropagation();
+//     e.stopPropagation();
+//     return false;
+
+//   })
+// });
+
+
 
 // function timeInput(){
 
@@ -35,21 +52,60 @@ timerElements.forEach((t, i) => {
 //   document.getElementById('time').style.padding = '1px';
 //   document.getElementById('time').style.color = 'gray';
 // }
+// document.querySelector('#editTimer').style.visibility = 'hidden';
+// document.querySelector('.timer').addEventListener('mouseover', revealEdit);
+// function revealEdit(){
+//   document.querySelector('#editTimer').style.visibility = 'visible';
+//   timerElements.forEach(t => {
+//     t.style.color = 'lightgray';
+//   })
+// }
+// document.querySelector('.timer').addEventListener('mouseout', hideEdit);
+// function hideEdit(){
+//   document.querySelector('#editTimer').style.visibility = 'hidden';
+// }
+timerElements.forEach(t => {
+  t.addEventListener('click', byePlaceholder);
+  function byePlaceholder(){
+    t.removeAttribute('placeholder');
+  }
+  t.addEventListener('blur', addPlaceholder);
+  function addPlaceholder(){
+    
+    t.setAttribute('placeholder', '00');
+    if(t.value.length < 2 && t.value.length > 0){
+      t.value = "0" + t.value;
+    } else if(t.value.length < 1){
+      t.value = "00"
+    }
+  }
+})
 
 document.getElementById("timer_clear").addEventListener('click', function(e) {
-  timerElements.forEach(t => t.innerHTML = "0");
+  timerElements.forEach(t => t.value = "00");
 })
 
 var countdown;
 
 document.getElementById("timer_start").addEventListener('click', function(e) {
-  var timeSend = timerElements[0].innerHTML +":"+ timerElements[1].innerHTML +":"+ timerElements[2].innerHTML 
+  timerElements.forEach(t => {
+    if(t.value === ''){
+      t.value = "00";
+    }
+  })
+  var timeSend = timerElements[0].value +":"+ timerElements[1].value +":"+ timerElements[2].value 
   console.log(timeSend)
   if (document.getElementById("timer_start").innerHTML == "Start" && timeSend !== "00:00:00" && document.querySelector('.dropdown-select').value !== "none") {
     confirmValidity()
     console.log("msg sent")
     chrome.runtime.sendMessage(chrome.runtime.id,
       {timer: timeSend}, null)
+
+  timerElements.forEach(t => {
+    t.style.border = '1.5px inset';
+    t.setAttribute('disabled', true);
+    
+  })
 
     timerStart()
   } else if (document.getElementById("timer_start").innerHTML == "Stop") {
@@ -62,9 +118,9 @@ document.getElementById("timer_start").addEventListener('click', function(e) {
 
 function confirmValidity() {
 
-  var hr = parseInt(timerElements[0].innerHTML)
-  var min = parseInt(timerElements[1].innerHTML)
-  var sec = parseInt(timerElements[2].innerHTML)
+  var hr = parseInt(timerElements[0].value)
+  var min = parseInt(timerElements[1].value)
+  var sec = parseInt(timerElements[2].value)
 
   if (sec > 59) {
     var add = Math.floor(sec / 60)
@@ -96,16 +152,16 @@ function confirmValidity() {
     hr = String(hr)
   }
 
-  timerElements[0].innerHTML = hr;
-  timerElements[1].innerHTML = min;
-  timerElements[2].innerHTML = sec;
+  timerElements[0].value = hr;
+  timerElements[1].value = min;
+  timerElements[2].value = sec;
   
 }
 
 function startTimer() {
-  var hr = parseInt(timerElements[0].innerHTML)
-  var min = parseInt(timerElements[1].innerHTML)
-  var sec = parseInt(timerElements[2].innerHTML)
+  var hr = parseInt(timerElements[0].value)
+  var min = parseInt(timerElements[1].value)
+  var sec = parseInt(timerElements[2].value)
 
   if (sec !== 0 || min !== 0 || hr !== 0) {
     sec -= 1
@@ -136,16 +192,21 @@ function startTimer() {
       hr = String(hr)
     }
 
-    timerElements[0].innerHTML = hr;
-    timerElements[1].innerHTML = min;
-    timerElements[2].innerHTML = sec;
+    timerElements[0].value = hr;
+    timerElements[1].value = min;
+    timerElements[2].value = sec;
   } else {
     timerEnd()
   }
 }
 
 function timerEnd() {
-
+  timerElements.forEach(t => {
+    t.style.border = '2px solid #736cdb';
+    t.removeAttribute('disabled');
+    t.value = "";
+    t.setAttribute("placeholder", "00");
+  })
   chrome.runtime.sendMessage(chrome.runtime.id,{timerStop: true}, null);
   document.querySelector(".container").innerHTML = `<div class = "dropdown">
   <select class = "dropdown-select">
@@ -216,9 +277,14 @@ chrome.runtime.onMessage.addListener(
 chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (resp) {
   if (resp) {
     var p = resp.split(':');
-    timerElements[0].innerHTML = p[0];
-    timerElements[1].innerHTML = p[1];
-    timerElements[2].innerHTML = p[2];
+    timerElements[0].value = p[0];
+    timerElements[1].value = p[1];
+    timerElements[2].value = p[2];
+    timerElements.forEach(t => {
+      t.style.border = '1.5px inset';
+      t.setAttribute('disabled', true);
+     
+    })
     
     countdown = setInterval(startTimer, 1000)
     //Checks whether enhanced block is on
