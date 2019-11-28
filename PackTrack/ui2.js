@@ -93,6 +93,7 @@ document.getElementById("timer_start").addEventListener('click', function(e) {
       t.value = "00";
     }
   })
+ 
   var timeSend = timerElements[0].value +":"+ timerElements[1].value +":"+ timerElements[2].value 
   console.log(timeSend)
   if (document.getElementById("timer_start").innerHTML == "Start" && timeSend !== "00:00:00" && document.querySelector('.dropdown-select').value !== "none") {
@@ -114,8 +115,21 @@ document.getElementById("timer_start").addEventListener('click', function(e) {
 
     timerEnd()
   }
-})
 
+
+
+  var subjectDrop = document.getElementsByClassName("dropdown-select")[0];
+    if(subjectDrop.value ==="none"){
+      document.getElementById("subjectReq").style.visibility = "visible";
+    }
+
+subjectDrop.addEventListener('change', checkSubjectStatus);
+  function checkSubjectStatus(){
+    if(subjectDrop.value !== "none"){
+      document.getElementById("subjectReq").style.visibility = "hidden";
+    }
+  }
+})
 function confirmValidity() {
 
   var hr = parseInt(timerElements[0].value)
