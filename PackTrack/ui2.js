@@ -1,5 +1,4 @@
 
-
 // const timervalue = '00:00:00';
 const timerElements = Array.from(document.querySelectorAll(".timerDigit"));
 
@@ -43,6 +42,8 @@ timerElements.forEach(t => {
 
 //   })
 // });
+
+
 
 // function timeInput(){
 
@@ -804,6 +805,8 @@ function warning(){
   alert("The enhanced block mode force you to finish your study session by taking away the stop button. Proceed with caution!")
 }
 
+
+
 //Welcome page js
 
 chrome.storage.sync.get(['welcomed'], function(result){
@@ -880,3 +883,4 @@ var s = document.createElement('style')
 s.innerHTML = style;
 document.head.appendChild(s)
 }
+
