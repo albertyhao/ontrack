@@ -89,7 +89,7 @@ var countdown;
 
 document.getElementById("timer_start").addEventListener('click', function(e) {
  timerElements.forEach(t => {
-    if(t.value == ''){
+    if(t.value == ''){ // fixed the NaN timer error
       t.value = "00"
     }
   })
