@@ -88,7 +88,11 @@ document.getElementById("timer_clear").addEventListener('click', function(e) {
 var countdown;
 
 document.getElementById("timer_start").addEventListener('click', function(e) {
- 
+ timerElements.forEach(t => {
+    if(t.value == ''){
+      t.value = "00"
+    }
+  })
   var timeSend = timerElements[0].value +":"+ timerElements[1].value +":"+ timerElements[2].value 
   console.log(timeSend)
   if (document.getElementById("timer_start").innerHTML == "Start" && timeSend !== "00:00:00" && document.querySelector('.dropdown-select').value !== "none") {
