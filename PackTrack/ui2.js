@@ -7,7 +7,7 @@ const timerElements = Array.from(document.querySelectorAll(".timerDigit"));
 //   t.setAttribute("contenteditable", true);
 
 //   t.addEventListener('keydown', function(f){
-    
+
 //     if('0123456789'.includes(f.key)) {
 //       t.innerHTML = "0"
 //       t.addEventListener('keydown', function(e){
@@ -17,14 +17,14 @@ const timerElements = Array.from(document.querySelectorAll(".timerDigit"));
 //         t.innerHTML = f.key;
 //       });
 //    })
-// });     
+// });
 
 timerElements.forEach(t => {
   t.addEventListener('focus', numbersOnly);
   function numbersOnly() {
     document.addEventListener('keydown',function(e){
       if(e.key === "Backspace"){
-        
+
       } else if(!'0123456789'.includes(e.key)){
         t.blur();
       }
@@ -32,7 +32,7 @@ timerElements.forEach(t => {
   }
 })
 
-      
+
 //       return;
 //     }
 //     e.preventDefault();
@@ -71,7 +71,8 @@ timerElements.forEach(t => {
   }
   t.addEventListener('blur', addPlaceholder);
   function addPlaceholder(){
-    
+
+    t.setAttribute('placeholder', '00');
     if(t.value.length < 2 && t.value.length > 0){
       t.value = "0" + t.value;
     } else if(t.value.length == 0){
@@ -91,12 +92,14 @@ document.getElementById("timer_clear").addEventListener('click', function(e) {
 var countdown;
 
 document.getElementById("timer_start").addEventListener('click', function(e) {
-  timerElements.forEach(t => {
-    if(t.value == ''){
+
+ timerElements.forEach(t => {
+    if(t.value == ''){ // fixed the NaN timer error
       t.value = "00"
     }
   })
-  var timeSend = timerElements[0].value +":"+ timerElements[1].value +":"+ timerElements[2].value 
+  var timeSend = timerElements[0].value +":"+ timerElements[1].value +":"+ timerElements[2].value
+
   console.log(timeSend)
   if (document.getElementById("timer_start").innerHTML == "Start" && timeSend !== "00:00:00" && document.querySelector('.dropdown-select').value !== "none") {
     confirmValidity()
@@ -107,7 +110,7 @@ document.getElementById("timer_start").addEventListener('click', function(e) {
   timerElements.forEach(t => {
     t.style.border = '1.5px inset';
     t.setAttribute('disabled', true);
-    
+
   })
 
     timerStart()
@@ -171,7 +174,7 @@ function confirmValidity() {
   timerElements[0].value = hr;
   timerElements[1].value = min;
   timerElements[2].value = sec;
-  
+
 }
 
 function startTimer() {
@@ -256,7 +259,7 @@ function timerEnd() {
       chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
     }
   });
-  
+
 //   chrome.tabs.query({}, function (tabs) {
 //     for (var i = 0; i < tabs.length; i++) {
 //       if(tabs[i].title == "Off Task!"){
@@ -265,7 +268,7 @@ function timerEnd() {
 //         var c = document.querySelector('#countdown');
 //         document.body.removeChild(c);
 //       }
-      
+
 //       }
 //   });
 //   //Code to enable enhanced block selection
@@ -304,9 +307,9 @@ chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (res
     timerElements.forEach(t => {
       t.style.border = '1.5px inset';
       t.setAttribute('disabled', true);
-     
+
     })
-    
+
     countdown = setInterval(startTimer, 1000)
     //Checks whether enhanced block is on
     var enhancedMode;
@@ -315,7 +318,7 @@ chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (res
       if(enhancedMode == "on"){
         document.getElementById("timer_start").disabled = true;
         document.getElementById("timer_start").style.visibility = 'hidden';
-        
+
       } else {
         document.getElementById("timer_start").disabled = false;
         document.getElementById("timer_start").style.visibility = 'visible';
@@ -346,9 +349,9 @@ chrome.runtime.sendMessage(chrome.runtime.id, {timeRequest: true}, function (res
         currentSubject = "Calculus"
       } else if(result.subject == "linearAlgebra") {
         currentSubject = "Linear Algebra"
-      } 
+      }
       else {
-        
+
       }
       document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">${currentSubject}</h1>`
     })
@@ -385,8 +388,8 @@ chrome.storage.sync.get(['wlist'], function(result){
 document.getElementById('wlistSite').addEventListener('click', saveWhitelist);
 
 function saveWhitelist(){
-  
-  
+
+
   if(document.querySelector('#whitelist').value.split('.').length < 2){
     document.getElementById('warning').style.visibility = 'visible';
   } else {
@@ -451,10 +454,10 @@ function timerStart(){
       chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
     }
   });
-  
 
 
-  
+
+
   countdown = setInterval(startTimer, 1000)
   document.getElementById("timer_start").innerHTML = "Stop"
   document.getElementById("timer_clear").style.display = "none"
@@ -479,17 +482,17 @@ function timerStart(){
         currentSubject = "Calculus"
       } else if(result.subject == "linearAlgebra") {
         currentSubject = "Linear Algebra"
-      } 
+      }
       else {
-        
+
       }
     document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">${currentSubject}</h1>`
   })
 
   document.getElementsByName('enhanced').forEach(e => e.disabled = true);
   document.querySelector('#enhancedWarning').style.display = 'none';
-  
-  
+
+
   //Checks whether enhanced block is on
   var enhancedMode;
   chrome.storage.sync.get(['enhanced'], function(result){
@@ -497,15 +500,15 @@ function timerStart(){
     if(enhancedMode == "on"){
       document.getElementById("timer_start").disabled = true;
       document.getElementById("timer_start").style.visibility = 'hidden';
-      
+
     } else {
       document.getElementById("timer_start").disabled = false;
       document.getElementById("timer_start").style.visibility = 'visible';
     }
   })
-  
-  
-  
+
+
+
   //Code to make enhanced block unclickable
   // var ebnodes = document.getElementsByName('enhanced');
   // for(i=0; i<2; i++){
@@ -723,15 +726,15 @@ function saveSettings(){
     var ebval;
     if(eb[i].checked === true){
       ebval = eb[i].value;
-    
+
     }
   }
   chrome.storage.sync.set({mode: val}, null);
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change mode", cutoff: val}, null);
   chrome.storage.sync.set({timerWidget: tval}, null);
-  
+
   chrome.storage.sync.set({enhanced: ebval}, null);
-  
+
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {subject: "timer on and off"}, null);
   });
@@ -764,7 +767,7 @@ chrome.storage.sync.get(['timerWidget'], function(result){
 })
 
 chrome.storage.sync.get(['enhanced'], function(result){
-  
+
   if(!result.enhanced){
     chrome.storage.sync.set({enhanced: "off"}, null);
   } else {
@@ -775,7 +778,7 @@ chrome.storage.sync.get(['enhanced'], function(result){
 
 function checkSetting1(val) {
   var rs =document.getElementsByName('mode');
-  
+
 	rs.forEach(r => {
 		if(r.value === val) {
 			r.checked = true;
@@ -784,7 +787,7 @@ function checkSetting1(val) {
 }
 
 function checkSetting2(val) {
- 
+
   var ts = document.getElementsByName('timer');
 
 
@@ -797,9 +800,9 @@ function checkSetting2(val) {
 }
 
 function checkSetting3(val) {
-  
+
   var eb = document.getElementsByName('enhanced');
-	
+
   eb.forEach(e => {
     if(e.value === val) {
       e.checked = true;
@@ -832,7 +835,7 @@ chrome.storage.sync.get(['welcomed'], function(result){
     document.querySelector('#welcomeModal').style.visibility = 'visible';
   } else {
     document.querySelector('#welcomeModal').style.visibility = 'hidden';
-    
+
   }
 })
 
@@ -840,7 +843,7 @@ chrome.storage.sync.get(['welcomed'], function(result){
 
 document.querySelector('#skipInfo').addEventListener('click', skipPage);
 function skipPage(){
-  
+
   document.querySelector('#welcomeModal').style.visibility = 'hidden';
   chrome.storage.sync.set({welcomed: "yes"})
 }
@@ -860,7 +863,7 @@ function submitValidity(){
       chrome.storage.sync.set({email: $email.value})
       document.querySelector('#welcomeModal').style.visibility = 'hidden';
     }
-    
+
   }
 }
 
@@ -878,7 +881,6 @@ function injectWelcomeStyle(){
     color: #736cdb;
     font-size: 11px;
   }
-
   #submitInfo:hover {
     background: #736cdb;
     color: #fff;

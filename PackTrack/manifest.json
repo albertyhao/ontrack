@@ -2,7 +2,8 @@
   "manifest_version": 2,
   "name": "OnTrack",
   "short_name": "OnTrack",
-  "version": "2.2",
+  "version": "2.4.1",
+
   "web_accessible_resources": [
     "biology.txt",
     "history.txt",
@@ -53,6 +54,6 @@
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; script-src 'self' 'unsafe-eval' https://nathan.qoom.io;",
   "chrome_url_overrides": {
-    "newtab": "newtab.html"
+
   }
 }
