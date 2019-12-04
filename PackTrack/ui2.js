@@ -1,4 +1,4 @@
-//Push stuff
+// Push stuff
 // const timervalue = '00:00:00';
 const timerElements = Array.from(document.querySelectorAll(".timerDigit"));
 
@@ -72,17 +72,20 @@ timerElements.forEach(t => {
   t.addEventListener('blur', addPlaceholder);
   function addPlaceholder(){
     
-    t.setAttribute('placeholder', '00');
     if(t.value.length < 2 && t.value.length > 0){
       t.value = "0" + t.value;
-    } else if(t.value.length < 1){
-      t.value = "00"
+    } else if(t.value.length == 0){
+      t.value = ""
+      t.setAttribute('placeholder', '00');
     }
   }
 })
 
 document.getElementById("timer_clear").addEventListener('click', function(e) {
-  timerElements.forEach(t => t.value = "00");
+  timerElements.forEach(t => {
+    t.value = "";
+    t.setAttribute('placeholder', '00');
+  });
 })
 
 var countdown;
