@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "OnTrack",
   "short_name": "OnTrack",
-  "version": "2.4.1",
+  "version": "2.4.2",
 
   "web_accessible_resources": [
     "biology.txt",
