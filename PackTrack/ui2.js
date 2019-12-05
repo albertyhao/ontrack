@@ -2,23 +2,6 @@
 // const timervalue = '00:00:00';
 const timerElements = Array.from(document.querySelectorAll(".timerDigit"));
 
-// timerElements.forEach((t, i) => {
-//   // t.addEventListener('click', timeInput);
-//   t.setAttribute("contenteditable", true);
-
-//   t.addEventListener('keydown', function(f){
-
-//     if('0123456789'.includes(f.key)) {
-//       t.innerHTML = "0"
-//       t.addEventListener('keydown', function(e){
-//         setTimeout(function() {
-//           if(i < timerElements.length - 1) timerElements[i+1].focus();
-//         }, 0)
-//         t.innerHTML = f.key;
-//       });
-//    })
-// });
-
 timerElements.forEach(t => {
   t.addEventListener('focus', numbersOnly);
   function numbersOnly() {
@@ -32,38 +15,6 @@ timerElements.forEach(t => {
   }
 })
 
-
-//       return;
-//     }
-//     e.preventDefault();
-//     e.stopImmediatePropagation();
-//     e.stopPropagation();
-//     return false;
-
-//   })
-// });
-
-
-
-// function timeInput(){
-
-//   document.getElementById('time').style.border = '2px solid #736cdb';
-//   document.getElementById('time').style.borderRadius = '10px';
-//   document.getElementById('time').style.padding = '1px';
-//   document.getElementById('time').style.color = 'gray';
-// }
-// document.querySelector('#editTimer').style.visibility = 'hidden';
-// document.querySelector('.timer').addEventListener('mouseover', revealEdit);
-// function revealEdit(){
-//   document.querySelector('#editTimer').style.visibility = 'visible';
-//   timerElements.forEach(t => {
-//     t.style.color = 'lightgray';
-//   })
-// }
-// document.querySelector('.timer').addEventListener('mouseout', hideEdit);
-// function hideEdit(){
-//   document.querySelector('#editTimer').style.visibility = 'hidden';
-// }
 timerElements.forEach(t => {
   t.addEventListener('click', byePlaceholder);
   function byePlaceholder(){
@@ -280,12 +231,6 @@ function timerEnd() {
   document.getElementById("timer_start").disabled = false;
   document.getElementById("timer_start").style.visibility = 'visible';
   document.querySelector('#enhancedWarning').style.display = 'block';
-
-  timerElements.forEach(t => {
-    if(t.value === ''){
-      t.value = "00";
-    }
-  })
 }
 
 chrome.runtime.onMessage.addListener(
@@ -421,32 +366,11 @@ chrome.storage.sync.get(['subject'], function(result){
   }
 
 })
-// function setSubject(){
-//   // chrome.storage.sync.get(['subject'], function(result){
-//   //   var $subject = result.subject;
-//   //   $subject = document.querySelector('.dropdown-select').value;
-//   //   chrome.storage.sync.set({subject: $subject}, null);
-//   // })
-// chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
-
-// chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
-// chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-//   chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
-// });
-// }
-
 
 function timerStart(){
-  // document.getElementById('time').style.border = 'none';
-  // document.getElementById('time').style.color = 'black';
+
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
-  // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-  //   chrome.tabs.sendMessage(tabs[0].id, {subject: "study session start"}, null);
-  // });
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
-  // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-  //   chrome.tabs.sendMessage(tabs[0].id, {subject: "change subjects"}, null);
-  // });
   var tabIds = [];
   chrome.tabs.query({}, function (tabs) {
     for (var i = 0; i < tabs.length; i++) {
