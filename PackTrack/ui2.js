@@ -380,7 +380,7 @@ chrome.storage.sync.get(['wlist'], function(result){
   if(!result.wlist){
     chrome.storage.sync.set({wlist: ["www.google.com", "www.joinontrack.com", "spcs.instructure.com", "mail.google.com", "drive.google.com", "sheets.google.com", "docs.google.com", "slides.google.com", "forms.google.com"]}, null);
   } else {
-    var $new = result.wlist.filter(i => i !== "www.netflix.com");
+    var $new = result.wlist.filter(i => !["www.netflix.com", "www.youtube.com"].includes(i));
     chrome.storage.sync.set({wlist: $new}, null);
   }
 })
@@ -579,17 +579,14 @@ var $unblock = document.querySelector('#unblock');
 $unblock.addEventListener('click', unblockGoodSite);
 
 function unblockGoodSite(){
-  //Makes request for site text from content script and then makes request to background to check similarity
+  // Makes request for site text from content script and then makes request to background to check similarity
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {subject: "site text"}, function(response){
-      var siteText = response.text;
-
-      chrome.runtime.sendMessage(chrome.runtime.id, {subject: "check sim for unblock", txt: siteText}, function(response) {
-        console.log(response)
-        if(response.sim > 0.1){
+    chrome.tabs.sendMessage(tabs[0].id, {subject: "site sim"}, function(response){
+        console.log(response.sim)
+        if(response.sim > 0.05){
           unblockSite();
         }
-      })
+      
 
 
     });
