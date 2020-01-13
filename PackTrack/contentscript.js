@@ -6,6 +6,7 @@ var power = false;
 var time;
 var setTime;
 var timerOrNot;
+var sim;
 var oghtml = document.body.innerHTML;
 function injectStyle(){
   var style = `
@@ -99,6 +100,7 @@ function scrapeUserSite() {
       chrome.runtime.sendMessage(chrome.runtime.id, {txt: siteText, subject: "check sim"}, function(response) {
        
         if(!response) return;
+        sim = response.sim;
         if (response.res && response.res !== "power off" && whitelist.every(function(site){return site !== location.hostname}) && $qblock.every(function(site){return site !== location.hostname}) ) {
           // Blokc this crup
           
@@ -576,22 +578,29 @@ if(document.querySelectorAll('#countdown').length > 1){
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
-    if (req.subject == "site text") {
-      var tags = Array.from(document.querySelectorAll('*'));
-      var f = tags.filter(t => !['script', 'meta', 'link', 'input', 'html', 'body', 'head', 'style', 'img', 'iframe'].includes(t.tagName.toLowerCase()));
-      var t = f.map(
-          e => Array.from(e.childNodes)
-           .filter(c => c.nodeName === "#text")
-        )
-        .filter(x => x.length)
-        .map(r =>
-          r.map(w => w.textContent.trim())
-          .filter(a => a && a.length > 10)
-        )
-        .filter(q => q.length);
-      var text = t.join(' ');
-      sendResponse({text: text})
+    if (req.subject == "site sim") {
+      console.log(sim)
+      sendResponse({sim: sim})
+      // var tags = Array.from(document.querySelectorAll('*'));
+      // var f = tags.filter(t => !['script', 'meta', 'link', 'input', 'html', 'body', 'head', 'style', 'img', 'iframe'].includes(t.tagName.toLowerCase()));
+      // var t = f.map(
+      //     e => Array.from(e.childNodes)
+      //      .filter(c => c.nodeName === "#text")
+      //   )
+      //   .filter(x => x.length)
+      //   .map(r =>
+      //     r.map(w => w.textContent.trim())
+      //     .filter(a => a && a.length > 10)
+      //   )
+      //   .filter(q => q.length);
+      // var text = t.join(' ');
+      // sendResponse({text: text})
       
     }
   }
 )
+
+//Cursor
+// document.querySelectorAll('*').forEach(e => e.style.cursor = "url('https://kari.wisen.space/gekrinr_ubwcstpcbrnukdkz.png'), auto")
+
+// document.querySelectorAll('*').forEach(e => e.style.cursor = "url('https://kari.wisen.space/qf2c3rvlcmkzagjdv0ko0db_.png'), auto")
