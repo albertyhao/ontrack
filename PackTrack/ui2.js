@@ -1,3 +1,7 @@
+
+
+
+
 // Push stuff
 // const timervalue = '00:00:00';
 const timerElements = Array.from(document.querySelectorAll(".timerDigit"));
@@ -220,6 +224,7 @@ function startTimer() {
 }
 
 function timerEnd() {
+  chrome.storage.sync.set({qblock: []}, null);
   timerElements.forEach(t => {
     t.style.border = '2px solid #736cdb';
     t.removeAttribute('disabled');
@@ -573,47 +578,6 @@ function timerStart(){
 
 
 
-//code for unblocking current site
-chrome.storage.sync.set({qblock: []}, null);
-var $unblock = document.querySelector('#unblock');
-$unblock.addEventListener('click', unblockGoodSite);
-
-function unblockGoodSite(){
-  // Makes request for site text from content script and then makes request to background to check similarity
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {subject: "site sim"}, function(response){
-        console.log(response.sim)
-        if(response.sim > 0.05){
-          unblockSite();
-        }
-      
-
-
-    });
-  });
-}
-
-function unblockSite(){
-  var getLocation = function(href){
-    var l = document.createElement('a');
-    l.href = href;
-    return l;
-  }
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    var l = getLocation(tabs[0].url);
-    var $hostname = l.hostname;
-    chrome.storage.sync.get(['qblock'], function(result){
-      var blankArray = result.qblock;
-      blankArray.push($hostname);
-      chrome.storage.sync.set({qblock: blankArray}, null);
-    })
-});
-
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {subject: "unblock"}, null);
-  });
-
-}
 
 //Open menu with hamburger
 // var hamburger = document.querySelector('#options');
@@ -814,78 +778,133 @@ function warning(){
 
 
 
-//Welcome page js
+// //Welcome page js
 
-chrome.storage.sync.get(['welcomed'], function(result){
-  if(!result.welcomed){
-    chrome.storage.sync.set({welcomed: "no"});
+// chrome.storage.sync.get(['welcomed'], function(result){
+//   if(!result.welcomed){
+//     chrome.storage.sync.set({welcomed: "no"});
+//   } else {
+//     chrome.storage.sync.set({welcomed: result.welcomed});
+//   }
+// })
+
+// var welcomed;
+
+// chrome.storage.sync.get(['welcomed'], function(result){
+//   welcomed = result.welcomed;
+//   if(welcomed == 'no'){
+//     document.querySelector('#welcomeModal').style.visibility = 'visible';
+//   } else {
+//     document.querySelector('#welcomeModal').style.visibility = 'hidden';
+
+//   }
+// })
+
+
+
+// document.querySelector('#skipInfo').addEventListener('click', skipPage);
+// function skipPage(){
+
+//   document.querySelector('#welcomeModal').style.visibility = 'hidden';
+//   chrome.storage.sync.set({welcomed: "yes"})
+// }
+
+// document.querySelector('#user').addEventListener('blur', submitValidity);
+// document.querySelector('#mail').addEventListener('blur', submitValidity);
+
+// function submitValidity(){
+//   var $username = document.getElementById('user');
+//   var $email = document.getElementById('mail');
+//   if($username.value.length > 1 && $email.value.length > 10 && $email.value.includes('@')){
+//     injectWelcomeStyle();
+//     document.querySelector('#submitInfo').addEventListener('click', postInfo);
+//     function postInfo(){
+//       chrome.storage.sync.set({welcomed: "yes"});
+//       chrome.storage.sync.set({name: $username.value});
+//       chrome.storage.sync.set({email: $email.value})
+//       document.querySelector('#welcomeModal').style.visibility = 'hidden';
+//     }
+
+//   }
+// }
+
+// function injectWelcomeStyle(){
+//   var style = `
+//   #submitInfo {
+//     border: 2px solid #736cdb;
+//     padding: 6px 16px;
+//     border-radius: 12px;
+//     letter-spacing: 0.06em;
+//     text-transform: uppercase;
+//     text-decoration: none;
+//     outline: none;
+//     background: #fff;
+//     color: #736cdb;
+//     font-size: 11px;
+//   }
+//   #submitInfo:hover {
+//     background: #736cdb;
+//     color: #fff;
+//     border: 2px solid #736cdb;
+//     border-radius: 12px;
+//   }
+//   `
+// var s = document.createElement('style')
+// s.innerHTML = style;
+// document.head.appendChild(s)
+// }
+
+
+//Feedback form
+var $go = document.querySelector('#go');
+var $later = document.querySelector('#later');
+var $survey = document.querySelector('#survey');
+var $surveyModal = document.querySelector('#surveyModal');
+
+
+chrome.storage.sync.get(['survey'], function(result){
+  
+  var surveyStatus = result.survey;
+  if(!surveyStatus){
+    
+    chrome.storage.sync.set({'survey': "incomplete"}, null);
+    surveyStatus = "incomplete";
+  } else if(surveyStatus){
+    
+    chrome.storage.sync.get(['survey'], function(result){
+      surveyStatus = result.survey;
+    })
+  }
+
+
+
+
+  $go.addEventListener('click', function(){
+    chrome.storage.sync.set({'survey': "completed"}, null);
+    surveyStatus = "completed";
+    $survey.style.visibility = "hidden";
+    $surveyModal.style.visibility = "hidden";
+    window.open("http://bit.ly/37hwNrS", "_blank");
+    
+  
+  });
+  
+  
+  if(surveyStatus == "incomplete"){
+    console.log('sending survey request')
+    chrome.runtime.sendMessage(chrome.runtime.id, {subject: "survey?"}, function(resp){
+      console.log(resp)
+      if(resp == "yes"){
+        $survey.style.visibility = "visible";
+        $surveyModal.style.visibility = "visible";
+      }
+    })
   } else {
-    chrome.storage.sync.set({welcomed: result.welcomed});
+    $survey.style.visibility = "hidden";
+    $surveyModal.style.visibility = "hidden";
   }
 })
 
-var welcomed;
-
-chrome.storage.sync.get(['welcomed'], function(result){
-  welcomed = result.welcomed;
-  if(welcomed == 'no'){
-    document.querySelector('#welcomeModal').style.visibility = 'visible';
-  } else {
-    document.querySelector('#welcomeModal').style.visibility = 'hidden';
-
-  }
-})
 
 
 
-document.querySelector('#skipInfo').addEventListener('click', skipPage);
-function skipPage(){
-
-  document.querySelector('#welcomeModal').style.visibility = 'hidden';
-  chrome.storage.sync.set({welcomed: "yes"})
-}
-
-document.querySelector('#user').addEventListener('blur', submitValidity);
-document.querySelector('#mail').addEventListener('blur', submitValidity);
-
-function submitValidity(){
-  var $username = document.getElementById('user');
-  var $email = document.getElementById('mail');
-  if($username.value.length > 1 && $email.value.length > 10 && $email.value.includes('@')){
-    injectWelcomeStyle();
-    document.querySelector('#submitInfo').addEventListener('click', postInfo);
-    function postInfo(){
-      chrome.storage.sync.set({welcomed: "yes"});
-      chrome.storage.sync.set({name: $username.value});
-      chrome.storage.sync.set({email: $email.value})
-      document.querySelector('#welcomeModal').style.visibility = 'hidden';
-    }
-
-  }
-}
-
-function injectWelcomeStyle(){
-  var style = `
-  #submitInfo {
-    border: 2px solid #736cdb;
-    padding: 6px 16px;
-    border-radius: 12px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    text-decoration: none;
-    outline: none;
-    background: #fff;
-    color: #736cdb;
-    font-size: 11px;
-  }
-  #submitInfo:hover {
-    background: #736cdb;
-    color: #fff;
-    border: 2px solid #736cdb;
-    border-radius: 12px;
-  }
-  `
-var s = document.createElement('style')
-s.innerHTML = style;
-document.head.appendChild(s)
-}

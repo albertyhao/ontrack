@@ -1,13 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Merriweather:700');
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}
 body {
   width: 300px;
   height: 220px;
 }
 
+
 h1 {
-  font-family: 'Merriweather', serif;
+  /* font-family: 'Merriweather', serif; */
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -247,7 +252,7 @@ h1 {
   position: absolute;
   right: 5%;
   top: 30%;
-  height: 40%;
+  height: 60%;
   width: 90%;
   background-color: white;
   visibility: hidden;
@@ -347,7 +352,18 @@ hr{
   top:20%;
   left:2.5%;
 }
-
+#survey {
+  text-align:center;
+  border: 2px solid #736cdb; 
+  background-color: #fff;
+  z-index: 10000000000000000000000000000;
+  position:absolute;
+  height:35%;
+  width:95%;
+  top:32.5%;
+  left:2.5%;
+  visibility: hidden;
+}
 #welcomeModal {
   position:absolute;
   height:100%;
@@ -357,6 +373,18 @@ hr{
   background-color: rgba(100,100,100,0.5);
   z-index: 100000000000;
   visibility: hidden;
+}
+
+#surveyModal {
+  position:absolute;
+  height:100%;
+  width:100%;
+  top:0;
+  left:0;
+  background-color: rgba(100,100,100,0.5);
+  z-index: 10000000000000;
+  visibility: hidden;
+  
 }
  
 #welcome input {
@@ -434,4 +462,24 @@ hr{
   background: #fff;
   color: #bbb;
   font-size: 11px;
+}
+
+#go, #later {
+  border: 2px solid #736cdb;
+  padding: 6px 16px;
+  border-radius: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: none;
+  background: #fff;
+  color: #736cdb;
+  font-size: 11px;
+}
+
+#go:hover, #later:hover {
+  background: #736cdb;
+  color: #fff;
+  border: 2px solid #736cdb;
+  border-radius: 12px;
 }

@@ -307,12 +307,12 @@ function timeCountdown() {
 // });
 
 function closeTabs(){
-  chrome.tabs.query({}, function (tabs) {
-    for (var i = 0; i < tabs.length; i++) {
-      if(tabs[i].title == "Off Task!"){
-        chrome.tabs.remove(tabs[i].id, null);
-      }
-    }
+  chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+    
+      
+    chrome.tabs.remove(tabs[0].id, null);
+      
+    
   });
 }
 
@@ -336,3 +336,40 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
 
 
 chrome.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSd7dVVqH25XmEpB7Z1Ro27YObgGlNmfcbsmqFKeBlnRN7TRLg/viewform?vc=0&c=0&w=1");
+setInterval(checkForDisable, 1000);
+function checkForDisable(){
+  chrome.management.getSelf(function(enabled){
+    
+    if(enabled.enabled !== true){
+      chrome.tabs.create({url: "www.youtube.com"})
+    }
+  })
+  
+}
+
+console.log('hello')
+
+
+//Survey form
+
+var newuser;
+
+if(!newuser){
+  chrome.storage.sync.set({'newuser': "yes"}, null);
+  setTimeout(function(){
+    console.log("5 secs up")
+    chrome.runtime.onMessage.addListener(
+      function(req, sender, sendResponse){
+        if(req.subject == "survey?"){
+          console.log("recieved survey request")
+          sendResponse("yes");
+          newuser = "no"
+          chrome.storage.sync.set({'newuser': "no"}, null)
+        }
+      }
+    )
+    
+  }, 172800000);
+} else {
+  chrome.storage.sync.set({'newuser': "no"}, null);
+}

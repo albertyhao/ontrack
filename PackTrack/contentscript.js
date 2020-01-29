@@ -7,7 +7,7 @@ var time;
 var setTime;
 var timerOrNot;
 var sim;
-var oghtml = document.body.innerHTML;
+
 function injectStyle(){
   var style = `
   
@@ -63,6 +63,60 @@ s.innerHTML = style;
 document.head.appendChild(s)
 }
 
+function injectStyle2(){
+  var style = `
+  
+  #countdown {
+    position: fixed;
+    right: 5%;
+    top: 5%;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    z-index: 100000;
+  }
+  
+  #countdown-number {
+    color: black;
+    display: inline-block;
+    line-height: 40px;
+    display: none;
+    z-index: 1000000000000000000000;
+  }
+  
+  #spinny {
+    position: absolute;
+    top: -28px;
+    right: -17px;
+    width: 80px;
+    height: 80px;
+    transform: rotateY(-180deg) rotateZ(-90deg);
+  }
+  
+  #spinny circle {
+    stroke-dasharray: 113px;
+    stroke-dashoffset: 0px;
+    stroke-linecap: round;
+    stroke-width: 3px;
+    stroke: white;
+    
+
+    fill: none;
+    
+  }
+  
+  @keyframes countdown {
+    from {
+      stroke-dashoffset: 0px;
+    }
+    to {
+      stroke-dashoffset: 113px;
+    }
+  }`
+var s = document.createElement('style')
+s.innerHTML = style;
+document.head.appendChild(s)
+}
 
 function scrapeUserSite() {
   var tags = Array.from(document.querySelectorAll('*'));
@@ -111,10 +165,132 @@ function scrapeUserSite() {
           document.body.style.height = '100vh';
           document.body.style.margin = '0';
           document.body.style.overflow = 'hidden';
-          document.body.innerHTML = `<center><p style="color:white; padding-top: 10vh; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 3.25rem">It seems as if you are distracted!</p><br></center>`;
           
-          insertMarkerTop();
-          //Code to delete tab
+          var link = document.createElement('link');
+          link.setAttribute('rel', "stylesheet");
+          link.setAttribute('href', "https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+          document.head.appendChild(link);
+
+          var link2 = document.createElement('link');
+          link2.setAttribute('rel', "icon");
+          link2.setAttribute('href', "https://nathan.wisen.space/9wwrvezffvk0txbgolidm9yg.png");
+          link2.setAttribute('type', "image/x-icon");
+          document.head.appendChild(link2);
+
+
+          document.body.innerHTML = `
+          <center>
+            <img src="https://nathan.wisen.space/k8batqoxbjpkpio4b_4tcq0s.png" style="height: 15vh;">
+            <p style="color:white; margin-top: 0; margin-bottom: 5vh; font-family: 'Montserrat', sans-serif; font-size: 2rem">This Page Doesn't Relate to What You're Working On</p>
+            <div id="linkBox" style="font-family: 'Montserrat', sans-serif; border: 2px solid white; border-radius: 10px; padding-bottom: 1em; width: 40vmin;">
+              <br>
+              <select id="options" style="font-size: 1.5rem; color: white; background: none; border: none; outline: none; font-family: 'Montserrat', sans-serif; text-align-last: center;">
+                <option>Helpful Links</option>
+                <option>Unblock Page</option>
+                <option>Exit Page</option>
+              </select>
+              <div id="helpfulLinks" style="display: block;"></div>
+              <div id="unblockPage" style="display: none;">
+                <p style="font-size: 1rem; color: white;">You may attempt to unblock this site if you feel that it shouldn't be flagged.</p>
+                <button style="cursor: pointer; border: 2px solid white; padding: 6px 16px; text-decoration: none; outline: none; background: #736cdb; color: white; border-radius: 12px;">Unblock Page</button>
+              </div>
+              <div id="exitPage" style="display: none;">
+                <button style="cursor: pointer; margin-top: 1.5em; position: relative; border: 2px solid white; padding: 6px 16px; text-decoration: none; outline: none; background: #736cdb; color: white; border-radius: 12px;">Exit Page</button>
+              </div>
+            </div>
+            <br>
+          </center>
+          `;
+
+  
+          if(whitelist.length > 9 && whitelist.length < 14){
+            for(i=9; i < whitelist.length; i++){
+              var newLink = document.createElement('div');
+              newLink.innerHTML = `
+                <img style="height: 20px; display: inline;" src="//logo.clearbit.com/${whitelist[i].split(".")[1] + "." + whitelist[i].split(".")[2]}">
+                <p style="display: inline; vertical-align: top; color: white; text-decoration: underline; cursor: pointer;">${whitelist[i]}</p>
+              `;
+              if(i == 9){
+                newLink.style.paddingTop = "1.5em";
+              }
+              newLink.setAttribute('class', "link");
+              document.querySelector('#helpfulLinks').appendChild(newLink);
+            }
+          } else if(whitelist.length > 14){
+            for(i=9; i < 14; i++){
+              var newLink = document.createElement('div');
+              newLink.innerHTML = `
+                <img style="height: 20px; display: inline;" src="//logo.clearbit.com/${whitelist[i].split(".")[1] + "." + whitelist[i].split(".")[2]}">
+                <p style="display: inline; vertical-align: top; color: white; text-decoration: underline; cursor: pointer;">${whitelist[i]}</p>
+              `;
+              if(i == 9){
+                newLink.style.paddingTop = "1.5em";
+              }
+              newLink.setAttribute('class', "link");
+              document.querySelector('#helpfulLinks').appendChild(newLink);
+            }
+          }
+          document.querySelectorAll('.link').forEach(i => {
+            if(i.querySelector('p').innerText == "undefined"){
+              i.style.display = "none";
+            }
+          })
+
+          document.querySelectorAll('.link').forEach(i => i.querySelector('p').addEventListener("click", function(){
+            window.location.href = "https://" + i.querySelector('p').innerText;
+          }));
+
+          document.addEventListener('input', function(event){
+            if(event.target.id !== "options") return;
+            if(event.target.value == "Helpful Links"){
+              document.querySelector('#helpfulLinks').style.display = "block";
+              document.querySelector('#unblockPage').style.display = "none";
+              document.querySelector('#exitPage').style.display = "none";
+            } else if(event.target.value == "Unblock Page"){
+              document.querySelector('#helpfulLinks').style.display = "none";
+              document.querySelector('#unblockPage').style.display = "block";
+              document.querySelector('#exitPage').style.display = "none";
+            } else {
+              document.querySelector('#helpfulLinks').style.display = "none";
+              document.querySelector('#unblockPage').style.display = "none";
+              document.querySelector('#exitPage').style.display = "block";
+            }
+          })
+
+          document.querySelector('#exitPage').addEventListener('click', function(){
+            chrome.runtime.sendMessage(chrome.runtime.id, {subject: "close tab"}, null);
+          })
+
+          //code for unblocking current site
+
+          var $unblock = document.querySelector('#unblockPage');
+          $unblock.addEventListener('click', unblockGoodSite);
+
+          function unblockGoodSite(){
+            if(sim > 0.1){
+              unblockSite();
+            } else {
+              alert("We detect that thie site has no correlation to your current subject.")
+            }
+          }
+
+          function unblockSite(){
+              var $hostname = location.hostname;
+              chrome.storage.sync.get(['qblock'], function(result){
+                var blankArray = result.qblock;
+                blankArray.push($hostname);
+                chrome.storage.sync.set({qblock: blankArray}, null);
+              })
+          
+
+            location.reload();
+
+          }
+
+          
+          injectStyle2();
+          insertTimer();
+          
           
           
         } else if(response.res == "power off"){
@@ -122,12 +298,17 @@ function scrapeUserSite() {
           if(t){
             document.body.removeChild(t);
           }
+
+          if(document.title == "Off Task!"){
+            location.reload();
+          }
           
           // console.log('power off');
         } else {
           if(timerOrNot == "on"){
             var t = document.querySelector('#countdown');
             if(!t){
+              injectStyle();
               insertTimer();
             }
             
@@ -187,16 +368,16 @@ window.onfocus = function(e) {
 //   }
 // )
 
-chrome.runtime.onMessage.addListener(
-  function(req, sender, sendResponse) {
-    if (req.subject == "unblock") {
+// chrome.runtime.onMessage.addListener(
+//   function(req, sender, sendResponse) {
+//     if (req.subject == "unblock") {
       
-      location.reload();
+//       location.reload();
       
       
-    }
-  }
-)
+//     }
+//   }
+// )
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
@@ -305,7 +486,7 @@ function insertTimer(){
    
   }, 1000);
   document.body.appendChild(timer);
-  injectStyle();
+  // injectStyle();
   if(seconds <= 0){
     document.getElementsByTagName('circle')[0].style.stroke = 'lightgray';
     return;
@@ -559,7 +740,7 @@ function closeTab(){
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "close tab"}, null);
 }
 
-setTimeout(closeTab, 5000);
+// setTimeout(closeTab, 5000);
 
 
 chrome.runtime.onMessage.addListener(
@@ -567,6 +748,9 @@ chrome.runtime.onMessage.addListener(
     if (req.subject == "take away timer") {
       var c = document.querySelector('#countdown');
       document.body.removeChild(c);
+      if(document.title == "Off Task!"){
+        location.reload();
+      }
     }
   }
 )
