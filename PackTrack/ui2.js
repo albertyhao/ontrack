@@ -865,6 +865,15 @@ var $surveyModal = document.querySelector('#surveyModal');
 chrome.storage.sync.get(['survey'], function(result){
   
   var surveyStatus = result.survey;
+  if(surveyStatus == "completed"){
+    $survey.style.visibility = "hidden";
+    $surveyModal.style.visibility = "hidden";
+  } else {
+    $survey.style.visibility = "visible";
+    $surveyModal.style.visibility = "visible";
+  }
+
+
   if(!surveyStatus){
     
     chrome.storage.sync.set({'survey': "incomplete"}, null);
@@ -888,23 +897,20 @@ chrome.storage.sync.get(['survey'], function(result){
     
   
   });
-  
-  
-  if(surveyStatus == "incomplete"){
-    console.log('sending survey request')
-    chrome.runtime.sendMessage(chrome.runtime.id, {subject: "survey?"}, function(resp){
-      console.log(resp)
-      if(resp == "yes"){
-        $survey.style.visibility = "visible";
-        $surveyModal.style.visibility = "visible";
-      }
-    })
-  } else {
+
+  $later.addEventListener('click', function(){
+    chrome.storage.sync.set({'survey': "completed"}, null);
+    surveyStatus = "completed";
     $survey.style.visibility = "hidden";
     $surveyModal.style.visibility = "hidden";
-  }
+  })
+  
+  
+  
 })
 
 
-
+document.querySelector('#tutorial').querySelectorAll('a').forEach(i => i.addEventListener('click', function(){
+  window.open(i.getAttribute('href'), "_blank");
+}))
 

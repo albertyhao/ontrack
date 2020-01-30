@@ -352,24 +352,24 @@ console.log('hello')
 
 //Survey form
 
-var newuser;
+// var newuser;
 
-if(!newuser){
-  chrome.storage.sync.set({'newuser': "yes"}, null);
-  setTimeout(function(){
-    console.log("5 secs up")
-    chrome.runtime.onMessage.addListener(
-      function(req, sender, sendResponse){
-        if(req.subject == "survey?"){
-          console.log("recieved survey request")
-          sendResponse("yes");
-          newuser = "no"
-          chrome.storage.sync.set({'newuser': "no"}, null)
-        }
-      }
-    )
+// if(!newuser){
+//   chrome.storage.sync.set({'newuser': "yes"}, null);
+//   setTimeout(function(){
+//     console.log("5 secs up")
+//     chrome.runtime.onMessage.addListener(
+//       function(req, sender, sendResponse){
+//         if(req.subject == "survey?"){
+//           console.log("recieved survey request")
+//           sendResponse("yes");
+//           newuser = "no"
+//           chrome.storage.sync.set({'newuser': "no"}, null)
+//         }
+//       }
+//     )
     
-  }, 172800000);
-} else {
-  chrome.storage.sync.set({'newuser': "no"}, null);
-}
+//   }, 172800000);
+// } else {
+//   chrome.storage.sync.set({'newuser': "no"}, null);
+// }

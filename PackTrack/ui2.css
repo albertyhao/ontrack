@@ -252,7 +252,7 @@ h1 {
   position: absolute;
   right: 5%;
   top: 30%;
-  height: 60%;
+  height: 50%;
   width: 90%;
   background-color: white;
   visibility: hidden;
@@ -362,7 +362,7 @@ hr{
   width:95%;
   top:32.5%;
   left:2.5%;
-  visibility: hidden;
+  visibility: visible;
 }
 #welcomeModal {
   position:absolute;
@@ -383,7 +383,7 @@ hr{
   left:0;
   background-color: rgba(100,100,100,0.5);
   z-index: 10000000000000;
-  visibility: hidden;
+  visibility: visible;
   
 }
  
