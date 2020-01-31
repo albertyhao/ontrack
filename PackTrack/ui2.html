@@ -3,13 +3,14 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta http-equiv="Content-Security-Policy" content="default-src gap://ready file://* *; style-src 'self' http://* https://* 'unsafe-inline'; script-src 'self' http://* https://* 'unsafe-inline' 'unsafe-eval'">
    <link href="ui2.css" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylehseet">
    <style>
    </style>
  </head>
  <body>
 
 
-  <div id="welcomeModal">
+  <!-- <div id="welcomeModal">
     <div id="welcome">
       <h1>Welcome to OnTrack!</h1><br>
       <div id="username"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><input id="user" type="text" placeholder="Name"></div>
@@ -18,7 +19,16 @@
       <br><br>
       <button id="skipInfo">Skip</button>&nbsp&nbsp<button id="submitInfo">Submit</button>
     </div>
+  </div> -->
+  <div id="surveyModal">
+      <div id="survey">
+          <h1>Enjoying OnTrack?</h1>
+          <p>Fill out our customer feedback form for a chance to win a $50 amazon giftcard! Winners will be announced in March!</p>
+          <br>
+          <button id="go">Go</button>&nbsp&nbsp<button id="later">Later</button>
+      </div>
   </div>
+  
   <img src="ontrackLogo.png" style="position: relative; transform: scale(0.27); right: 50%; margin-top: -40%;">
   <!--<svg id="options" style="position: absolute; top: 18px; right: 10px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>-->
 
@@ -34,6 +44,7 @@
          <input class="timerDigit" maxlength="2" id="time1" placeholder="00"><h4 class="timeMod"><sub>&nbsps</sub></h4>
           <!-- <h2 class="timerDigit" id="time1">00</h2><h2>:</h2><h2 class="timerDigit" id="time2">00</h2><h2>:</h2><h2 class="timerDigit" id="time3">00</h2> -->
       </div>
+      <br>
        <p id="selection" style="font-size: 15px; text-align: center; position: relative; margin-top: -15px;">Select a subject to focus on</p>
        <svg id="openTutorial" style="position: absolute; top: 20px; left: 15px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12" y2="17"></line></svg>
 
@@ -52,7 +63,7 @@
             <option value="whitelist">Whitelist</option>
           </select>
         </div>
-        <svg id="subjectReq" style="visibility:hidden;position:absolute;top:44.5%;left:76%"xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12" y2="16"></line></svg>
+        <svg id="subjectReq" style="visibility:hidden;position:absolute;top:50%;left:76%"xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12" y2="16"></line></svg>
 
          <!-- <br>
          <br> -->
@@ -62,12 +73,12 @@
          </div> -->
 
        </div>
-       <br><br>
+       <br><br><br>
        <center><button id="timer_start" class = "btn2">Start</button>&nbsp&nbsp<button id="timer_clear" class="btn2">Clear</button></center>
-       <br>
-      <hr width: 50%>
       <br>
-       <center><button id="unblock">Unblock Current Site</button></center>
+      <hr width: 50% style="position:relative; top: 1em;">
+      
+       <!-- <center><button id="unblock">Unblock Current Site</button></center> -->
      </div>
 
    <br><br>
@@ -125,9 +136,13 @@
     <h3>Subjects</h3>
     <p>In the subject dropdown, you can select several focuses. Currently, there are only a few accessible subjects like <b>Biology</b> and <b>College apps</b> but more will be added in the future. You can also select the <b>General Studying</b> option, which will only allow you to access whitelisted sites.</p>
     <h3>Unblock</h3>
-    <p>In the event that we mistakenly block a site that shouldn't be blocked, simply click the <b>Unblock</b> button at the bottom to gain access quickly (note: unblocked sites will not be whitelisted and will be only be temporarily accessible). </p>
+    <p>In the event that we mistakenly block a site that shouldn't be blocked, select "Unblock site" in the dropdown menu on the off task page and click the button (note: unblocked sites will not be whitelisted and will be only be temporarily accessible). We will reevaluate the page and determine if the unblock is appropriate.</p>
     <h3>Settings</h3>
     <p>To adjust settings, click on the gear icon and select <b>Settings</b>. This page will allow you to adjust how strict the blocking is and turn the timer widget on or off. Adjust the settings and click the </b>Save</b> button to save your settings.</p>
+    <h3>Technical Issues</h3>
+    <p>If you run into any technical issues, fill out our technical support form here: <a href="http://bit.ly/2RHh6Fb">http://bit.ly/2RHh6Fb</a>.</p>
+    <h3>Any Feedback?</h3>
+    <p>Fill out this form for a chance to win a $50 amazon giftcard: <a href="http://bit.ly/37hwNrS">http://bit.ly/37hwNrS</a>.</p>
   </div>
    <!-- <center><button id="power">Turn Extension On</button></center>
    <br><br> -->
