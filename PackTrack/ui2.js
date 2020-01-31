@@ -104,10 +104,10 @@ document.getElementById("timer_start").addEventListener('click', function(e) {
   })
   var timeSend = timerElements[0].value +":"+ timerElements[1].value +":"+ timerElements[2].value
 
-  console.log(timeSend)
+  // console.log(timeSend)
   if (document.getElementById("timer_start").innerHTML == "Start" && timeSend !== "00:00:00" && document.querySelector('.dropdown-select').value !== "none") {
     confirmValidity()
-    console.log("msg sent")
+    // console.log("msg sent")
     chrome.runtime.sendMessage(chrome.runtime.id,
       {timer: timeSend}, null)
 

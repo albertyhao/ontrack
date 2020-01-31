@@ -763,7 +763,7 @@ if(document.querySelectorAll('#countdown').length > 1){
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     if (req.subject == "site sim") {
-      console.log(sim)
+      // console.log(sim)
       sendResponse({sim: sim})
       // var tags = Array.from(document.querySelectorAll('*'));
       // var f = tags.filter(t => !['script', 'meta', 'link', 'input', 'html', 'body', 'head', 'style', 'img', 'iframe'].includes(t.tagName.toLowerCase()));

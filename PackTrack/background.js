@@ -66,7 +66,7 @@ chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse){
     if(req.subject == "check sim for unblock"){
       var text = req.txt;
-      console.log(req.txt)
+      // console.log(req.txt)
       var siteText = ""; 
           
     for( var i = 0; i < text.length; i++ ){
@@ -75,19 +75,19 @@ chrome.runtime.onMessage.addListener(
         
       }
     }
-    console.log(siteText)
+    // console.log(siteText)
     siteText = siteText.toLowerCase();
     var num = 0;
-    console.log(subjectWords.length);
-    console.log(subjectWords)
+    // console.log(subjectWords.length);
+    // console.log(subjectWords)
     for(var i=0; i < subjectWords.length; i++){
       if(siteText.includes(subjectWords[i]) === true){
         num += 1;
       }
     }
-    console.log(num)
+    // console.log(num)
     var sim = num/(subjectWords.length);
-    console.log(sim)
+    // console.log(sim)
     sendResponse({sim: sim});
   
     
@@ -128,7 +128,7 @@ chrome.runtime.onMessage.addListener(
     // console.log(simCutoff)
     
     chrome.storage.sync.get(['customerid', 'subject', 'email', 'name'], function(result){
-      console.log(result.subject);
+      // console.log(result.subject);
       var xhr = new XMLHttpRequest();
       xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&sim=${sim}&subject=${result.subject}&loadsimtime=${req.loadsimtime}&name=${result.name}&email=${result.email}`);
       xhr.send(); 
@@ -201,7 +201,7 @@ chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     if (req.timer) {
       time = req.timer
-      console.log(time)
+      // console.log(time)
       timerInterval = setInterval(timeCountdown, 1000)
     }
   }
@@ -347,7 +347,7 @@ function checkForDisable(){
   
 }
 
-console.log('hello')
+// console.log('hello')
 
 
 //Survey form
