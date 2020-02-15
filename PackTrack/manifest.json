@@ -34,9 +34,12 @@
     "management"
 
   ],
+<<<<<<< HEAD
   "chrome_url_overrides": {
     "newtab": "newtab.html"
   },
+=======
+>>>>>>> 7082d376aa26aeea6ddcdb301c9e40ff63d94a75
   "background": {
     "scripts": ["background.js"],
     "persistent": true

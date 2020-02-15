@@ -336,16 +336,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
 
 
 chrome.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSd7dVVqH25XmEpB7Z1Ro27YObgGlNmfcbsmqFKeBlnRN7TRLg/viewform?vc=0&c=0&w=1");
-setInterval(checkForDisable, 1000);
-function checkForDisable(){
-  chrome.management.getSelf(function(enabled){
-    
-    if(enabled.enabled !== true){
-      chrome.tabs.create({url: "www.youtube.com"})
-    }
-  })
-  
-}
+
 
 // console.log('hello')
 
