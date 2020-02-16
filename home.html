@@ -3,142 +3,119 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>OnTrack</title>
-    <link href="/navbar.css" rel="stylesheet">
     <link href="/home.css" rel="stylesheet">
-    <style>
-    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat&display=swap">
   </head>
   <body>
 
     <!-- nav bar code -->
 
-    <div class="sidenav" style="text-align:center">
-      <a href="/">
-        <img src="http://i65.tinypic.com/nzeryv.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
-        <p>Home</p>
-      </a>
-
-      <a href="/blacklist">
-        <img src="http://i64.tinypic.com/24zf0g8.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
-        <p>Blacklist</p>
-      </a>
-      <a href="/settings">
-        <img src="http://i65.tinypic.com/zx9unq.png" style="height: 35%; width: 35%; text-align: center; margin: 0 auto; display: inline-block">
-        <p>Settings</p>
-      </a>
+    <div id="sidenav">
+      <img src="https://nathan.wisen.space/packtrack128.png" style="height: 80px; width: 80px; display: block; margin: auto;">
+      <div class="grid-container">
+        <div class="grid-item" name="dashboard" active="true"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"/><path d="M9 22V12h6v10M2 10.6L12 2l10 8.6"/></svg></div>
+        <div class="grid-item" name="report">2</div>
+        <div class="grid-item" name="schedule">3</div>
+        <div class="grid-item" name="alerts">4</div>
+        <div class="grid-item" name="settings">5</div>
+        <div class="grid-item" name="account">6</div>
+      </div>
     </div>
 
 
-    <!-- timer code -->
+    
 
-    <div class="container">
-
-      <!-- <div class="options">
-        <form name="customForm" id="custom">
-          <input type="text" name="minutes" class="option" placeholder="Enter Minutes...">
-        </form>
-      </div> -->
-      <div class="display">
-        <p style="color: white; font-size: 2rem">I Want to Study</p>
-        <select>
-          <option value="calculus">Calculus</option>
-          <option value="biology">Biology</option>
-          <option value="history">American History</option>
-        </select>
-        <button id="submit">Submit</button>
-        <!-- <h1 class="time_left">
-        
-        <form name="customForm" id="custom">
-          <input type="text" name="minutes" class="option" placeholder="Enter Minutes...">
-        </form>
-
-        <div>
-          <p class="end_time"></p>
-          <input type="text" class="subject" placeholder="Subject I'm Studying...">
-          <br>
-
-          <progress color="ef6c36" value="22" max="100"></progress> -->
-        </div>
+    <div id="dashboard" class="container">
+      <div class="topnav">
+        <h2 style="margin-top: 1%;">Dashboard</h2>
       </div>
-      <iframe></iframe>
+      <table class="menu">
+        <tr>
+          <td>
+            <div id="userCount"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>0</div>
+          </td>
+          <td>
+            <div id="refresh">Refresh<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg></div>
+          </td>
+        </tr>
+      </table>
+      
+      <div id="dashboard-stats">
+        <div class="stats"><h2>Productivity Stats</h2></div>
+        <div class="stats"><h2>Website Stats</h2></div>
+        <div class="graphs"><h2>Productivity</h2></div>
+        <div class="graphs"><h2>Team</h2></div>
+      </div>
+
+    </div>
+
+    <div id="report" class="container">
+        <div class="topnav">
+            <h2 style="margin-top: 1%;">Accumulative Report</h2>
+        </div>
+        <table class="menu" style="width: 18vw !important;">
+            <tr>
+              <td>
+                <select>
+                  <option>Today</option>
+                </select>
+              </td>
+              <td>
+                  <select>
+                      <option>All members</option>
+                  </select>
+              </td>
+              <td>
+                <div id="refresh">Refresh<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg></div>
+              </td>
+            </tr>
+        </table>
+        <div id="report-summary">
+          <h2>Productivity Summary</h2>
+        </div>
+        <div id="report-analysis">
+          <h2>Analysis</h2>
+        </div>
+    </div>
+    <div id="schedule" class="container">
+      <h1>Schedule!</h1>
+    </div>
+    <div id="alerts" class="container">
+        <h1>Alerts!</h1>
+    </div>
+    <div id="settings" class="container">
+        <h1>Settings!</h1>
+    </div> 
+    <div id="account" class="container">
+        <h1>Account!</h1>
+    </div>
 
   </body>
-  <!-- <script src="/timer.js"></script> -->
-  <script type="text/javascript" src="./lib/jquery-3.3.1.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>
-
-    function sendData() {
-      document.querySelector('select').value;
+    document.querySelectorAll(".grid-item")[0].style.border = "3px solid #736cdb";
+    document.querySelectorAll(".grid-item").forEach(i => i.addEventListener('click', function(){
+      document.querySelectorAll(".grid-item").forEach(i => {
+       i.style.border = "none";
+       i.setAttribute('active', false);
+      })
+      i.style.border = "3px solid #736cdb";
+      i.setAttribute('active', true);
+      loadPage();
+    }))
+    
+    function loadPage(){
+      document.querySelectorAll(".container").forEach(i => {
+        i.style.display = "none";
+      })
+      document.querySelectorAll(".grid-item").forEach(i => {
+        if(i.getAttribute('active') == "true"){
+          document.getElementById(i.getAttribute('name')).style.display = "block";
         }
-document.getElementById("submit").addEventListener("click", sendData);
-  
-      
-    // req.open('GET', '/home', true);
-    // req.send();
+      })
+    }
 
-    // function test() {
-    //   console.log('it works');
-    // }
+    loadPage();
 
-
-    //Opening indexeddb 
-    // var db;
-    
-    // const subjectData = {subject: document.querySelector('select').value};
-    
-
-    
-
-    // var req = window.indexedDB.open("UserSubjectDatabase", 3);
-    // req.onsuccess = function(event) {
-    // db = event.target.result;
-    // console.log("it worked");
-    // };
-    // req.onerror = function(event) {
-    // console.log("Why didn't you allow my web app to use IndexedDB?!");
-    // };
-    // req.onupgradeneeded = function(event) {
-    //   var db = event.target.result;
-
-    //   // Create an objectStore to hold information about our customers. We're
-    //   // going to use "ssn" as our key path because it's guaranteed to be
-    //   // unique - or at least that's what I was told during the kickoff meeting.
-    //   var objectStore = db.createObjectStore("subject", {keyPath: "subject"});
-    //   objectStore.createIndex("subject");
-    
-
-    //   // Use transaction oncomplete to make sure the objectStore creation is 
-    //   // finished before adding data into it.
-    //   objectStore.transaction.oncomplete = function(event) {
-    //     // Store values in the newly created objectStore.
-    //     var userSubjectData = db.transaction("subject", "readwrite").objectStore("subject");
-    //     subjectData.forEach(function(subject) {
-    //       userSubjectData.add(subject);
-          
-    //     });
-        
-    //   };
-      
-    //   var transaction = db.transaction(["subject"], "readwrite");
-    //   console.log("starts")
-    //   transaction.oncomplete = function(event) {
-    //         console.log("All done!");
-    //       };
-
-    // transaction.onerror = function(event) {
-    //         console.log('fuck you indexeddb');
-    //       };
-    // var objectStore = transaction.objectStore("subject");
-    // subjectData.forEach(function(subject) {
-    //   var req = objectStore.add(subject);
-    //   req.onsuccess = function(event) {
-    //     console.log('yay');
-    //   };
-    // });
-    // };
-    
-    
   </script>
   
 </html>
