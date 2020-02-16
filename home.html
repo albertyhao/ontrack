@@ -3,18 +3,133 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>OnTrack</title>
+<<<<<<< HEAD
     <link href="/navbar.css" rel="stylesheet">
     <style>
     </style>
+=======
+    <link href="/home.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat&display=swap">
+>>>>>>> 9af75484afc53182f0423a240cf91303257d5d76
   </head>
   <body>
 
     <!-- nav bar code -->
+<<<<<<< HEAD
     <div id="navbar">
       <p>Dashboard</p>
     </div>
   </body>
   <script>
+=======
+
+    <div id="sidenav">
+      <img src="https://nathan.wisen.space/packtrack128.png" style="height: 80px; width: 80px; display: block; margin: auto;">
+      <div class="grid-container">
+        <div class="grid-item" name="dashboard" active="true"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"/><path d="M9 22V12h6v10M2 10.6L12 2l10 8.6"/></svg></div>
+        <div class="grid-item" name="report">2</div>
+        <div class="grid-item" name="schedule">3</div>
+        <div class="grid-item" name="alerts">4</div>
+        <div class="grid-item" name="settings">5</div>
+        <div class="grid-item" name="account">6</div>
+      </div>
+    </div>
+
+
+    
+
+    <div id="dashboard" class="container">
+      <div class="topnav">
+        <h2 style="margin-top: 1%;">Dashboard</h2>
+      </div>
+      <table class="menu">
+        <tr>
+          <td>
+            <div id="userCount"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>0</div>
+          </td>
+          <td>
+            <div id="refresh">Refresh<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg></div>
+          </td>
+        </tr>
+      </table>
+      
+      <div id="dashboard-stats">
+        <div class="stats"><h2>Productivity Stats</h2></div>
+        <div class="stats"><h2>Website Stats</h2></div>
+        <div class="graphs"><h2>Productivity</h2></div>
+        <div class="graphs"><h2>Team</h2></div>
+      </div>
+
+    </div>
+
+    <div id="report" class="container">
+        <div class="topnav">
+            <h2 style="margin-top: 1%;">Accumulative Report</h2>
+        </div>
+        <table class="menu" style="width: 18vw !important;">
+            <tr>
+              <td>
+                <select>
+                  <option>Today</option>
+                </select>
+              </td>
+              <td>
+                  <select>
+                      <option>All members</option>
+                  </select>
+              </td>
+              <td>
+                <div id="refresh">Refresh<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg></div>
+              </td>
+            </tr>
+        </table>
+        <div id="report-summary">
+          <h2>Productivity Summary</h2>
+        </div>
+        <div id="report-analysis">
+          <h2>Analysis</h2>
+        </div>
+    </div>
+    <div id="schedule" class="container">
+      <h1>Schedule!</h1>
+    </div>
+    <div id="alerts" class="container">
+        <h1>Alerts!</h1>
+    </div>
+    <div id="settings" class="container">
+        <h1>Settings!</h1>
+    </div> 
+    <div id="account" class="container">
+        <h1>Account!</h1>
+    </div>
+
+  </body>
+  <script>
+    document.querySelectorAll(".grid-item")[0].style.border = "3px solid #736cdb";
+    document.querySelectorAll(".grid-item").forEach(i => i.addEventListener('click', function(){
+      document.querySelectorAll(".grid-item").forEach(i => {
+       i.style.border = "none";
+       i.setAttribute('active', false);
+      })
+      i.style.border = "3px solid #736cdb";
+      i.setAttribute('active', true);
+      loadPage();
+    }))
+    
+    function loadPage(){
+      document.querySelectorAll(".container").forEach(i => {
+        i.style.display = "none";
+      })
+      document.querySelectorAll(".grid-item").forEach(i => {
+        if(i.getAttribute('active') == "true"){
+          document.getElementById(i.getAttribute('name')).style.display = "block";
+        }
+      })
+    }
+
+    loadPage();
+
+>>>>>>> 9af75484afc53182f0423a240cf91303257d5d76
   </script>
 
 </html>
