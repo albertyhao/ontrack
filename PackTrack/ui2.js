@@ -942,6 +942,16 @@ chrome.storage.sync.get(['sessions'], function(result){
   }
 })
 
+chrome.storage.sync.get(['studyTime'], function(result){
+  if(!result.studyTime){
+    chrome.storage.sync.set({studyTime: "00:00:00"}, null)
+    document.querySelector('#studyTime').innerText = "0h 0m 0s"
+  } else {
+    chrome.storage.sync.set({studyTime: result.studyTime}, null)
+    document.querySelector('#studyTime').innerText = String(parseInt(result.studyTime.substr(0,2))) + "h " + String(parseInt(result.studyTime.substr(3,2))) + "m " + String(parseInt(result.studyTime.substr(6,2))) + "s";
+  }
+})
+
 
 //Google analytics
 
