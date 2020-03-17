@@ -269,7 +269,18 @@ h1 {
   background-color: rgb(30, 30, 30, 0.8);
   visibility: hidden;
 }
-
+#achievements {
+  z-index: 10000000000000;
+  background-color: white;
+  height: 70%;
+  width: 95%;
+  top: 17%;
+  right: 2.5%;
+  position: absolute;
+  padding: 0 1em;
+  box-sizing: border-box;
+  visibility: hidden;
+}
 #tutorial {
   z-index: 10000000000000;
   background-color: white;
@@ -298,32 +309,25 @@ hr{
   border-bottom-color: #333333;
   margin: auto;
   padding-bottom: 10px;
-  padding-top: 10px;
   border-radius: 25px;
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
 }
 
 .tabs-1 {
-  display: inline-block;
-  left: 50%;
-  width: 32%;
+ 
 }
 
 .tabs-2 {
-  display: inline-block;
-  left: 37%;
-  width: 35%;
+  
 }
 
 .tabs-3 {
-  display: inline-block;
-  left: 100%;
-  width: 28%;
+  
 }
 
 .tabs-4 {
-  display: inline-block;
-  left: 80%;
-  width: 30%;
+  
 }
 
 #home-icon {

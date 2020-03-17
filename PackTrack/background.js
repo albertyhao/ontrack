@@ -292,6 +292,12 @@ function timeCountdown() {
   
     alert("Study session completed!")
     
+    chrome.storage.sync.get(['sessions'], function(result){
+        var $new = result.sessions + 1;
+        console.log($new)
+        chrome.storage.sync.set({sessions: $new});
+      
+    })
   }
 }
 
@@ -364,3 +370,5 @@ chrome.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSd7dVVq
 // } else {
 //   chrome.storage.sync.set({'newuser': "no"}, null);
 // }
+
+
