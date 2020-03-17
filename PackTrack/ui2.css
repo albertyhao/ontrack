@@ -487,3 +487,11 @@ hr{
   border: 2px solid #736cdb;
   border-radius: 12px;
 }
+
+#sessions {
+  color: #736cdb;
+}
+#achievements table {
+  margin: auto;
+  width: 90%;
+}

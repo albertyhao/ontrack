@@ -1,4 +1,4 @@
-console.log("im the one")
+
 // Push stuff
 // const timervalue = '00:00:00';
 const timerElements = Array.from(document.querySelectorAll(".timerDigit"));
@@ -948,8 +948,17 @@ chrome.storage.sync.get(['studyTime'], function(result){
     document.querySelector('#studyTime').innerText = "0h 0m 0s"
   } else {
     chrome.storage.sync.set({studyTime: result.studyTime}, null)
-    document.querySelector('#studyTime').innerText = String(parseInt(result.studyTime.substr(0,2))) + "h " + String(parseInt(result.studyTime.substr(3,2))) + "m " + String(parseInt(result.studyTime.substr(6,2))) + "s";
+    document.querySelector('#studyTime').querySelectorAll('span')[0].innerText = String(parseInt(result.studyTime.substr(0,2))) 
+    document.querySelector('#studyTime').querySelectorAll('span')[1].innerText = String(parseInt(result.studyTime.substr(3,2))) 
+    document.querySelector('#studyTime').querySelectorAll('span')[2].innerText = String(parseInt(result.studyTime.substr(6,2)))
   }
+})
+
+document.querySelector('#studyTime').querySelectorAll('span').forEach(i => {
+  
+    i.style.color = "#736cdb"
+  
+  
 })
 
 

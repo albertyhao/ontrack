@@ -296,12 +296,12 @@ function timeCountdown() {
     
     chrome.storage.sync.get(['sessions'], function(result){
         var $new = result.sessions + 1;
-        console.log($new)
+        
         chrome.storage.sync.set({sessions: $new});
       
     })
     chrome.storage.sync.get(['studyTime'], function(result){
-      console.log(sessionTime)
+      
       var $hour = parseInt(result.studyTime.substr(0, 2)) + parseInt(sessionTime.substr(0, 2))
       var $min = parseInt(result.studyTime.substr(3, 2)) + parseInt(sessionTime.substr(3, 2))
       var $sec = parseInt(result.studyTime.substr(6, 2)) + parseInt(sessionTime.substr(6, 2))
