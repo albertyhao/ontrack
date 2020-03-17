@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "OnTrack: Smart Productivity Tool",
   "short_name": "OnTrack: Smart Productivity Tool",
-  "version": "2.5.3",
+  "version": "2.5.4",
 
   "web_accessible_resources": [
     "biology.txt",
