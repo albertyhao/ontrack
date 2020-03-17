@@ -196,11 +196,13 @@ chrome.runtime.onMessage.addListener(
 //Timer Code
 var timerInterval;
 var time;
+var sessionTime;
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     if (req.timer) {
       time = req.timer
+      sessionTime = req.timer
       // console.log(time)
       timerInterval = setInterval(timeCountdown, 1000)
     }
@@ -292,6 +294,37 @@ function timeCountdown() {
   
     alert("Study session completed!")
     
+    chrome.storage.sync.get(['sessions'], function(result){
+        var $new = result.sessions + 1;
+        
+        chrome.storage.sync.set({sessions: $new});
+      
+    })
+    chrome.storage.sync.get(['studyTime'], function(result){
+      
+      var $hour = parseInt(result.studyTime.substr(0, 2)) + parseInt(sessionTime.substr(0, 2))
+      var $min = parseInt(result.studyTime.substr(3, 2)) + parseInt(sessionTime.substr(3, 2))
+      var $sec = parseInt(result.studyTime.substr(6, 2)) + parseInt(sessionTime.substr(6, 2))
+      if ($sec / 10 < 1) {
+        $newsec = "0" + String($sec)
+      } else {
+        $newsec = String($sec)
+      }
+  
+      if ($min / 10 < 1) {
+        $newmin = "0" + String($min)
+      } else {
+        $newmin = String($min)
+      }
+  
+      if ($hour / 10 < 1) {
+        $newhr = "0" + String($hour)
+      } else {
+        $newhr = String($hour)
+      }
+      var $newTime = $newhr + ":" + $newmin + ":" + $newsec;
+      chrome.storage.sync.set({studyTime: $newTime});
+    })
   }
 }
 
@@ -364,3 +397,5 @@ chrome.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSd7dVVq
 // } else {
 //   chrome.storage.sync.set({'newuser': "no"}, null);
 // }
+
+

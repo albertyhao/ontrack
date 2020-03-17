@@ -1,7 +1,4 @@
 
-
-
-
 // Push stuff
 // const timervalue = '00:00:00';
 const timerElements = Array.from(document.querySelectorAll(".timerDigit"));
@@ -536,6 +533,8 @@ document.getElementById("settingsTab").addEventListener('click', function(e) {
   document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
   document.getElementById("home").style.visibility = "hidden";
   document.getElementById("home-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
+  document.getElementById("achievements").style.visibility = "hidden";
+  document.getElementById("trophy").style.borderBottom = "3px solid white";
 })
 
 // var $whitelist = document.querySelector('#openWhitelistPanel');
@@ -562,6 +561,8 @@ document.getElementById("whitelistTab").addEventListener('click', function(e) {
   document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(113, 109, 218)";
   document.getElementById("home").style.visibility = "hidden";
   document.getElementById("home-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
+  document.getElementById("achievements").style.visibility = "hidden";
+  document.getElementById("trophy").style.borderBottom = "3px solid white";
 })
 
 document.getElementById("homeTab").addEventListener('click', function(e) {
@@ -571,6 +572,20 @@ document.getElementById("homeTab").addEventListener('click', function(e) {
   document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
   document.getElementById("home").style.visibility = "visible";
   document.getElementById("home-icon").style.borderBottom = "3px solid rgb(113, 109, 218)";
+  document.getElementById("achievements").style.visibility = "hidden";
+  document.getElementById("trophy").style.borderBottom = "3px solid white";
+})
+
+document.getElementById("achievementsTab").addEventListener('click', function(e) {
+  document.getElementById("settings").style.visibility = "hidden";
+  document.getElementById("settings-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
+  document.getElementById("whitelistPanel").style.visibility = "hidden";
+  document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
+  document.getElementById("home").style.visibility = "hidden";
+  document.getElementById("home-icon").style.borderBottom = "3px solid white";
+  document.getElementById("achievements").style.visibility = "visible";
+  document.getElementById("trophy").style.borderBottom = "3px solid rgb(113, 109, 218)";
+
 })
 
 //Opening and closing tutorial menu
@@ -837,4 +852,61 @@ chrome.storage.sync.get(['survey'], function(result){
 document.querySelector('#tutorial').querySelectorAll('a').forEach(i => i.addEventListener('click', function(){
   window.open(i.getAttribute('href'), "_blank");
 }))
+
+
+//Achievements feature
+
+chrome.storage.sync.get(['sessions'], function(result){
+  if(!result.sessions){
+    chrome.storage.sync.set({sessions: 0}, null)
+    document.querySelector('#sessions').innerText = "0";
+  } else {
+    chrome.storage.sync.set({sessions: result.sessions}, null)
+    document.querySelector('#sessions').innerText = result.sessions;
+  }
+})
+
+chrome.storage.sync.get(['studyTime'], function(result){
+  if(!result.studyTime){
+    chrome.storage.sync.set({studyTime: "00:00:00"}, null)
+    document.querySelector('#studyTime').innerText = "0h 0m 0s"
+  } else {
+    chrome.storage.sync.set({studyTime: result.studyTime}, null)
+    document.querySelector('#studyTime').querySelectorAll('span')[0].innerText = String(parseInt(result.studyTime.substr(0,2))) 
+    document.querySelector('#studyTime').querySelectorAll('span')[1].innerText = String(parseInt(result.studyTime.substr(3,2))) 
+    document.querySelector('#studyTime').querySelectorAll('span')[2].innerText = String(parseInt(result.studyTime.substr(6,2)))
+  }
+})
+
+document.querySelector('#studyTime').querySelectorAll('span').forEach(i => {
+  
+    i.style.color = "#736cdb"
+  
+  
+})
+
+
+//Google analytics
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-150162735-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = 'https://ssl.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+
+
+function trackButton(e){
+  if(e.target.innerText == "STOP"){
+    _gaq.push(['_trackEvent', document.querySelector('.dropdown-select').value, document.querySelectorAll('.timerDigit')[0].value + ":" + document.querySelectorAll('.timerDigit')[1].value + ":" + document.querySelectorAll('.timerDigit')[2].value])
+  } else {
+    _gaq.push(['_trackEvent', "none", "stop session"])
+  }
+}
+
+document.querySelector('#timer_start').addEventListener('click', trackButton);
 
