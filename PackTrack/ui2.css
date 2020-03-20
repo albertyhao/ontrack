@@ -32,10 +32,10 @@ h1 {
   position:relative;
   border-radius: 8px;
   text-align: center;
- 
+
 
   padding: 0;
-  
+
   overflow: hidden;
 }
 ::-webkit-input-placeholder {
@@ -161,7 +161,7 @@ h1 {
    bottom: 74%;
    z-index: 10000000000000000000;
  }
- 
+
 
  #unblock {
   border: 2px solid #736cdb;
@@ -281,6 +281,18 @@ h1 {
   box-sizing: border-box;
   visibility: hidden;
 }
+#todo {
+  z-index: 10000000000000;
+  background-color: white;
+  height: 70%;
+  width: 95%;
+  top: 17%;
+  right: 2.5%;
+  position: absolute;
+  padding: 0 1em;
+  box-sizing: border-box;
+  visibility: hidden;
+}
 #tutorial {
   z-index: 10000000000000;
   background-color: white;
@@ -311,23 +323,23 @@ hr{
   padding-bottom: 10px;
   border-radius: 25px;
   display: grid;
-  grid-template-columns: 25% 25% 25% 25%;
+  grid-template-columns: 20% 20% 20% 20% 20%;
 }
 
 .tabs-1 {
- 
+
 }
 
 .tabs-2 {
-  
+
 }
 
 .tabs-3 {
-  
+
 }
 
 .tabs-4 {
-  
+
 }
 
 #home-icon {
@@ -347,7 +359,7 @@ hr{
 
 #welcome {
   text-align:center;
-  border: 2px solid #736cdb; 
+  border: 2px solid #736cdb;
   background-color: #fff;
   z-index: 100000000000000000000000000;
   position:absolute;
@@ -358,7 +370,7 @@ hr{
 }
 #survey {
   text-align:center;
-  border: 2px solid #736cdb; 
+  border: 2px solid #736cdb;
   background-color: #fff;
   z-index: 10000000000000000000000000000;
   position:absolute;
@@ -388,9 +400,9 @@ hr{
   background-color: rgba(100,100,100,0.5);
   z-index: 10000000000000;
   visibility: visible;
-  
+
 }
- 
+
 #welcome input {
   height: 3em;
   width: 15em;
@@ -409,7 +421,7 @@ hr{
 #username {
   width: 18em;
   height: 3em;
-  
+
   display: block;
   margin:auto;
 }
@@ -417,7 +429,7 @@ hr{
 #email {
   width: 18em;
   height: 3em;
-  
+
   display: block;
   margin:auto;
 }
@@ -494,4 +506,25 @@ hr{
 #achievements table {
   margin: auto;
   width: 90%;
+}
+
+.todo-list {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+}
+.todoLi {
+  list-style: none;
+}
+
+.btnTodo {
+  border: 2px solid #736cdb;
+  padding: 4px 10px;
+  border-radius: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: none;
+  background: #fff;
+  color: #736cdb;
+  font-size: 10px;
 }

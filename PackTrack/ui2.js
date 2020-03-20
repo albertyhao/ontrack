@@ -1,3 +1,7 @@
+////////////////////////////////////////////////////////////////////////
+// TIMER ///////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+
 
 // Push stuff
 // const timervalue = '00:00:00';
@@ -73,7 +77,9 @@ document.getElementById("timer_start").addEventListener('click', function(e) {
     timerEnd()
   }
 
-
+/////////////////////////////////////////////////////////////////////////////
+// SUBJECTS /////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
   var subjectDrop = document.getElementsByClassName("dropdown-select")[0];
     if(subjectDrop.value ==="none"){
@@ -526,66 +532,65 @@ function timerStart(){
 //   document.querySelector('#settings').style.visibility = 'hidden';
 // }
 
+var openTabs = {
+  "settings": {
+    "open": false,
+    "icon": "settings-icon"
+  },
+  "whitelistPanel": {
+    "open": false,
+    "icon": "whitelist-icon"
+  },
+  "home": {
+    "open": true,
+    "icon": "home-icon"
+  },
+  "achievements": {
+    "open": false,
+    "icon": "trophy"
+  },
+  "todo": {
+    "open": false,
+    "icon": "todo-icon"
+  }
+}
+
+function changeTabs(tab) {
+  for (t in openTabs) {
+    if (tab === t) {
+      openTabs[t]["open"] = true;
+    } else {
+      openTabs[t]["open"] = false;
+    }
+
+    if (openTabs[t]["open"]) {
+      document.getElementById(t).style.visibility = "visible";
+      document.getElementById(openTabs[t]["icon"]).style.borderBottom = "3px solid rgb(113, 109, 218)";
+    } else {
+      document.getElementById(t).style.visibility = "hidden";
+      document.getElementById(openTabs[t]["icon"]).style.borderBottom = "3px solid rgb(255, 255, 255)";
+    }
+  }
+}
+
 document.getElementById("settingsTab").addEventListener('click', function(e) {
-  document.getElementById("settings").style.visibility = "visible";
-  document.getElementById("settings-icon").style.borderBottom = "3px solid rgb(113, 109, 218)";
-  document.getElementById("whitelistPanel").style.visibility = "hidden";
-  document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
-  document.getElementById("home").style.visibility = "hidden";
-  document.getElementById("home-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
-  document.getElementById("achievements").style.visibility = "hidden";
-  document.getElementById("trophy").style.borderBottom = "3px solid white";
+  changeTabs("settings")
 })
 
-// var $whitelist = document.querySelector('#openWhitelistPanel');
-// $whitelist.addEventListener('click', openWhitelist);
-// function openWhitelist(){
-//   document.querySelector('#overlay').style.visibility = 'visible';
-//   document.querySelector('#whitelistPanel').style.visibility = 'visible';
-//   document.querySelector('#table').style.visibility = 'hidden';
-// }
-//
-// document.querySelector('#exitWhitelistPanel').addEventListener('click', exitWhitelist);
-// function exitWhitelist(){
-//   document.querySelector('#table').style.visibility = 'hidden';
-//   document.querySelector('#overlay').style.visibility = 'hidden';
-//   document.querySelector('#whitelistPanel').style.visibility = 'hidden';
-//   document.querySelector('#warning').style.visibility = 'hidden';
-//
-//
-
 document.getElementById("whitelistTab").addEventListener('click', function(e) {
-  document.getElementById("settings").style.visibility = "hidden";
-  document.getElementById("settings-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
-  document.getElementById("whitelistPanel").style.visibility = "visible";
-  document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(113, 109, 218)";
-  document.getElementById("home").style.visibility = "hidden";
-  document.getElementById("home-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
-  document.getElementById("achievements").style.visibility = "hidden";
-  document.getElementById("trophy").style.borderBottom = "3px solid white";
+  changeTabs("whitelistPanel")
 })
 
 document.getElementById("homeTab").addEventListener('click', function(e) {
-  document.getElementById("settings").style.visibility = "hidden";
-  document.getElementById("settings-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
-  document.getElementById("whitelistPanel").style.visibility = "hidden";
-  document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
-  document.getElementById("home").style.visibility = "visible";
-  document.getElementById("home-icon").style.borderBottom = "3px solid rgb(113, 109, 218)";
-  document.getElementById("achievements").style.visibility = "hidden";
-  document.getElementById("trophy").style.borderBottom = "3px solid white";
+  changeTabs("home")
 })
 
 document.getElementById("achievementsTab").addEventListener('click', function(e) {
-  document.getElementById("settings").style.visibility = "hidden";
-  document.getElementById("settings-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
-  document.getElementById("whitelistPanel").style.visibility = "hidden";
-  document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
-  document.getElementById("home").style.visibility = "hidden";
-  document.getElementById("home-icon").style.borderBottom = "3px solid white";
-  document.getElementById("achievements").style.visibility = "visible";
-  document.getElementById("trophy").style.borderBottom = "3px solid rgb(113, 109, 218)";
+  changeTabs("achievements")
+})
 
+document.getElementById("todoTab").addEventListener('click', function(e) {
+  changeTabs("todo")
 })
 
 //Opening and closing tutorial menu
@@ -802,7 +807,7 @@ var $surveyModal = document.querySelector('#surveyModal');
 
 
 chrome.storage.sync.get(['survey'], function(result){
-  
+
   var surveyStatus = result.survey;
   if(surveyStatus == "completed"){
     $survey.style.visibility = "hidden";
@@ -814,11 +819,11 @@ chrome.storage.sync.get(['survey'], function(result){
 
 
   if(!surveyStatus){
-    
+
     chrome.storage.sync.set({'survey': "incomplete"}, null);
     surveyStatus = "incomplete";
   } else if(surveyStatus){
-    
+
     chrome.storage.sync.get(['survey'], function(result){
       surveyStatus = result.survey;
     })
@@ -833,8 +838,8 @@ chrome.storage.sync.get(['survey'], function(result){
     $survey.style.visibility = "hidden";
     $surveyModal.style.visibility = "hidden";
     window.open("http://bit.ly/37hwNrS", "_blank");
-    
-  
+
+
   });
 
   $later.addEventListener('click', function(){
@@ -843,9 +848,9 @@ chrome.storage.sync.get(['survey'], function(result){
     $survey.style.visibility = "hidden";
     $surveyModal.style.visibility = "hidden";
   })
-  
-  
-  
+
+
+
 })
 
 
@@ -872,17 +877,17 @@ chrome.storage.sync.get(['studyTime'], function(result){
     document.querySelector('#studyTime').innerText = "0h 0m 0s"
   } else {
     chrome.storage.sync.set({studyTime: result.studyTime}, null)
-    document.querySelector('#studyTime').querySelectorAll('span')[0].innerText = String(parseInt(result.studyTime.substr(0,2))) 
-    document.querySelector('#studyTime').querySelectorAll('span')[1].innerText = String(parseInt(result.studyTime.substr(3,2))) 
+    document.querySelector('#studyTime').querySelectorAll('span')[0].innerText = String(parseInt(result.studyTime.substr(0,2)))
+    document.querySelector('#studyTime').querySelectorAll('span')[1].innerText = String(parseInt(result.studyTime.substr(3,2)))
     document.querySelector('#studyTime').querySelectorAll('span')[2].innerText = String(parseInt(result.studyTime.substr(6,2)))
   }
 })
 
 document.querySelector('#studyTime').querySelectorAll('span').forEach(i => {
-  
+
     i.style.color = "#736cdb"
-  
-  
+
+
 })
 
 
@@ -910,3 +915,61 @@ function trackButton(e){
 
 document.querySelector('#timer_start').addEventListener('click', trackButton);
 
+///////////////////////////////////////////////////////////////////////////////
+// TODO ///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+function getTodos(callback) {
+    chrome.storage.sync.get(['todos'], callback);
+}
+
+function addTodo() {
+    var task = document.getElementById('task').value;
+    if (task !== '') {
+      document.getElementById('task').value = '';
+
+      chrome.storage.sync.get(['todos'], function(result) {
+        result.todos.push(task);
+        chrome.storage.sync.set({todos: result.todos}, function() {
+          showTodos();
+        });
+      });
+    }
+
+    return false;
+}
+
+function removeTodo() {
+    var id = this.getAttribute('id');
+
+    chrome.storage.sync.get(['todos'], function(result) {
+      result.todos.splice(id, 1);
+      chrome.storage.sync.set({todos: result.todos}, function() {
+        showTodos();
+      });
+    });
+
+    return false;
+}
+
+function showTodos() {
+    chrome.storage.sync.get(['todos'], function(result) {
+      var todos = result.todos;
+      var html = '<ul>';
+      for(var i=0; i<todos.length; i++) {
+          html += '<li class="todoLi">' + todos[i] + '  <button class="remove btnTodo" id="' + i  + '">x</button></li>';
+      };
+      html += '</ul>';
+
+      document.getElementById('todo-list').innerHTML = html;
+
+      var buttons = document.getElementsByClassName('remove');
+      for (var i=0; i < buttons.length; i++) {
+          buttons[i].addEventListener('click', removeTodo);
+      };
+    });
+}
+
+document.addEventListener('keypress', function(e) { if (openTabs["todo"]["open"] && e.key == "Enter") { addTodo(); } })
+document.getElementById('add').addEventListener('click', addTodo);
+showTodos();

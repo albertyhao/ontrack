@@ -67,12 +67,12 @@ chrome.runtime.onMessage.addListener(
     if(req.subject == "check sim for unblock"){
       var text = req.txt;
       // console.log(req.txt)
-      var siteText = ""; 
-          
+      var siteText = "";
+
     for( var i = 0; i < text.length; i++ ){
       if( !(text[i] == '\n' || text[i] == '\r') ){
-        siteText += text[i]; 
-        
+        siteText += text[i];
+
       }
     }
     // console.log(siteText)
@@ -89,14 +89,14 @@ chrome.runtime.onMessage.addListener(
     var sim = num/(subjectWords.length);
     // console.log(sim)
     sendResponse({sim: sim});
-  
-    
+
+
 
 
 
 
     }
-    
+
   }
 )
 
@@ -104,12 +104,12 @@ chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse){
     if(req.subject == "check sim"){
       var text = req.txt;
-      var siteText = ""; 
-          
+      var siteText = "";
+
     for( var i = 0; i < text.length; i++ ){
       if( !(text[i] == '\n' || text[i] == '\r') ){
-        siteText += text[i]; 
-        
+        siteText += text[i];
+
       }
     }
     siteText = siteText.toLowerCase();
@@ -126,12 +126,12 @@ chrome.runtime.onMessage.addListener(
     // console.log(num)
     // console.log(sim)
     // console.log(simCutoff)
-    
+
     chrome.storage.sync.get(['customerid', 'subject', 'email', 'name'], function(result){
       // console.log(result.subject);
       var xhr = new XMLHttpRequest();
       xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&sim=${sim}&subject=${result.subject}&loadsimtime=${req.loadsimtime}&name=${result.name}&email=${result.email}`);
-      xhr.send(); 
+      xhr.send();
     })
     if (newSubject == "collegeApps"){
       if (sender.tab.url.includes(".edu/") || sim > simCutoff || sender.tab.url.includes("college") || sender.tab.url.includes("university")){
@@ -150,7 +150,7 @@ chrome.runtime.onMessage.addListener(
       sendResponse({res: true, sim: sim})
     }
   }
-    
+
 
 
 
@@ -164,7 +164,7 @@ chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     if (req.subject == "change subject") {
       setNewSubject();
-     
+
   }
 }
 )
@@ -279,29 +279,29 @@ function timeCountdown() {
   } else {
     clearInterval(timerInterval)
     chrome.runtime.sendMessage(chrome.runtime.id, {endTimer: true}, null)
-    
+
     chrome.storage.sync.set({subject: "none"}, null);
     chrome.storage.sync.get(['subject'], function(result){
-      
+
     })
     chrome.tabs.query({}, function(tabs) {
       for(var i=0; i < tabs.length; i++){
         chrome.tabs.sendMessage(tabs[i].id, {subject: "take away timer"}, null);
       }
-        
+
      });
      setNewSubject();
-  
+
     alert("Study session completed!")
-    
+
     chrome.storage.sync.get(['sessions'], function(result){
         var $new = result.sessions + 1;
-        
+
         chrome.storage.sync.set({sessions: $new});
-      
+
     })
     chrome.storage.sync.get(['studyTime'], function(result){
-      
+
       var $hour = parseInt(result.studyTime.substr(0, 2)) + parseInt(sessionTime.substr(0, 2))
       var $min = parseInt(result.studyTime.substr(3, 2)) + parseInt(sessionTime.substr(3, 2))
       var $sec = parseInt(result.studyTime.substr(6, 2)) + parseInt(sessionTime.substr(6, 2))
@@ -310,13 +310,13 @@ function timeCountdown() {
       } else {
         $newsec = String($sec)
       }
-  
+
       if ($min / 10 < 1) {
         $newmin = "0" + String($min)
       } else {
         $newmin = String($min)
       }
-  
+
       if ($hour / 10 < 1) {
         $newhr = "0" + String($hour)
       } else {
@@ -341,11 +341,11 @@ function timeCountdown() {
 
 function closeTabs(){
   chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-    
-      
+
+
     chrome.tabs.remove(tabs[0].id, null);
-      
-    
+
+
   });
 }
 
@@ -361,7 +361,7 @@ chrome.runtime.onMessage.addListener(
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
   if(changeInfo && changeInfo.status == "complete"){
       chrome.tabs.sendMessage(tabId, {subject: "state change"}, function(response) {
-          
+
       });
 
   }
@@ -392,10 +392,31 @@ chrome.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSd7dVVq
 //         }
 //       }
 //     )
-    
+
 //   }, 172800000);
 // } else {
 //   chrome.storage.sync.set({'newuser': "no"}, null);
 // }
 
+function checkHour(){
+    var d = new Date();
+    if(d.getHours() >= 9 && d.getHours() <= 20){ // If between 09:00 and 20:00, alert
+        remindTodos();
+    }
+    setTimeout(checkHour, getMilisecondsLeft());
 
+}
+
+function remindTodos(){
+    // Remind for todos code here
+    chrome.storage.sync.get(['todos'], function(result) {
+      alert(`You have ${result.todos.length} incompleted items on your todo list!`)
+    });
+}
+
+function getMilisecondsLeft(){
+    var d = new Date();
+    return 1000*60*60 - (d.getMinutes()*1000*60 + d.getSeconds()*1000+ d.getMilliseconds());
+}
+
+setTimeout(checkHour, getMilisecondsLeft());
