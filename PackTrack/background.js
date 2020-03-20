@@ -410,7 +410,9 @@ function checkHour(){
 function remindTodos(){
     // Remind for todos code here
     chrome.storage.sync.get(['todos'], function(result) {
-      alert(`You have ${result.todos.length} incompleted items on your todo list!`)
+      if (result.todos.length > 0) {
+        alert(`You have ${result.todos.length} incompleted items on your todo list!`)
+      }
     });
 }
 
