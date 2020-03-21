@@ -1,4 +1,3 @@
-
 var load = new Date ();
 var $qblock;
 var siteText;
@@ -45,7 +44,6 @@ function injectStyle(){
     stroke-width: 3px;
     stroke: #736cdb;
     
-
     fill: none;
     
   }
@@ -100,7 +98,6 @@ function injectStyle2(){
     stroke-width: 3px;
     stroke: white;
     
-
     fill: none;
     
   }
@@ -152,6 +149,7 @@ function scrapeUserSite() {
       // console.log(whitelist);
     }
       chrome.runtime.sendMessage(chrome.runtime.id, {txt: siteText, subject: "check sim"}, function(response) {
+        console.log(response)
        
         if(!response) return;
         sim = response.sim;
@@ -216,7 +214,7 @@ function scrapeUserSite() {
               newLink.setAttribute('class', "link");
               document.querySelector('#helpfulLinks').appendChild(newLink);
             }
-          } else if(whitelist.length > 14){
+          } else if(whitelist.length >= 14){
             for(i=9; i < 14; i++){
               var newLink = document.createElement('div');
               newLink.innerHTML = `
@@ -293,17 +291,6 @@ function scrapeUserSite() {
           
           
           
-        } else if(response.res == "power off"){
-          var t = document.querySelector('#countdown');
-          if(t){
-            document.body.removeChild(t);
-          }
-
-          if(document.title == "Off Task!"){
-            location.reload();
-          }
-          
-          // console.log('power off');
         } else {
           if(timerOrNot == "on"){
             var t = document.querySelector('#countdown');
@@ -321,6 +308,23 @@ function scrapeUserSite() {
           }
           
         }
+
+
+        chrome.storage.sync.get(['subject'], function(result){
+          if(result.subject == "none"){
+            var t = document.querySelector('#countdown');
+            if(t){
+              document.body.removeChild(t);
+            }
+  
+            // if(document.title == "Off Task!"){
+            //   location.reload();
+            // }
+            location.reload();
+              
+            
+          }
+        })
 
         // 
         
@@ -478,10 +482,7 @@ function insertTimer(){
   setInterval(function(){
     if(document.getElementById('timeMarker')){
       document.getElementById('timeMarker').getElementsByTagName('p')[0].innerHTML = `<p style="text-align: center;">${time}</p>`;
-      if(document.getElementById('timeMarker').getElementsByTagName('p')[0].innerText == "00:00:00"){
-        document.getElementById('timeMarker').getElementsByTagName('p')[0].innerHTML = `<p style="text-align: center; color: darkgreen;">Done <svg style="position: relative; top: 2px;" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="darkgreen" stroke-width="3" stroke-linecap="square" stroke-linejoin="arcs"><polyline points="20 6 9 17 4 12"></polyline></svg></p>`;;
-        
-      }
+      
     }
    
   }, 1000);
@@ -783,8 +784,3 @@ chrome.runtime.onMessage.addListener(
     }
   }
 )
-
-//Cursor
-// document.querySelectorAll('*').forEach(e => e.style.cursor = "url('https://kari.wisen.space/gekrinr_ubwcstpcbrnukdkz.png'), auto")
-
-// document.querySelectorAll('*').forEach(e => e.style.cursor = "url('https://kari.wisen.space/qf2c3rvlcmkzagjdv0ko0db_.png'), auto")
