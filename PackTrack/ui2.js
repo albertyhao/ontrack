@@ -919,10 +919,6 @@ document.querySelector('#timer_start').addEventListener('click', trackButton);
 // TODO ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-function getTodos(callback) {
-    chrome.storage.sync.get(['todos'], callback);
-}
-
 function addTodo() {
     var task = document.getElementById('task').value;
     if (task !== '') {
@@ -973,4 +969,13 @@ function showTodos() {
 
 document.addEventListener('keypress', function(e) { if (openTabs["todo"]["open"] && e.key == "Enter") { addTodo(); } })
 document.getElementById('add').addEventListener('click', addTodo);
-showTodos();
+
+chrome.storage.sync.get(['todos'], function(result) {
+  if (!result.todos) {
+    chrome.storage.sync.set({todos: []}, function() {
+      showTodos();
+    })
+  } else {
+    showTodos();
+  }
+})
