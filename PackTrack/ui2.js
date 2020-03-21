@@ -929,6 +929,7 @@ function addTodo() {
       document.getElementById('task').value = '';
 
       chrome.storage.sync.get(['todos'], function(result) {
+        console.log(result.todos)
         result.todos.push(task);
         chrome.storage.sync.set({todos: result.todos}, function() {
           showTodos();
