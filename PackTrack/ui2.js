@@ -210,7 +210,7 @@ function timerEnd() {
   chrome.tabs.query({}, function (tabs) {
     for (var i = 0; i < tabs.length; i++) {
       tabIds.push(tabs[i].id);
-      chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
+      chrome.tabs.update(tabIds[i], {url: tabs[i].url}, null);
 
     }
   });
@@ -742,11 +742,55 @@ chrome.storage.sync.get(['studyTime'], function(result){
   }
 })
 
+var noneBadge = "https://nathan.wisen.space/None%20badge_00000.png";
+var woodBadge = "https://nathan.wisen.space/Wood%20Badge_00016.png";
+var bronzeBadge = "https://nathan.wisen.space/Bronze%20Badge.png"
+var silverBadge = "https://nathan.wisen.space/Silver%20Badge_00029.png"
+var goldBadge = "https://nathan.wisen.space/gold%20(5)_00044.png"
+var platBadge = "https://nathan.wisen.space/Plat%20Badge%20Final_00000.png"
+var diamondBadge = "https://nathan.wisen.space/Diamond%20Badge%20Blue_00000.png"
+var $0Badge = noneBadge;
+var $1Badge = woodBadge;
+var $2Badge = bronzeBadge;
+var $3Badge = silverBadge;
+var $4Badge = goldBadge;
+var $5Badge = platBadge;
+var $6Badge = diamondBadge;
+
 chrome.storage.sync.get(['badge'], function(result){
   if(!result.badge){
     chrome.storage.sync.set({badge: "none"}, null);
     document.querySelector('#badge').querySelector('img').setAttribute('src', "https://nathan.wisen.space/None%20badge_00000.png");
   }
+  document.querySelector('#badgeName').innerText = result.badge;
+
+
+  document.querySelector('#bestBadge').setAttribute('src', window[result.badge + "Badge"])
+
+  //Carousel
+  document.querySelector('#previousBadge').addEventListener('click', function(){
+    var number;
+    if(result.badge == "none"){
+      number = 0;
+    } else if(result.badge == "wood"){
+      number = 1;
+    } else if(result.badge == "bronze"){
+      number = 2;
+    } else if(result.badge == "silver"){
+      number = 3;
+    } else if(result.badge == "gold"){
+      number = 4;
+    } else if(result.badge == "platinum"){
+      number = 5;
+    } else if(result.badge == "diamond"){
+      number = 6;
+    }
+
+    document.querySelector('#bestBadge').setAttribute('src', window["$" + JSON.stringify(number - 1) + "Badge"]);
+
+
+
+  })
 })
 
 document.querySelector('#studyTime').querySelectorAll('span').forEach(i => {
@@ -755,6 +799,14 @@ document.querySelector('#studyTime').querySelectorAll('span').forEach(i => {
 
 
 })
+
+
+document.querySelector('#badge').querySelector('img').addEventListener('click', openCollection);
+function openCollection(){
+  document.querySelector('#badgeCollection').style.visibility = "visible";
+}
+
+
 
 
 //Google analytics
