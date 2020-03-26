@@ -16,7 +16,7 @@ var bioWords = ['biological', 'biology', 'cell', 'cells', 'dna', 'energy', 'evol
 var economicWords =  ['macro','micro','utility','resource','allocation','right','left','shift','cost', 'demand', 'economic', 'economists', 'economy', 'goods', 'income', 'labor', 'market', 'neoclassical', 'output', 'policy', 'price', 'production', 'resources', 'supply', 'theory', 'trade', 'unemployment', 'unemployed', 'account', 'banks', 'capital', 'crisis', 'financial', 'companies', 'competition', 'consumers', 'firm', 'monopoly', 'power', 'employer', 'money', 'plan', 'purchase', 'quantity', 'retirement', 'service', 'services', 'tax', 'velocity', 'willing', 'curve', 'equilibrium', 'rate', 'revenue', 'taxation', 'cuts', 'gdp', 'growth', 'elasticity', 'revenues', 'side', 'taxes', 'federal', 'interest','aggregate', 'funds', 'recession', 'growth', 'oligopoly', 'perfect competition', 'monopolistic', 'deadweight', 'excise', 'marginal', 'benefit'];
 var linearWords = ['matrix', 'matrices', 'row', 'operation', 'column','invertible','elementary','inverse','determinant','transpose','augment','identity','solution','equation','linear algebra','vector','scalar','echelon','row reduced','gaussian','elimination','eigen','dual','cramer','infinite','finite', 'Ax=b','add','subtract','multiply','singular','nonsingular','symmetric','skew','rectangular','triangular'];
 var calcWords = ['area', 'under', 'calculus', 'curve', 'derivative', 'differential', 'displaystyle', 'dx', 'function', 'infinitesimal', 'infinitesimals', 'input', 'integral', 'leibniz', 'limit', 'newton', 'slope', 'squaring', 'equation', 'equations','limit', 'graph', 'theorem', 'substitution', 'interval', 'continuity', 'continous', 'intermediate value theorem', 'product', 'quotient', 'average', 'instantaneous', 'secant', 'change', 'infinite', 'infinity', 'proof','sum', 'cos(', 'sin(', 'tan(', 'ln(', 'function', `L'`, 'extrema', 'test', 'concave','convex','concavity','inflection','second','first','polar','parametric','relative','absolute','local','global','maximum', 'minimum', 'exponent', 'logarithm', 'tangent','sine','cosine','chain rule','related rate', 'volume', 'summation'];
-var chemWords = ['chemistry','chemical','gas','mole','state','solid','liquid','solution','reaction','pressure','volume','temperature','energy','work','enthalpy','entropy','endothermic','exothermic','molecule','solution','compound','ion','acid','atom','covalent','charge','polymer','metal','halogen','periodic table','transition','oxidation','reduction','cloud','configuration','valence','electron','proton','neutron','heat','specific','joule','group','nucleus','orbital','subshell','ionization','lewis','structure','octet','pair','phase','decomposition','displacement','single','double','precipitate','molality','molarity','density','base','conjugate','weak','strong','reactant','product','conservation','matter','redox','capacity','calorimeter']
+var chemWords = ['chemistry','chemical','gas','mole','state','solid','liquid','solution','reaction','pressure','volume','temperature','energy','work','enthalpy','entropy','endothermic','exothermic','molecule','solution','compound','ion','acid','atom','covalent','charge','polymer','metal','halogen','periodic table','transition','oxidation','reduction','cloud','configuration','valence','electron','proton','neutron','heat','specific','joule','group','nucleus','orbital','subshell','ionization','lewis','structure','octet','pair','phase','decomposition','displacement','single','double','precipitate','molality','molarity','density','base','conjugate','weak','strong','reactant','product','conservation','matter','redox','capacity','calorimeter', 'aqueous', 'freezing', 'boiling', 'sublimation', 'vaporization', `van't Hoff`]
 var historyWords = ['american', 'americans', 'army', 'british', 'colonies', 'congress', 'government', 'nation', 'quaker','native',  'north', 'party', 'president', 'rights', 'slavery', 'slaves', 'south', 'states', 'union', 'united', 'war', 'women', 'americas', 'culture', 'indian', 'indians', 'iroquois', 'tribe', 'america', 'became', 'britain', 'colonial', 'colonists', 'colony', 'england', 'english', 'florida', 'land', 'population', 'settlers', 'spain', 'spanish', 'bay', 'canada', 'colonization', 'columbia', 'empire', 'established', 'hudson', 'kingdom', 'overseas', 'quebec', 'rupert', 'boston', 'loyalists', 'parliament', 'patriots', 'revolution', 'york', 'french', 'hamilton', 'mount', 'vernon', 'virginia', 'washington', 'black', 'cotton', 'enslaved', 'free', 'slave', 'trade', 'white', 'battle', 'force', 'fort', 'navy', 'royal', 'ship', 'ships', 'era', 'federalist', 'federalists', 'feelings', 'good', 'jacksonian', 'madison', 'monroe', 'national', 'political', 'presidential', 'republican', 'tour', 'would', 'confederacy', 'confederate', 'southern', 'african', 'blacks',  'civil', 'former', 'freedmen', 'johnson', 'radical', 'radicals', 'reconstruction', 'republicans', 'state', 'vote', 'whites', 'abortion', 'carter', 'conservative', 'crisis', 'economic', 'ford', 'military', 'nixon', 'policy', 'reagan', 'soviet', 'vietnam', 'activists', 'alabama', 'bus', 'freedom', 'kennedy', 'king', 'local', 'malcolm', 'march', 'mississippi', 'montgomery', 'movement', 'nonviolence', 'nonviolent', 'police', 'public', 'registration', 'school', 'segregation',  'students', 'voter', 'voting', 'pennsylvania', 'new york', 'carolina', 'tobacco', 'plantation', 'master', 'liberty'];
 var collegeWords = ['apply', 'essay', 'university','college','applicant','words','narrative','personality','academic','extracurricular','activities','class','interest','explore','campus'];
 
@@ -106,26 +106,26 @@ chrome.runtime.onMessage.addListener(
       var text = req.txt;
       var siteText = ""; 
           
-    for( var i = 0; i < text.length; i++ ){
-      if( !(text[i] == '\n' || text[i] == '\r') ){
-        siteText += text[i]; 
-        
+      for( var i = 0; i < text.length; i++ ){
+        if( !(text[i] == '\n' || text[i] == '\r') ){
+          siteText += text[i]; 
+          
+        }
       }
-    }
-    siteText = siteText.toLowerCase();
-    var num = 0;
-    // console.log(subjectWords);
-    for(var i=0; i < subjectWords.length; i++){
-      if(siteText.includes(subjectWords[i]) === true){
-        num += 1;
+      siteText = siteText.toLowerCase();
+      var num = 0;
+      // console.log(subjectWords);
+      for(var i=0; i < subjectWords.length; i++){
+        if(siteText.includes(subjectWords[i]) === true){
+          num += 1;
+        }
       }
-    }
-    var sim = num/(subjectWords.length);
-    // console.log(sender.tab.url)
-    // // console.log(siteText.split(' ').length);
-    // console.log(num)
-    // console.log(sim)
-    // console.log(simCutoff)
+      var sim = num/(subjectWords.length);
+      // console.log(sender.tab.url)
+      // // console.log(siteText.split(' ').length);
+      // console.log(num)
+      // console.log(sim)
+      // console.log(simCutoff)
     
     chrome.storage.sync.get(['customerid', 'subject', 'email', 'name'], function(result){
       // console.log(result.subject);
@@ -140,6 +140,7 @@ chrome.runtime.onMessage.addListener(
         sendResponse({res: true, sim: sim, txt: "This ain't a college website"})
       }
   } else if(newSubject == "none"){
+    console.log("power is apparently off?")
       sendResponse({res: "power off", sim: sim})
   } else if(newSubject == "whitelist"){
       sendResponse({res: true, sim: sim})
@@ -155,7 +156,7 @@ chrome.runtime.onMessage.addListener(
 
 
 
-    }
+    } 
   }
 )
 // getWordsFromFile('physics.txt');
@@ -240,7 +241,7 @@ chrome.runtime.onMessage.addListener(
 )
 
 function timeCountdown() {
-  // console.log(time)
+  console.log(time)
 
   var hr = parseInt(time.substr(0, 2))
   var min = parseInt(time.substr(3, 2))
@@ -302,9 +303,22 @@ function timeCountdown() {
     })
     chrome.storage.sync.get(['studyTime'], function(result){
       
-      var $hour = parseInt(result.studyTime.substr(0, 2)) + parseInt(sessionTime.substr(0, 2))
-      var $min = parseInt(result.studyTime.substr(3, 2)) + parseInt(sessionTime.substr(3, 2))
-      var $sec = parseInt(result.studyTime.substr(6, 2)) + parseInt(sessionTime.substr(6, 2))
+      var $hour = parseInt(result.studyTime.split(':')[0]) + parseInt(sessionTime.split(':')[0])
+      var $min = parseInt(result.studyTime.split(':')[1]) + parseInt(sessionTime.split(':')[1])
+      var $sec = parseInt(result.studyTime.split(':')[2]) + parseInt(sessionTime.split(':')[2])
+      if ($sec > 59) {
+        
+        $sec = $sec % 60
+        $min += 1;
+        
+      }
+    
+      if ($min > 59) {
+        
+        $min = $min % 60
+        $hour += 1;
+      }
+
       if ($sec / 10 < 1) {
         $newsec = "0" + String($sec)
       } else {
@@ -328,16 +342,7 @@ function timeCountdown() {
   }
 }
 
-// console.log(simCutoff)
-// console.log(newSubject)
 
-
-// browser.runtime.onMessage.addListener(message => {
-//   console.log("background: onMessage", message);
-
-//   // Add this line:
-//   return Promise.resolve("Dummy response to keep the console quiet");
-// });
 
 function closeTabs(){
   chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
@@ -370,32 +375,98 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
 
 chrome.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSd7dVVqH25XmEpB7Z1Ro27YObgGlNmfcbsmqFKeBlnRN7TRLg/viewform?vc=0&c=0&w=1");
 
+//Schedule 
 
-// console.log('hello')
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "schedule") {
+      console.log(req.time, req.timeLength, req.topic)
+      console.log("A study session on " + req.topic + " has been scheduled to start in " + req.time + " and will run for " + req.timeLength)
+      setTimeout(function(){
+        time = req.timeLength
+        sessionTime = req.timeLength
+        // console.log(time)
+        timerInterval = setInterval(timeCountdown, 1000)
+        chrome.storage.sync.set({subject: req.topic}, null);
+        setNewSubject();
+        var tabIds = [];
+        chrome.tabs.query({}, function (tabs) {
+          for (var i = 0; i < tabs.length; i++) {
+            tabIds.push(tabs[i].id);
+            chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
+          }
+        });
+      }, req.time);
+
+    }
+  }
+)
+
+function msToTime(duration) {
+  var seconds = Math.floor((duration / 1000) % 60),
+    minutes = Math.floor((duration / (1000 * 60)) % 60),
+    hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+  hours = (hours < 10) ? "0" + hours : hours;
+  minutes = (minutes < 10) ? "0" + minutes : minutes;
+  seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+  return hours + ":" + minutes + ":" + seconds;
+}
+// var t = setTimeout(function(){
+//   console.log('started the test')
+//   time = "00:00:15";
+//   sessionTime = "00:00:15";
+//   timerInterval = setInterval(timeCountdown, 1000);
+//   chrome.storage.sync.set({subject: "biology"}, null);
+//   setNewSubject();
+//   var tabIds = [];
+//   chrome.tabs.query({}, function (tabs) {
+//     for (var i = 0; i < tabs.length; i++) {
+//       tabIds.push(tabs[i].id);
+//       chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
+//     }
+//   });
+// }, 10000)
+var scheduleRunning;
+if(!scheduleRunning){
+  scheduleRunning = "off"
+}
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "schedule length") {
+      scheduleRunning = "on"
+      console.log(scheduleRunning)
+      setTimeout(function(){
+        scheduleRunning = "off"
+      }, req.length);
+    }
+  }
+)
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "schedule running or not") {
+      sendResponse(scheduleRunning)
+    }
+  }
+)
+
+chrome.runtime.onMessage.addListener(
+  function(req, sender, sendResponse) {
+    if (req.subject == "stop schedule") {
+      scheduleRunning = "off"
+      console.log(scheduleRunning)
+      var id = window.setTimeout(function() {}, 0);
+      while (id--) {
+          window.clearTimeout(id); // will do nothing if no timeout with id is present
+      }
+    }
+  }
+)
 
 
-//Survey form
 
-// var newuser;
-
-// if(!newuser){
-//   chrome.storage.sync.set({'newuser': "yes"}, null);
-//   setTimeout(function(){
-//     console.log("5 secs up")
-//     chrome.runtime.onMessage.addListener(
-//       function(req, sender, sendResponse){
-//         if(req.subject == "survey?"){
-//           console.log("recieved survey request")
-//           sendResponse("yes");
-//           newuser = "no"
-//           chrome.storage.sync.set({'newuser': "no"}, null)
-//         }
-//       }
-//     )
-    
-//   }, 172800000);
-// } else {
-//   chrome.storage.sync.set({'newuser': "no"}, null);
-// }
 
 
