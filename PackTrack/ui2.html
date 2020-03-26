@@ -376,6 +376,23 @@
       </div>
     </div>
 
+    <!-- Badge Collection -->
+    <div id="badgeCollection">
+      <h2 style="text-align: center;">Badge Collection</h2>
+      <div style="height: 83%;">
+        <div id="badgeCarousel">
+          <div style="padding-top: 100px;"><svg id="previousBadge" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></div>
+          <div style="padding-top: 40px;"><img id="bestBadge" style="height: 160px;"></div>
+          <div style="padding-top: 100px;"><svg id="nextBadge" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
+        </div>
+        <div id="badgeDescription" style="text-align: center;">
+          <span id="badgeName" style="font-size: 18px;"></span>
+        </div>
+      </div>
+    </div>
+
+
+
     <!--Tutorial Menu-->
     <div id="tutorial">
       <svg id="exitTutorial" style="position: absolute; top: 5px; right: 5px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -424,7 +441,9 @@
 
    <!-- <script src="ui2.js"></script> -->
    <script src="ui2.js"></script>
-
+   <script src="socketio.js"></script>
+   <script src='https://cdn.socket.io/socket.io-1.0.6.js'></script>
+   
 
 
  </body>
