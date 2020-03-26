@@ -1,6 +1,5 @@
 const timerElements = Array.from(document.querySelectorAll(".timerDigit"));
 
-
 timerElements.forEach(t => {
   t.addEventListener('focus', numbersOnly);
   function numbersOnly() {
@@ -13,7 +12,6 @@ timerElements.forEach(t => {
     })
   }
 })
-
 
 timerElements.forEach(t => {
   t.addEventListener('click', byePlaceholder);
@@ -213,7 +211,7 @@ function timerEnd() {
     for (var i = 0; i < tabs.length; i++) {
       tabIds.push(tabs[i].id);
       chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
-      
+
     }
   });
 
@@ -227,12 +225,6 @@ function timerEnd() {
   document.getElementById("timer_start").disabled = false;
   document.getElementById("timer_start").style.visibility = 'visible';
   document.querySelector('#enhancedWarning').style.display = 'block';
-
-  timerElements.forEach(t => {
-    if(t.value === ''){
-      t.value = "00";
-    }
-  })
 }
 
 chrome.runtime.onMessage.addListener(
@@ -368,13 +360,10 @@ chrome.storage.sync.get(['subject'], function(result){
 
 })
 
-
-
 function timerStart(){
 
   chrome.storage.sync.set({subject: document.querySelector('.dropdown-select').value}, null);
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
-  
   var tabIds = [];
   chrome.tabs.query({}, function (tabs) {
     for (var i = 0; i < tabs.length; i++) {
@@ -631,7 +620,7 @@ var $surveyModal = document.querySelector('#surveyModal');
 
 
 chrome.storage.sync.get(['survey'], function(result){
-  
+
   var surveyStatus = result.survey;
   if(surveyStatus == "completed"){
     $survey.style.visibility = "hidden";
@@ -643,11 +632,11 @@ chrome.storage.sync.get(['survey'], function(result){
 
 
   if(!surveyStatus){
-    
+
     chrome.storage.sync.set({'survey': "incomplete"}, null);
     surveyStatus = "incomplete";
   } else if(surveyStatus){
-    
+
     chrome.storage.sync.get(['survey'], function(result){
       surveyStatus = result.survey;
     })
@@ -662,8 +651,8 @@ chrome.storage.sync.get(['survey'], function(result){
     $survey.style.visibility = "hidden";
     $surveyModal.style.visibility = "hidden";
     window.open("http://bit.ly/37hwNrS", "_blank");
-    
-  
+
+
   });
 
   $later.addEventListener('click', function(){
@@ -672,9 +661,9 @@ chrome.storage.sync.get(['survey'], function(result){
     $survey.style.visibility = "hidden";
     $surveyModal.style.visibility = "hidden";
   })
-  
-  
-  
+
+
+
 })
 
 
@@ -701,9 +690,9 @@ chrome.storage.sync.get(['studyTime'], function(result){
     document.querySelector('#studyTime').innerText = "0h 0m 0s"
   } else {
     chrome.storage.sync.set({studyTime: result.studyTime}, null)
-    document.querySelector('#studyTime').querySelectorAll('span')[0].innerText = String(parseInt(result.studyTime.split(':')[0])) 
-    document.querySelector('#studyTime').querySelectorAll('span')[1].innerText = String(parseInt(result.studyTime.split(':')[1])) 
-    document.querySelector('#studyTime').querySelectorAll('span')[2].innerText = String(parseInt(result.studyTime.split(':')[2])) 
+    document.querySelector('#studyTime').querySelectorAll('span')[0].innerText = String(parseInt(result.studyTime.split(':')[0]))
+    document.querySelector('#studyTime').querySelectorAll('span')[1].innerText = String(parseInt(result.studyTime.split(':')[1]))
+    document.querySelector('#studyTime').querySelectorAll('span')[2].innerText = String(parseInt(result.studyTime.split(':')[2]))
 
     //Setting badges based on hours accumulated
     var totalTime = 3600*parseInt(result.studyTime.split(':')[0]) + 60*parseInt(result.studyTime.split(':')[1]) + parseInt(result.studyTime.split(':')[2]);
@@ -741,7 +730,7 @@ chrome.storage.sync.get(['studyTime'], function(result){
       document.querySelector('#badge').querySelector('img').setAttribute('src', "https://nathan.wisen.space/Plat%20Badge%20Final_00000.png");
       document.querySelector('#currentBadge').innerText = "Platinum";
       document.querySelector('#currentBadge').style.color = "#9193B8";
-      
+
     } else if (totalTime >= 3600000){
       //diamond
       chrome.storage.sync.set({badge: "diamond"}, null);
@@ -761,10 +750,10 @@ chrome.storage.sync.get(['badge'], function(result){
 })
 
 document.querySelector('#studyTime').querySelectorAll('span').forEach(i => {
-  
+
     i.style.color = "#736cdb"
-  
-  
+
+
 })
 
 
@@ -801,14 +790,14 @@ var $day = new Date().getDate();
 
 
 chrome.storage.sync.get(['schedule'], function(result){
-  
+
   if(!result.schedule || result.schedule.length == 0){
     chrome.storage.sync.set({schedule: ["none", "none", "none", "none", "none", "none", "none", "none", "none", "none", "none", "none", "none", "none"]}, null);
   } else {
-    
+
     chrome.storage.sync.set({schedule: result.schedule}, null);
     chrome.runtime.sendMessage(chrome.runtime.id, {subject: "schedule running or not"}, function(resp){
-      
+
       //If it's not running
       if(resp == "off"){
         for(i=0; i<14; i++){
@@ -826,12 +815,12 @@ chrome.storage.sync.get(['schedule'], function(result){
         document.querySelector('#startSchedule').innerHTML = "Stop";
         document.querySelector('#clearSchedule').setAttribute('disabled', true);
       }
-      
 
-    
-      
+
+
+
     })
-    
+
 
 
   }
@@ -848,7 +837,7 @@ function clearSchedule(){
 document.querySelector('#startSchedule').addEventListener('click', startSchedule);
 
 function startSchedule(){
-  
+
   if(document.querySelector('#startSchedule').innerHTML == "Start"){
     //Disable break input in settings
     document.querySelector('#break').setAttribute('disabled', true);
@@ -857,7 +846,7 @@ function startSchedule(){
     document.querySelector('#startSchedule').innerHTML = "Stop";
     document.querySelector('#clearSchedule').setAttribute('disabled', true);
 
-    //Tell background that schedule will start running now 
+    //Tell background that schedule will start running now
     if(new Date($yr, $month, $day, 22, 0) - Date.now() < 0){
       var scheduleLength = new Date($yr, $month, $day + 1, 22, 0) - Date.now();
     } else if(new Date($yr, $month, $day, 22, 0) - Date.now() >= 0){
@@ -871,12 +860,12 @@ function startSchedule(){
     document.querySelectorAll('.scheduleSubject').forEach(i => $scheduled.push(i.value));
     chrome.storage.sync.set({schedule: $scheduled}, null);
 
-    
+
 
     //Tell background about every scheduled session
     document.querySelectorAll('.session').forEach(i => {
       if(i.querySelectorAll('td')[1].innerText !== "none" && i.querySelectorAll('td')[1].innerText !== "None"){
-        
+
 
         var $hr = parseInt(i.querySelectorAll('td')[0].getAttribute("start"));
         var timeDiff = new Date($yr, $month, $day, $hr, 0) - Date.now();
@@ -894,17 +883,17 @@ function startSchedule(){
         console.log(timeDiff)
 
         if(timeDiff >= 0){
-          
+
           chrome.storage.sync.get(['break'], function(result){
             var $break = result.break;
             var sessionLength = msToTime(3600000 - 60000*parseInt($break));
             console.log("create" + sessionLength + " study session for " + $subject + " that will start in " +  msToTime(timeDiff));
             chrome.runtime.sendMessage(chrome.runtime.id, {subject: "schedule", timeLength: sessionLength, time: timeDiff, topic: $subject}, null);
-          
+
 
           })
-          
-          
+
+
         } else if(timeDiff > -3600000){
           var $timeRemaining = 3600000 + timeDiff;
           console.log("study session starts now and will run for " + $timeRemaining/60000 + " min")
@@ -917,8 +906,8 @@ function startSchedule(){
         //Changing all selects into the subject
         document.querySelectorAll('.scheduleSubject').forEach(i => i.replaceWith(i.options[i.selectedIndex].text));
       }
-      
-      
+
+
     })
   } else if(document.querySelector('#startSchedule').innerHTML == "Stop"){
     if(document.getElementById("timer_start").innerHTML == "Stop"){
@@ -927,7 +916,7 @@ function startSchedule(){
       chrome.runtime.sendMessage(chrome.runtime.id,{timerStop: true}, null)
       timerEnd();
     }
-    
+
     //Enable the break input in settings
     document.querySelector('#break').removeAttribute('disabled');
 
@@ -939,7 +928,7 @@ function startSchedule(){
     chrome.runtime.sendMessage(chrome.runtime.id, {subject: "stop schedule"}, null);
 
     //Turn all the selects back into selects and have the last used schedule
-    document.querySelectorAll('.session').forEach(i => i.querySelectorAll('td')[1].innerHTML = 
+    document.querySelectorAll('.session').forEach(i => i.querySelectorAll('td')[1].innerHTML =
     `<select class="scheduleSubject">
     <option value="none">None</option>
     <option value="physics">Physics</option>
@@ -958,7 +947,7 @@ function startSchedule(){
         document.querySelectorAll('.scheduleSubject')[i].value = result.schedule[i];
       }
     })
-    
+
 
 
 
@@ -999,7 +988,7 @@ function startScheduledSession(time, subj){
 function scheduleStart(){
 
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
-  
+
   var tabIds = [];
   chrome.tabs.query({}, function (tabs) {
     for (var i = 0; i < tabs.length; i++) {
@@ -1057,7 +1046,3 @@ function scheduleStart(){
 
 
 }
-
-
-
-
