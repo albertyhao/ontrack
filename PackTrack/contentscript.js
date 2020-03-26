@@ -1,4 +1,3 @@
-
 var load = new Date ();
 var $qblock;
 var siteText;
@@ -7,6 +6,12 @@ var time;
 var setTime;
 var timerOrNot;
 var sim;
+
+if(!time){time = "00:00:00"}
+if(!setTime){setTime = "00:00:00"}
+if(!timerOrNot){
+  timerOrNot = "on";
+}
 
 function injectStyle(){
   var style = `
@@ -45,7 +50,6 @@ function injectStyle(){
     stroke-width: 3px;
     stroke: #736cdb;
     
-
     fill: none;
     
   }
@@ -58,9 +62,9 @@ function injectStyle(){
       stroke-dashoffset: 113px;
     }
   }`
-var s = document.createElement('style')
-s.innerHTML = style;
-document.head.appendChild(s)
+  var s = document.createElement('style')
+  s.innerHTML = style;
+  document.head.appendChild(s)
 }
 
 function injectStyle2(){
@@ -100,7 +104,6 @@ function injectStyle2(){
     stroke-width: 3px;
     stroke: white;
     
-
     fill: none;
     
   }
@@ -119,22 +122,24 @@ document.head.appendChild(s)
 }
 
 function scrapeUserSite() {
-  var tags = Array.from(document.querySelectorAll('*'));
-  var f = tags.filter(t => !['script', 'meta', 'link', 'input', 'html', 'body', 'head', 'style', 'img', 'iframe'].includes(t.tagName.toLowerCase()));
-  var t = f.map(
-      e => Array.from(e.childNodes)
-       .filter(c => c.nodeName === "#text")
-    )
-    .filter(x => x.length)
-    .map(r =>
-      r.map(w => w.textContent.trim())
-      .filter(a => a && a.length > 10)
-    )
-    .filter(q => q.length);
-  siteText = t.join(' ');
+  function scrapeText(){
+    var tags = Array.from(document.querySelectorAll('*'));
+    var f = tags.filter(t => !['script', 'meta', 'link', 'input', 'html', 'body', 'head', 'style', 'img', 'iframe'].includes(t.tagName.toLowerCase()));
+    var t = f.map(
+        e => Array.from(e.childNodes)
+         .filter(c => c.nodeName === "#text")
+      )
+      .filter(x => x.length)
+      .map(r =>
+        r.map(w => w.textContent.trim())
+        .filter(a => a && a.length > 10)
+      )
+      .filter(q => q.length);
+    siteText = t.join(' ');
+  }
 
+  scrapeText();
   
-
 
   chrome.storage.sync.get(['qblock'], function(result){
     if(!result.qblock){
@@ -151,183 +156,178 @@ function scrapeUserSite() {
     } else {
       // console.log(whitelist);
     }
-      chrome.runtime.sendMessage(chrome.runtime.id, {txt: siteText, subject: "check sim"}, function(response) {
-       
-        if(!response) return;
-        sim = response.sim;
-        if (response.res && response.res !== "power off" && whitelist.every(function(site){return site !== location.hostname}) && $qblock.every(function(site){return site !== location.hostname}) ) {
-          // Blokc this crup
-          
-          document.write('<!DOCTYPE html><html><head></head><body></body></html>');
-          window.document.title = "Off Task!"
-          
-          document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";
-          document.body.style.height = '100vh';
-          document.body.style.margin = '0';
-          document.body.style.overflow = 'hidden';
-          
-          var link = document.createElement('link');
-          link.setAttribute('rel', "stylesheet");
-          link.setAttribute('href', "https://fonts.googleapis.com/css?family=Montserrat&display=swap");
-          document.head.appendChild(link);
+    chrome.runtime.sendMessage(chrome.runtime.id, {txt: siteText, subject: "check sim"}, function(response) {
+      console.log(response)
+      
+      if(!response) return;
+      sim = response.sim;
+      if (response.res && response.res !== "power off" && whitelist.every(function(site){return site !== location.hostname}) && $qblock.every(function(site){return site !== location.hostname}) ) {
+        // Blokc this crup
+        
+        document.write('<!DOCTYPE html><html><head></head><body></body></html>');
+        window.document.title = "Off Task!"
+        
+        document.body.style.background = "linear-gradient(to top left,  #9d00ff, #008187) fixed";
+        document.body.style.height = '100vh';
+        document.body.style.margin = '0';
+        document.body.style.overflow = 'hidden';
+        
+        var link = document.createElement('link');
+        link.setAttribute('rel', "stylesheet");
+        link.setAttribute('href', "https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+        document.head.appendChild(link);
 
-          var link2 = document.createElement('link');
-          link2.setAttribute('rel', "icon");
-          link2.setAttribute('href', "https://nathan.wisen.space/9wwrvezffvk0txbgolidm9yg.png");
-          link2.setAttribute('type', "image/x-icon");
-          document.head.appendChild(link2);
+        var link2 = document.createElement('link');
+        link2.setAttribute('rel', "icon");
+        link2.setAttribute('href', "https://nathan.wisen.space/9wwrvezffvk0txbgolidm9yg.png");
+        link2.setAttribute('type', "image/x-icon");
+        document.head.appendChild(link2);
 
 
-          document.body.innerHTML = `
-          <center>
-            <img src="https://nathan.wisen.space/k8batqoxbjpkpio4b_4tcq0s.png" style="height: 15vh;">
-            <p style="color:white; margin-top: 0; margin-bottom: 5vh; font-family: 'Montserrat', sans-serif; font-size: 2rem">This Page Doesn't Relate to What You're Working On</p>
-            <div id="linkBox" style="font-family: 'Montserrat', sans-serif; border: 2px solid white; border-radius: 10px; padding-bottom: 1em; width: 40vmin;">
-              <br>
-              <select id="options" style="font-size: 1.5rem; color: white; background: none; border: none; outline: none; font-family: 'Montserrat', sans-serif; text-align-last: center;">
-                <option>Helpful Links</option>
-                <option>Unblock Page</option>
-                <option>Exit Page</option>
-              </select>
-              <div id="helpfulLinks" style="display: block;"></div>
-              <div id="unblockPage" style="display: none;">
-                <p style="font-size: 1rem; color: white;">You may attempt to unblock this site if you feel that it shouldn't be flagged.</p>
-                <button style="cursor: pointer; border: 2px solid white; padding: 6px 16px; text-decoration: none; outline: none; background: #736cdb; color: white; border-radius: 12px;">Unblock Page</button>
-              </div>
-              <div id="exitPage" style="display: none;">
-                <button style="cursor: pointer; margin-top: 1.5em; position: relative; border: 2px solid white; padding: 6px 16px; text-decoration: none; outline: none; background: #736cdb; color: white; border-radius: 12px;">Exit Page</button>
-              </div>
-            </div>
+        document.body.innerHTML = `
+        <center>
+          <img src="https://nathan.wisen.space/k8batqoxbjpkpio4b_4tcq0s.png" style="height: 15vh;">
+          <p style="color:white; margin-top: 0; margin-bottom: 5vh; font-family: 'Montserrat', sans-serif; font-size: 2rem">This Page Doesn't Relate to What You're Working On</p>
+          <div id="linkBox" style="font-family: 'Montserrat', sans-serif; border: 2px solid white; border-radius: 10px; padding-bottom: 1em; width: 40vmin;">
             <br>
-          </center>
-          `;
+            <select id="options" style="font-size: 1.5rem; color: white; background: none; border: none; outline: none; font-family: 'Montserrat', sans-serif; text-align-last: center;">
+              <option>Helpful Links</option>
+              <option>Unblock Page</option>
+              <option>Exit Page</option>
+            </select>
+            <div id="helpfulLinks" style="display: block;"></div>
+            <div id="unblockPage" style="display: none;">
+              <p style="font-size: 1rem; color: white;">You may attempt to unblock this site if you feel that it shouldn't be flagged.</p>
+              <button style="cursor: pointer; border: 2px solid white; padding: 6px 16px; text-decoration: none; outline: none; background: #736cdb; color: white; border-radius: 12px;">Unblock Page</button>
+            </div>
+            <div id="exitPage" style="display: none;">
+              <button style="cursor: pointer; margin-top: 1.5em; position: relative; border: 2px solid white; padding: 6px 16px; text-decoration: none; outline: none; background: #736cdb; color: white; border-radius: 12px;">Exit Page</button>
+            </div>
+          </div>
+          <br>
+        </center>
+        `;
 
-  
-          if(whitelist.length > 9 && whitelist.length < 14){
-            for(i=9; i < whitelist.length; i++){
-              var newLink = document.createElement('div');
-              newLink.innerHTML = `
-                <img style="height: 20px; display: inline;" src="//logo.clearbit.com/${whitelist[i].split(".")[1] + "." + whitelist[i].split(".")[2]}">
-                <p style="display: inline; vertical-align: top; color: white; text-decoration: underline; cursor: pointer;">${whitelist[i]}</p>
-              `;
-              if(i == 9){
-                newLink.style.paddingTop = "1.5em";
-              }
-              newLink.setAttribute('class', "link");
-              document.querySelector('#helpfulLinks').appendChild(newLink);
+
+        if(whitelist.length > 9 && whitelist.length < 14){
+          for(i=9; i < whitelist.length; i++){
+            var newLink = document.createElement('div');
+            newLink.innerHTML = `
+              <img style="height: 20px; display: inline;" src="//logo.clearbit.com/${whitelist[i].split(".")[1] + "." + whitelist[i].split(".")[2]}">
+              <p style="display: inline; vertical-align: top; color: white; text-decoration: underline; cursor: pointer;">${whitelist[i]}</p>
+            `;
+            if(i == 9){
+              newLink.style.paddingTop = "1.5em";
             }
-          } else if(whitelist.length > 14){
-            for(i=9; i < 14; i++){
-              var newLink = document.createElement('div');
-              newLink.innerHTML = `
-                <img style="height: 20px; display: inline;" src="//logo.clearbit.com/${whitelist[i].split(".")[1] + "." + whitelist[i].split(".")[2]}">
-                <p style="display: inline; vertical-align: top; color: white; text-decoration: underline; cursor: pointer;">${whitelist[i]}</p>
-              `;
-              if(i == 9){
-                newLink.style.paddingTop = "1.5em";
-              }
-              newLink.setAttribute('class', "link");
-              document.querySelector('#helpfulLinks').appendChild(newLink);
-            }
+            newLink.setAttribute('class', "link");
+            document.querySelector('#helpfulLinks').appendChild(newLink);
           }
-          document.querySelectorAll('.link').forEach(i => {
-            if(i.querySelector('p').innerText == "undefined"){
-              i.style.display = "none";
+        } else if(whitelist.length >= 14){
+          for(i=9; i < 14; i++){
+            var newLink = document.createElement('div');
+            newLink.innerHTML = `
+              <img style="height: 20px; display: inline;" src="//logo.clearbit.com/${whitelist[i].split(".")[1] + "." + whitelist[i].split(".")[2]}">
+              <p style="display: inline; vertical-align: top; color: white; text-decoration: underline; cursor: pointer;">${whitelist[i]}</p>
+            `;
+            if(i == 9){
+              newLink.style.paddingTop = "1.5em";
             }
-          })
-
-          document.querySelectorAll('.link').forEach(i => i.querySelector('p').addEventListener("click", function(){
-            window.location.href = "https://" + i.querySelector('p').innerText;
-          }));
-
-          document.addEventListener('input', function(event){
-            if(event.target.id !== "options") return;
-            if(event.target.value == "Helpful Links"){
-              document.querySelector('#helpfulLinks').style.display = "block";
-              document.querySelector('#unblockPage').style.display = "none";
-              document.querySelector('#exitPage').style.display = "none";
-            } else if(event.target.value == "Unblock Page"){
-              document.querySelector('#helpfulLinks').style.display = "none";
-              document.querySelector('#unblockPage').style.display = "block";
-              document.querySelector('#exitPage').style.display = "none";
-            } else {
-              document.querySelector('#helpfulLinks').style.display = "none";
-              document.querySelector('#unblockPage').style.display = "none";
-              document.querySelector('#exitPage').style.display = "block";
-            }
-          })
-
-          document.querySelector('#exitPage').addEventListener('click', function(){
-            chrome.runtime.sendMessage(chrome.runtime.id, {subject: "close tab"}, null);
-          })
-
-          //code for unblocking current site
-
-          var $unblock = document.querySelector('#unblockPage');
-          $unblock.addEventListener('click', unblockGoodSite);
-
-          function unblockGoodSite(){
-            if(sim > 0.1){
-              unblockSite();
-            } else {
-              alert("We detect that thie site has no correlation to your current subject.")
-            }
+            newLink.setAttribute('class', "link");
+            document.querySelector('#helpfulLinks').appendChild(newLink);
           }
-
-          function unblockSite(){
-              var $hostname = location.hostname;
-              chrome.storage.sync.get(['qblock'], function(result){
-                var blankArray = result.qblock;
-                blankArray.push($hostname);
-                chrome.storage.sync.set({qblock: blankArray}, null);
-              })
-          
-
-            location.reload();
-
+        }
+        document.querySelectorAll('.link').forEach(i => {
+          if(i.querySelector('p').innerText == "undefined"){
+            i.style.display = "none";
           }
+        })
 
+        document.querySelectorAll('.link').forEach(i => i.querySelector('p').addEventListener("click", function(){
+          window.location.href = "https://" + i.querySelector('p').innerText;
+        }));
+
+        document.addEventListener('input', function(event){
+          if(event.target.id !== "options") return;
+          if(event.target.value == "Helpful Links"){
+            document.querySelector('#helpfulLinks').style.display = "block";
+            document.querySelector('#unblockPage').style.display = "none";
+            document.querySelector('#exitPage').style.display = "none";
+          } else if(event.target.value == "Unblock Page"){
+            document.querySelector('#helpfulLinks').style.display = "none";
+            document.querySelector('#unblockPage').style.display = "block";
+            document.querySelector('#exitPage').style.display = "none";
+          } else {
+            document.querySelector('#helpfulLinks').style.display = "none";
+            document.querySelector('#unblockPage').style.display = "none";
+            document.querySelector('#exitPage').style.display = "block";
+          }
+        })
+
+        document.querySelector('#exitPage').addEventListener('click', function(){
+          chrome.runtime.sendMessage(chrome.runtime.id, {subject: "close tab"}, null);
+        })
+
+        //code for unblocking current site
+
+        var $unblock = document.querySelector('#unblockPage');
+        $unblock.addEventListener('click', unblockGoodSite);
+
+        function unblockGoodSite(){
+          if(sim > 0.1){
+            unblockSite();
+          } else {
+            alert("We detect that thie site has no correlation to your current subject.")
+          }
+        }
+
+        function unblockSite(){
+            var $hostname = location.hostname;
+            chrome.storage.sync.get(['qblock'], function(result){
+              var blankArray = result.qblock;
+              blankArray.push($hostname);
+              chrome.storage.sync.set({qblock: blankArray}, null);
+            })
+        
+
+          location.reload();
+
+        }
+
+        
+        injectStyle2();
+        insertTimer();
+        
+        
+        
+      } else {
+        if(timerOrNot == "on"){
+          var t = document.querySelector('#countdown');
+          if(!t){
+            injectStyle();
+            insertTimer();
+          }
           
-          injectStyle2();
-          insertTimer();
-          
-          
-          
-        } else if(response.res == "power off"){
+        } else {
           var t = document.querySelector('#countdown');
           if(t){
             document.body.removeChild(t);
           }
-
-          if(document.title == "Off Task!"){
-            location.reload();
-          }
-          
-          // console.log('power off');
-        } else {
-          if(timerOrNot == "on"){
-            var t = document.querySelector('#countdown');
-            if(!t){
-              injectStyle();
-              insertTimer();
-            }
-            
-          } else {
-            var t = document.querySelector('#countdown');
-            if(t){
-              document.body.removeChild(t);
-            }
-            
-          }
           
         }
-
-        // 
         
-        // console.log(response.txt);
-      })
+      }
+
     })
+  })
 }
+
+
+chrome.storage.sync.get(['subject'], function(result){
+  if(result.subject !== "none"){
+    scrapeUserSite();
+  }
+})
+
 
 window.onblur = function(e) {
   // console.log(e);
@@ -347,59 +347,18 @@ window.onfocus = function(e) {
 
 
 
-// chrome.runtime.onMessage.addListener(
-//   function(req, sender, sendResponse) {
-//     if (req.subject == "change subjects") {
-//       // console.log("got it")
-//       getCurrentTime();
-//       scrapeUserSite();
-//     }
-//   }
-// )
-
-// chrome.runtime.onMessage.addListener(
-//   function(req, sender, sendResponse) {
-//     if (req.subject == "change subjects and end session") {
-//       // console.log("got it")
-//       location.reload();
-//       scrapeUserSite();
-      
-//     }
-//   }
-// )
-
-// chrome.runtime.onMessage.addListener(
-//   function(req, sender, sendResponse) {
-//     if (req.subject == "unblock") {
-      
-//       location.reload();
-      
-      
-//     }
-//   }
-// )
-
-chrome.runtime.onMessage.addListener(
-  function(req, sender, sendResponse) {
-    if (req.subject == "state change") {
-      
-      scrapeUserSite();
-      
-      
-    }
-  }
-)
-
 
 chrome.runtime.onMessage.addListener(
   function(req, sender, sendResponse) {
     if (req.subject == "timer on and off") {
       chrome.storage.sync.get(['timerWidget'], function(result){
         timerOrNot = result.timerWidget;
-        // console.log(timerOrNot)
       })
-      
-      // console.log(timerOrNot);
+    } else {
+      var t = document.querySelector('#countdown');
+      if(t){
+        document.body.removeChild(t);
+      }
     }
   }
 )
@@ -423,17 +382,8 @@ function getTime(){
 setInterval(getTime, 1000);
 
 
-if(!time){time = "00:00:00"}
-if(!setTime){setTime = "00:00:00"}
-// chrome.runtime.onMessage.addListener(
-//   function(req, sender, sendResponse) {
-//     if (req.timeSet) {
-//       setTime = req.timeSet;
-//       console.log(setTime);
-      
-//     }
-//   }
-// )
+
+
 
 function getCurrentTime(){
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "current time"}, function(res) {
@@ -478,10 +428,7 @@ function insertTimer(){
   setInterval(function(){
     if(document.getElementById('timeMarker')){
       document.getElementById('timeMarker').getElementsByTagName('p')[0].innerHTML = `<p style="text-align: center;">${time}</p>`;
-      if(document.getElementById('timeMarker').getElementsByTagName('p')[0].innerText == "00:00:00"){
-        document.getElementById('timeMarker').getElementsByTagName('p')[0].innerHTML = `<p style="text-align: center; color: darkgreen;">Done <svg style="position: relative; top: 2px;" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="darkgreen" stroke-width="3" stroke-linecap="square" stroke-linejoin="arcs"><polyline points="20 6 9 17 4 12"></polyline></svg></p>`;;
-        
-      }
+      
     }
    
   }, 1000);
@@ -545,189 +492,7 @@ function insertTimer(){
     }
   }
 }
-function insertMarkerTop(){
-  var marker = document.createElement('div');
-  marker.innerHTML = `<p style="text-align: center; cursor: pointer;">Time remaining: ${time}</p>`;
-  setInterval(function(){marker.getElementsByTagName('p')[0].innerHTML = `<p style="text-align: center;">Time remaining: ${time}</p>`}, 1000);
-  marker.style.position = 'fixed';
-  marker.style.top = '25%';
-  marker.style.width = '300px';
-  marker.style.height = '50px';
-  marker.style.backgroundColor = '#f0f0f0';
-  marker.style.left = '42%';
-  marker.style.zIndex = '100';
-  marker.style.borderTop = '4px solid #736cdb';
-  marker.style.borderLeft = '4px solid #736cdb';
-  marker.style.borderRight = '4px solid #736cdb';
-  var currentSubject;
-  document.body.appendChild(marker);
-  chrome.storage.sync.get(['subject'], function(result){
-    if(result.subject == "none"){
-      currentSubject = "None";
-    } else if(result.subject == "biology"){
-      currentSubject = "Biology";
-    } else if(result.subject == "history"){
-      currentSubject = "American History"
-    } else if(result.subject == "collegeApps"){
-      currentSubject = "College Apps"
-    } else {
-      currentSubject = "General Studying"
-    }
-  })
-  marker.addEventListener('click', enlarge);
-  function enlarge(){
-    marker.style.height = '150px';
-    marker.innerHTML = `<b><h4 style="text-align: center;">Study session in progress</h4></b><p style="text-align: center;">Time remaining: ${time}</p><p style="text-align: center;">Current Subject: ${currentSubject}</p>`
-    
-    
-    
-  }
-  marker.addEventListener('mouseout', shrink);
-  function shrink(){
-    marker.style.height = '50px';
-    marker.innerHTML = `<p style="text-align: center; cursor: pointer;">Time remaining: ${time}</p>`
-  }
 
-  //Make the DIV element draggagle:
-  dragElement(marker);
-  marker.style.cursor = 'move';
-  function dragElement(elmnt) {
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    
-      /* otherwise, move the DIV from anywhere inside the DIV:*/
-      elmnt.onmousedown = dragMouseDown;
-  
-
-    function dragMouseDown(e) {
-      e = e || window.event;
-      e.preventDefault();
-      // get the mouse cursor position at startup:
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      document.onmouseup = closeDragElement;
-      // call a function whenever the cursor moves:
-      document.onmousemove = elementDrag;
-    }
-
-    function elementDrag(e) {
-      e = e || window.event;
-      e.preventDefault();
-      // calculate the new cursor position:
-      pos1 = pos3 - e.clientX;
-      pos2 = pos4 - e.clientY;
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      // set the element's new position:
-      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-    
-    }
-
-    function closeDragElement() {
-      /* stop moving when mouse button is released:*/
-      document.onmouseup = null;
-      document.onmousemove = null;
-    }
-  }
-}
-
-
-
-function insertMarkerTop(){
-  var marker = document.createElement('div');
-  marker.innerHTML = `<p style="position: relative; bottom: 5.5px; text-align: center; font-size: 1.3rem !important; line-height: 1.5; font-weight: normal !important; color: #454546;">Time remaining: ${time}</p>`;
-  setInterval(function(){
-    marker.getElementsByTagName('p')[0].innerHTML = `<p style="position: relative; bottom: 5.5px; text-align: center; font-size: 1.3rem !important; line-height: 1.5; font-weight: normal !important; color: #454546;">Time remaining: ${time}</p>`
-    if(marker.getElementsByTagName('p')[0].innerText == "Time remaining: 00:00:00"){
-      marker.getElementsByTagName('p')[0].innerHTML = `<p style="position: relative; bottom: 5.5px; text-align: center; font-size: 1.3rem !important; color: darkgreen; line-height: 1.5; font-weight: normal !important;">Study session completed</p>`;
-    }
-  }, 1000);
-  marker.style.position = 'fixed';
-  marker.style.top = '28%';
-  marker.style.width = '300px';
-  marker.style.height = '50px';
-  marker.style.backgroundColor = '#f0f0f0';
-  marker.style.left = '42%';
-  marker.style.zIndex = '100';
-  marker.style.boxShadow = '0 0 1px 1px lightgray';
-  marker.style.borderRadius = '1%';
-  // var currentSubject;
-  document.body.appendChild(marker);
-  // chrome.storage.sync.get(['subject'], function(result){
-  //   if(result.subject == "none"){
-  //     currentSubject = "None";
-  //   } else if(result.subject == "biology"){
-  //     currentSubject = "Biology";
-  //   } else if(result.subject == "history"){
-  //     currentSubject = "American History"
-  //   } else if(result.subject == "collegeApps"){
-  //     currentSubject = "College Apps"
-  //   } else {
-  //     currentSubject = "General Studying"
-  //   }
-  // })
-  // marker.addEventListener('click', enlarge);
-  // function enlarge(){
-  //   marker.style.height = '150px';
-  //   marker.innerHTML = `<b><h4 style="text-align: center;">Study session in progress</h4></b><p style="text-align: center;">Time remaining: ${time}</p><p style="text-align: center;">Current Subject: ${currentSubject}</p>`
-    
-    
-    
-  // }
-  // marker.addEventListener('mouseout', shrink);
-  // function shrink(){
-  //   marker.style.height = '50px';
-  //   marker.innerHTML = `<p style="text-align: center; cursor: pointer;">Time remaining: ${time}</p>`
-  // }
-
-  //Make the DIV element draggagle:
-  dragElement(marker);
-  marker.style.cursor = 'move';
-  function dragElement(elmnt) {
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    
-      /* otherwise, move the DIV from anywhere inside the DIV:*/
-      elmnt.onmousedown = dragMouseDown;
-  
-
-    function dragMouseDown(e) {
-      e = e || window.event;
-      e.preventDefault();
-      // get the mouse cursor position at startup:
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      document.onmouseup = closeDragElement;
-      // call a function whenever the cursor moves:
-      document.onmousemove = elementDrag;
-    }
-
-    function elementDrag(e) {
-      e = e || window.event;
-      e.preventDefault();
-      // calculate the new cursor position:
-      pos1 = pos3 - e.clientX;
-      pos2 = pos4 - e.clientY;
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      // set the element's new position:
-      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-    
-    }
-
-    function closeDragElement() {
-      /* stop moving when mouse button is released:*/
-      document.onmouseup = null;
-      document.onmousemove = null;
-    }
-  }
-}
-
-if(!timerOrNot){
-  timerOrNot = "on";
-}
-
-scrapeUserSite();
 
 
 chrome.storage.sync.get(['timerWidget'], function(result){
@@ -740,51 +505,11 @@ function closeTab(){
   chrome.runtime.sendMessage(chrome.runtime.id, {subject: "close tab"}, null);
 }
 
-// setTimeout(closeTab, 5000);
 
-
-chrome.runtime.onMessage.addListener(
-  function(req, sender, sendResponse) {
-    if (req.subject == "take away timer") {
-      var c = document.querySelector('#countdown');
-      document.body.removeChild(c);
-      if(document.title == "Off Task!"){
-        location.reload();
-      }
-    }
-  }
-)
 
 if(document.querySelectorAll('#countdown').length > 1){
   document.body.removeChild(document.querySelectorAll('#countdown')[0]);
 }
 
 
-chrome.runtime.onMessage.addListener(
-  function(req, sender, sendResponse) {
-    if (req.subject == "site sim") {
-      // console.log(sim)
-      sendResponse({sim: sim})
-      // var tags = Array.from(document.querySelectorAll('*'));
-      // var f = tags.filter(t => !['script', 'meta', 'link', 'input', 'html', 'body', 'head', 'style', 'img', 'iframe'].includes(t.tagName.toLowerCase()));
-      // var t = f.map(
-      //     e => Array.from(e.childNodes)
-      //      .filter(c => c.nodeName === "#text")
-      //   )
-      //   .filter(x => x.length)
-      //   .map(r =>
-      //     r.map(w => w.textContent.trim())
-      //     .filter(a => a && a.length > 10)
-      //   )
-      //   .filter(q => q.length);
-      // var text = t.join(' ');
-      // sendResponse({text: text})
-      
-    }
-  }
-)
 
-//Cursor
-// document.querySelectorAll('*').forEach(e => e.style.cursor = "url('https://kari.wisen.space/gekrinr_ubwcstpcbrnukdkz.png'), auto")
-
-// document.querySelectorAll('*').forEach(e => e.style.cursor = "url('https://kari.wisen.space/qf2c3rvlcmkzagjdv0ko0db_.png'), auto")

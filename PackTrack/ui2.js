@@ -1,6 +1,3 @@
-
-// Push stuff
-// const timervalue = '00:00:00';
 const timerElements = Array.from(document.querySelectorAll(".timerDigit"));
 
 timerElements.forEach(t => {
@@ -33,6 +30,7 @@ timerElements.forEach(t => {
     }
   }
 })
+
 
 document.getElementById("timer_clear").addEventListener('click', function(e) {
   timerElements.forEach(t => {
@@ -77,7 +75,7 @@ document.getElementById("timer_start").addEventListener('click', function(e) {
 
   var subjectDrop = document.getElementsByClassName("dropdown-select")[0];
     if(subjectDrop.value ==="none"){
-      document.getElementById("subjectReq").style.visibility = "visible";
+      document.getElementById("subjectReq").style.visibility = "visible"
     }
 
 subjectDrop.addEventListener('change', checkSubjectStatus);
@@ -87,6 +85,9 @@ subjectDrop.addEventListener('change', checkSubjectStatus);
     }
   }
 })
+
+
+
 function confirmValidity() {
 
   var hr = parseInt(timerElements[0].value)
@@ -209,21 +210,12 @@ function timerEnd() {
   chrome.tabs.query({}, function (tabs) {
     for (var i = 0; i < tabs.length; i++) {
       tabIds.push(tabs[i].id);
-      chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
+      chrome.tabs.update(tabIds[i], {url: tabs[i].url}, null);
+
     }
   });
 
-//   chrome.tabs.query({}, function (tabs) {
-//     for (var i = 0; i < tabs.length; i++) {
-//       if(tabs[i].title == "Off Task!"){
-//         chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
-//       } else {
-//         var c = document.querySelector('#countdown');
-//         document.body.removeChild(c);
-//       }
 
-//       }
-//   });
 //   //Code to enable enhanced block selection
   var ebnodes = document.getElementsByName('enhanced');
   for(i=0; i<2; i++){
@@ -356,8 +348,7 @@ function saveWhitelist(){
 //Code for saving subject
 
 
-// var subjectButton = document.querySelector('#submit');
-// subjectButton.addEventListener('click', setSubject);
+
 
 chrome.storage.sync.get(['subject'], function(result){
   if(!result.subject || !document.querySelector('.dropdown-select').value){
@@ -380,9 +371,6 @@ function timerStart(){
       chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
     }
   });
-
-
-
 
   countdown = setInterval(startTimer, 1000)
   document.getElementById("timer_start").innerHTML = "Stop"
@@ -417,8 +405,6 @@ function timerStart(){
 
   document.getElementsByName('enhanced').forEach(e => e.disabled = true);
   document.querySelector('#enhancedWarning').style.display = 'none';
-
-
   //Checks whether enhanced block is on
   var enhancedMode;
   chrome.storage.sync.get(['enhanced'], function(result){
@@ -434,131 +420,28 @@ function timerStart(){
   })
 
 
-
-  //Code to make enhanced block unclickable
-  // var ebnodes = document.getElementsByName('enhanced');
-  // for(i=0; i<2; i++){
-  //   ebnodes[i].disabled = true;
-  // }
-  //Code to reload every tab except the one user is on
-  // var tabUrls = [];
-  // chrome.tabs.query({}, function (tabs) {
-  //   for (var i = 0; i < tabs.length; i++) {
-  //     tabUrls.push(tabs[i].url);
-  //     }
-  // });
-  // var currentTabNum;
-  // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-  //   currentTabNum = tabUrls.indexOf(tabs[0].url);
-  // });
-
-  // chrome.tabs.query({}, function (tabs) {
-  //   for (var i = 0; i < tabs.length; i++) {
-  //     if(i === currentTabNum){
-  //       continue;
-  //     }
-  //     chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
-  //     }
-  // });
 }
-//Code for turning on/off extension
 
 
 
-// var $powerButton = document.querySelector('#power');
-// chrome.storage.sync.get(['on'], function(result){
-//   if(result.on === false){
-//     $powerButton.innerHTML = "Turn Extension On";
-//   } else {
-//     $powerButton.innerHTML = "Turn Extension Off";
-
-//   }
-// })
-// $powerButton.addEventListener('click', powerOnOff);
-// function powerOnOff(){
-//   if($powerButton.innerText == "Turn Extension On"){
-//     $powerButton.innerHTML = "Turn Extension Off";
-//     chrome.storage.sync.set({on: true}, null);
-//     var final = new Date();
-//     chrome.storage.sync.set({on: true}, null);
-//     chrome.storage.sync.set({ontime: final}, null);
-//     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-//       chrome.tabs.sendMessage(tabs[0].id, {subject: "turn on"}, null);
-//     });
-//   } else {
-//     $powerButton.innerHTML = "Turn Extension On";
-//     var final = new Date();
-//     chrome.storage.sync.set({on: false}, null);
-//     chrome.storage.sync.set({offtime: final}, null);
-//     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-//       chrome.tabs.sendMessage(tabs[0].id, {subject: "turn off"}, null);
-//     });
-//   }
-// }
-
-
-
-
-
-//Open menu with hamburger
-// var hamburger = document.querySelector('#options');
-// hamburger.addEventListener('click', openMenu);
-// function openMenu(){
-//   var table = document.querySelector('#table');
-//   if(table.style.visibility === 'hidden'){
-//     table.style.visibility = 'visible';
-//   } else {
-//     table.style.visibility = 'hidden';
-//   }
-//
-// }
-//Code for opening and closing settings menu
-// var settingsButton = document.querySelector('#openSettings');
-// settingsButton.addEventListener('click', openSettings);
-// function openSettings(){
-//   document.querySelector('#settings').style.visibility = 'visible';
-//   document.querySelector('#table').style.visibility = 'hidden';
-// }
-
-// var exitSettings = document.querySelector('#exitSettings');
-// exitSettings.addEventListener('click', exitSettingsPage);
-// function exitSettingsPage(){
-//   document.querySelector('#settings').style.visibility = 'hidden';
-// }
 
 document.getElementById("settingsTab").addEventListener('click', function(e) {
   document.getElementById("settings").style.visibility = "visible";
   document.getElementById("settings-icon").style.borderBottom = "3px solid rgb(113, 109, 218)";
-  document.getElementById("whitelistPanel").style.visibility = "hidden";
-  document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
+  document.getElementById("schedulePanel").style.visibility = "hidden";
+  document.getElementById("schedule-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
   document.getElementById("home").style.visibility = "hidden";
   document.getElementById("home-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
   document.getElementById("achievements").style.visibility = "hidden";
   document.getElementById("trophy").style.borderBottom = "3px solid white";
 })
 
-// var $whitelist = document.querySelector('#openWhitelistPanel');
-// $whitelist.addEventListener('click', openWhitelist);
-// function openWhitelist(){
-//   document.querySelector('#overlay').style.visibility = 'visible';
-//   document.querySelector('#whitelistPanel').style.visibility = 'visible';
-//   document.querySelector('#table').style.visibility = 'hidden';
-// }
-//
-// document.querySelector('#exitWhitelistPanel').addEventListener('click', exitWhitelist);
-// function exitWhitelist(){
-//   document.querySelector('#table').style.visibility = 'hidden';
-//   document.querySelector('#overlay').style.visibility = 'hidden';
-//   document.querySelector('#whitelistPanel').style.visibility = 'hidden';
-//   document.querySelector('#warning').style.visibility = 'hidden';
-//
-//
 
-document.getElementById("whitelistTab").addEventListener('click', function(e) {
+document.getElementById("scheduleTab").addEventListener('click', function(e) {
   document.getElementById("settings").style.visibility = "hidden";
   document.getElementById("settings-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
-  document.getElementById("whitelistPanel").style.visibility = "visible";
-  document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(113, 109, 218)";
+  document.getElementById("schedulePanel").style.visibility = "visible";
+  document.getElementById("schedule-icon").style.borderBottom = "3px solid rgb(113, 109, 218)";
   document.getElementById("home").style.visibility = "hidden";
   document.getElementById("home-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
   document.getElementById("achievements").style.visibility = "hidden";
@@ -568,8 +451,8 @@ document.getElementById("whitelistTab").addEventListener('click', function(e) {
 document.getElementById("homeTab").addEventListener('click', function(e) {
   document.getElementById("settings").style.visibility = "hidden";
   document.getElementById("settings-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
-  document.getElementById("whitelistPanel").style.visibility = "hidden";
-  document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
+  document.getElementById("schedulePanel").style.visibility = "hidden";
+  document.getElementById("schedule-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
   document.getElementById("home").style.visibility = "visible";
   document.getElementById("home-icon").style.borderBottom = "3px solid rgb(113, 109, 218)";
   document.getElementById("achievements").style.visibility = "hidden";
@@ -579,8 +462,8 @@ document.getElementById("homeTab").addEventListener('click', function(e) {
 document.getElementById("achievementsTab").addEventListener('click', function(e) {
   document.getElementById("settings").style.visibility = "hidden";
   document.getElementById("settings-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
-  document.getElementById("whitelistPanel").style.visibility = "hidden";
-  document.getElementById("whitelist-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
+  document.getElementById("schedulePanel").style.visibility = "hidden";
+  document.getElementById("schedule-icon").style.borderBottom = "3px solid rgb(255, 255, 255)";
   document.getElementById("home").style.visibility = "hidden";
   document.getElementById("home-icon").style.borderBottom = "3px solid white";
   document.getElementById("achievements").style.visibility = "visible";
@@ -634,7 +517,7 @@ function saveSettings(){
   chrome.storage.sync.set({timerWidget: tval}, null);
 
   chrome.storage.sync.set({enhanced: ebval}, null);
-
+  chrome.storage.sync.set({break: document.querySelector('#break').value}, null);
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {subject: "timer on and off"}, null);
   });
@@ -673,6 +556,15 @@ chrome.storage.sync.get(['enhanced'], function(result){
   } else {
     chrome.storage.sync.set({enhanced: result.enhanced}, null);
     checkSetting3(result.enhanced);
+  }
+})
+
+chrome.storage.sync.get(['break'], function(result){
+  if(!result.break){
+    chrome.storage.sync.set({break: "5"}, null);
+  } else {
+    chrome.storage.sync.set({break: result.break}, null);
+    document.querySelector('#break').value = result.break;
   }
 })
 
@@ -717,81 +609,7 @@ function warning(){
 
 
 
-// //Welcome page js
 
-// chrome.storage.sync.get(['welcomed'], function(result){
-//   if(!result.welcomed){
-//     chrome.storage.sync.set({welcomed: "no"});
-//   } else {
-//     chrome.storage.sync.set({welcomed: result.welcomed});
-//   }
-// })
-
-// var welcomed;
-
-// chrome.storage.sync.get(['welcomed'], function(result){
-//   welcomed = result.welcomed;
-//   if(welcomed == 'no'){
-//     document.querySelector('#welcomeModal').style.visibility = 'visible';
-//   } else {
-//     document.querySelector('#welcomeModal').style.visibility = 'hidden';
-
-//   }
-// })
-
-
-
-// document.querySelector('#skipInfo').addEventListener('click', skipPage);
-// function skipPage(){
-
-//   document.querySelector('#welcomeModal').style.visibility = 'hidden';
-//   chrome.storage.sync.set({welcomed: "yes"})
-// }
-
-// document.querySelector('#user').addEventListener('blur', submitValidity);
-// document.querySelector('#mail').addEventListener('blur', submitValidity);
-
-// function submitValidity(){
-//   var $username = document.getElementById('user');
-//   var $email = document.getElementById('mail');
-//   if($username.value.length > 1 && $email.value.length > 10 && $email.value.includes('@')){
-//     injectWelcomeStyle();
-//     document.querySelector('#submitInfo').addEventListener('click', postInfo);
-//     function postInfo(){
-//       chrome.storage.sync.set({welcomed: "yes"});
-//       chrome.storage.sync.set({name: $username.value});
-//       chrome.storage.sync.set({email: $email.value})
-//       document.querySelector('#welcomeModal').style.visibility = 'hidden';
-//     }
-
-//   }
-// }
-
-// function injectWelcomeStyle(){
-//   var style = `
-//   #submitInfo {
-//     border: 2px solid #736cdb;
-//     padding: 6px 16px;
-//     border-radius: 12px;
-//     letter-spacing: 0.06em;
-//     text-transform: uppercase;
-//     text-decoration: none;
-//     outline: none;
-//     background: #fff;
-//     color: #736cdb;
-//     font-size: 11px;
-//   }
-//   #submitInfo:hover {
-//     background: #736cdb;
-//     color: #fff;
-//     border: 2px solid #736cdb;
-//     border-radius: 12px;
-//   }
-//   `
-// var s = document.createElement('style')
-// s.innerHTML = style;
-// document.head.appendChild(s)
-// }
 
 
 //Feedback form
@@ -802,7 +620,7 @@ var $surveyModal = document.querySelector('#surveyModal');
 
 
 chrome.storage.sync.get(['survey'], function(result){
-  
+
   var surveyStatus = result.survey;
   if(surveyStatus == "completed"){
     $survey.style.visibility = "hidden";
@@ -814,11 +632,11 @@ chrome.storage.sync.get(['survey'], function(result){
 
 
   if(!surveyStatus){
-    
+
     chrome.storage.sync.set({'survey': "incomplete"}, null);
     surveyStatus = "incomplete";
   } else if(surveyStatus){
-    
+
     chrome.storage.sync.get(['survey'], function(result){
       surveyStatus = result.survey;
     })
@@ -833,8 +651,8 @@ chrome.storage.sync.get(['survey'], function(result){
     $survey.style.visibility = "hidden";
     $surveyModal.style.visibility = "hidden";
     window.open("http://bit.ly/37hwNrS", "_blank");
-    
-  
+
+
   });
 
   $later.addEventListener('click', function(){
@@ -843,9 +661,9 @@ chrome.storage.sync.get(['survey'], function(result){
     $survey.style.visibility = "hidden";
     $surveyModal.style.visibility = "hidden";
   })
-  
-  
-  
+
+
+
 })
 
 
@@ -872,18 +690,123 @@ chrome.storage.sync.get(['studyTime'], function(result){
     document.querySelector('#studyTime').innerText = "0h 0m 0s"
   } else {
     chrome.storage.sync.set({studyTime: result.studyTime}, null)
-    document.querySelector('#studyTime').querySelectorAll('span')[0].innerText = String(parseInt(result.studyTime.substr(0,2))) 
-    document.querySelector('#studyTime').querySelectorAll('span')[1].innerText = String(parseInt(result.studyTime.substr(3,2))) 
-    document.querySelector('#studyTime').querySelectorAll('span')[2].innerText = String(parseInt(result.studyTime.substr(6,2)))
+    document.querySelector('#studyTime').querySelectorAll('span')[0].innerText = String(parseInt(result.studyTime.split(':')[0]))
+    document.querySelector('#studyTime').querySelectorAll('span')[1].innerText = String(parseInt(result.studyTime.split(':')[1]))
+    document.querySelector('#studyTime').querySelectorAll('span')[2].innerText = String(parseInt(result.studyTime.split(':')[2]))
+
+    //Setting badges based on hours accumulated
+    var totalTime = 3600*parseInt(result.studyTime.split(':')[0]) + 60*parseInt(result.studyTime.split(':')[1]) + parseInt(result.studyTime.split(':')[2]);
+    if(totalTime < 18000){
+      chrome.storage.sync.set({badge: "none"}, null);
+      document.querySelector('#badge').querySelector('img').setAttribute('src', "https://nathan.wisen.space/None%20badge_00000.png");
+      document.querySelector('#currentBadge').innerText = "none";
+    } else if (totalTime < 36000){
+      //wood
+      chrome.storage.sync.set({badge: "wood"}, null);
+      document.querySelector('#badge').querySelector('img').setAttribute('src', "https://nathan.wisen.space/Wood%20Badge_00016.png");
+      document.querySelector('#currentBadge').innerText = "Wood";
+      document.querySelector('#currentBadge').style.color = "brown";
+    } else if (totalTime < 90000){
+      //bronze
+      chrome.storage.sync.set({badge: "bronze"}, null);
+      document.querySelector('#badge').querySelector('img').setAttribute('src', "https://nathan.wisen.space/Bronze%20Badge.png");
+      document.querySelector('#currentBadge').innerText = "Bronze";
+      document.querySelector('#currentBadge').style.color = "light brown";
+    } else if (totalTime < 360000){
+      //silver
+      chrome.storage.sync.set({badge: "silver"}, null);
+      document.querySelector('#badge').querySelector('img').setAttribute('src', "https://nathan.wisen.space/Silver%20Badge_00029.png");
+      document.querySelector('#currentBadge').innerText = "Silver";
+      document.querySelector('#currentBadge').style.color = "gray";
+    } else if (totalTime < 900000){
+      //gold
+      chrome.storage.sync.set({badge: "gold"}, null);
+      document.querySelector('#badge').querySelector('img').setAttribute('src', "https://nathan.wisen.space/gold%20(5)_00044.png");
+      document.querySelector('#currentBadge').innerText = "Gold";
+      document.querySelector('#currentBadge').style.color = "#fcba03";
+    } else if (totalTime < 3600000){
+      //plat
+      chrome.storage.sync.set({badge: "platinum"}, null);
+      document.querySelector('#badge').querySelector('img').setAttribute('src', "https://nathan.wisen.space/Plat%20Badge%20Final_00000.png");
+      document.querySelector('#currentBadge').innerText = "Platinum";
+      document.querySelector('#currentBadge').style.color = "#9193B8";
+
+    } else if (totalTime >= 3600000){
+      //diamond
+      chrome.storage.sync.set({badge: "diamond"}, null);
+      document.querySelector('#badge').querySelector('img').setAttribute('src', "https://nathan.wisen.space/Diamond%20Badge%20Blue_00000.png");
+      document.querySelector('#badge').querySelector('img').style.height = "130px";
+      document.querySelector('#currentBadge').innerText = "Diamond";
+      document.querySelector('#currentBadge').style.color = "blue";
+    }
   }
 })
 
-document.querySelector('#studyTime').querySelectorAll('span').forEach(i => {
-  
-    i.style.color = "#736cdb"
-  
-  
+var noneBadge = "https://nathan.wisen.space/None%20badge_00000.png";
+var woodBadge = "https://nathan.wisen.space/Wood%20Badge_00016.png";
+var bronzeBadge = "https://nathan.wisen.space/Bronze%20Badge.png"
+var silverBadge = "https://nathan.wisen.space/Silver%20Badge_00029.png"
+var goldBadge = "https://nathan.wisen.space/gold%20(5)_00044.png"
+var platBadge = "https://nathan.wisen.space/Plat%20Badge%20Final_00000.png"
+var diamondBadge = "https://nathan.wisen.space/Diamond%20Badge%20Blue_00000.png"
+var $0Badge = noneBadge;
+var $1Badge = woodBadge;
+var $2Badge = bronzeBadge;
+var $3Badge = silverBadge;
+var $4Badge = goldBadge;
+var $5Badge = platBadge;
+var $6Badge = diamondBadge;
+
+chrome.storage.sync.get(['badge'], function(result){
+  if(!result.badge){
+    chrome.storage.sync.set({badge: "none"}, null);
+    document.querySelector('#badge').querySelector('img').setAttribute('src', "https://nathan.wisen.space/None%20badge_00000.png");
+  }
+  document.querySelector('#badgeName').innerText = result.badge;
+
+
+  document.querySelector('#bestBadge').setAttribute('src', window[result.badge + "Badge"])
+
+  //Carousel
+  document.querySelector('#previousBadge').addEventListener('click', function(){
+    var number;
+    if(result.badge == "none"){
+      number = 0;
+    } else if(result.badge == "wood"){
+      number = 1;
+    } else if(result.badge == "bronze"){
+      number = 2;
+    } else if(result.badge == "silver"){
+      number = 3;
+    } else if(result.badge == "gold"){
+      number = 4;
+    } else if(result.badge == "platinum"){
+      number = 5;
+    } else if(result.badge == "diamond"){
+      number = 6;
+    }
+
+    document.querySelector('#bestBadge').setAttribute('src', window["$" + JSON.stringify(number - 1) + "Badge"]);
+
+
+
+  })
 })
+
+document.querySelector('#studyTime').querySelectorAll('span').forEach(i => {
+
+    i.style.color = "#736cdb"
+
+
+})
+
+
+document.querySelector('#badge').querySelector('img').addEventListener('click', openCollection);
+function openCollection(){
+  document.querySelector('#badgeCollection').style.visibility = "visible";
+}
+
+
 
 
 //Google analytics
@@ -910,3 +833,268 @@ function trackButton(e){
 
 document.querySelector('#timer_start').addEventListener('click', trackButton);
 
+
+//Schedule code
+
+var $yr = new Date().getFullYear();
+var $month = new Date().getMonth();
+var $day = new Date().getDate();
+
+
+chrome.storage.sync.get(['schedule'], function(result){
+
+  if(!result.schedule || result.schedule.length == 0){
+    chrome.storage.sync.set({schedule: ["none", "none", "none", "none", "none", "none", "none", "none", "none", "none", "none", "none", "none", "none"]}, null);
+  } else {
+
+    chrome.storage.sync.set({schedule: result.schedule}, null);
+    chrome.runtime.sendMessage(chrome.runtime.id, {subject: "schedule running or not"}, function(resp){
+
+      //If it's not running
+      if(resp == "off"){
+        for(i=0; i<14; i++){
+          document.querySelectorAll('.scheduleSubject')[i].value = result.schedule[i];
+        }
+        //Make stop button a start button
+        document.querySelector('#startSchedule').innerHTML = "Start";
+        document.querySelector('#clearSchedule').removeAttribute('disabled');
+      } else {
+        for(i=0; i<14; i++){
+          document.querySelectorAll('.scheduleSubject')[i].value = result.schedule[i];
+        }
+        document.querySelectorAll('.scheduleSubject').forEach(i => i.replaceWith(i.options[i.selectedIndex].text));
+        //Make start button a stop button
+        document.querySelector('#startSchedule').innerHTML = "Stop";
+        document.querySelector('#clearSchedule').setAttribute('disabled', true);
+      }
+
+
+
+
+    })
+
+
+
+  }
+})
+
+document.querySelector('#clearSchedule').addEventListener('click', clearSchedule);
+function clearSchedule(){
+  console.log("cleared")
+  document.querySelectorAll('.scheduleSubject').forEach(i => i.value = "none");
+  chrome.storage.sync.set({schedule: ["none", "none", "none", "none", "none", "none", "none", "none", "none", "none", "none", "none", "none", "none"]}, null);
+}
+
+
+document.querySelector('#startSchedule').addEventListener('click', startSchedule);
+
+function startSchedule(){
+
+  if(document.querySelector('#startSchedule').innerHTML == "Start"){
+    //Disable break input in settings
+    document.querySelector('#break').setAttribute('disabled', true);
+
+    //Make start button a stop button
+    document.querySelector('#startSchedule').innerHTML = "Stop";
+    document.querySelector('#clearSchedule').setAttribute('disabled', true);
+
+    //Tell background that schedule will start running now
+    if(new Date($yr, $month, $day, 22, 0) - Date.now() < 0){
+      var scheduleLength = new Date($yr, $month, $day + 1, 22, 0) - Date.now();
+    } else if(new Date($yr, $month, $day, 22, 0) - Date.now() >= 0){
+      var scheduleLength = new Date($yr, $month, $day, 22, 0) - Date.now();
+    }
+
+    chrome.runtime.sendMessage(chrome.runtime.id, {subject: "schedule length", length: scheduleLength}, null);
+
+    //Storing the set subjects as the schedule
+    var $scheduled = [];
+    document.querySelectorAll('.scheduleSubject').forEach(i => $scheduled.push(i.value));
+    chrome.storage.sync.set({schedule: $scheduled}, null);
+
+
+
+    //Tell background about every scheduled session
+    document.querySelectorAll('.session').forEach(i => {
+      if(i.querySelectorAll('td')[1].innerText !== "none" && i.querySelectorAll('td')[1].innerText !== "None"){
+
+
+        var $hr = parseInt(i.querySelectorAll('td')[0].getAttribute("start"));
+        var timeDiff = new Date($yr, $month, $day, $hr, 0) - Date.now();
+        var $rawSubject = i.querySelectorAll('td')[1].innerText;
+        var $subject;
+        if($rawSubject == "None" || $rawSubject == "Physics" || $rawSubject == "Biology" || $rawSubject == "Chemistry" || $rawSubject == "Economics" || $rawSubject == "Calculus" || $rawSubject == "Whitelist"){
+          $subject = $rawSubject.toLowerCase();
+        } else if($rawSubject == "American History"){
+          $subject = "history"
+        } else if($rawSubject == "Linear Algebra"){
+          $subject = "linearAlgebra"
+        } else if($rawSubject == "College Apps"){
+          $subject = "collegeApps"
+        }
+        console.log(timeDiff)
+
+        if(timeDiff >= 0){
+
+          chrome.storage.sync.get(['break'], function(result){
+            var $break = result.break;
+            var sessionLength = msToTime(3600000 - 60000*parseInt($break));
+            console.log("create" + sessionLength + " study session for " + $subject + " that will start in " +  msToTime(timeDiff));
+            chrome.runtime.sendMessage(chrome.runtime.id, {subject: "schedule", timeLength: sessionLength, time: timeDiff, topic: $subject}, null);
+
+
+          })
+
+
+        } else if(timeDiff > -3600000){
+          var $timeRemaining = 3600000 + timeDiff;
+          console.log("study session starts now and will run for " + $timeRemaining/60000 + " min")
+          chrome.storage.sync.get(['break'], function(result){
+            var shortenedSession = msToTime($timeRemaining - 60000*parseInt(result.break))
+            startScheduledSession(shortenedSession, $subject);
+          })
+        }
+
+        //Changing all selects into the subject
+        document.querySelectorAll('.scheduleSubject').forEach(i => i.replaceWith(i.options[i.selectedIndex].text));
+      }
+
+
+    })
+  } else if(document.querySelector('#startSchedule').innerHTML == "Stop"){
+    if(document.getElementById("timer_start").innerHTML == "Stop"){
+
+
+      chrome.runtime.sendMessage(chrome.runtime.id,{timerStop: true}, null)
+      timerEnd();
+    }
+
+    //Enable the break input in settings
+    document.querySelector('#break').removeAttribute('disabled');
+
+    //Make stop button a start button
+    document.querySelector('#startSchedule').innerHTML = "Start";
+    document.querySelector('#clearSchedule').removeAttribute('disabled');
+
+    //Tell background to stop schedule and clear all sessions
+    chrome.runtime.sendMessage(chrome.runtime.id, {subject: "stop schedule"}, null);
+
+    //Turn all the selects back into selects and have the last used schedule
+    document.querySelectorAll('.session').forEach(i => i.querySelectorAll('td')[1].innerHTML =
+    `<select class="scheduleSubject">
+    <option value="none">None</option>
+    <option value="physics">Physics</option>
+    <option value="biology">Biology</option>
+    <option value="chemistry">Chemistry</option>
+    <option value="history">American History</option>
+    <option value="economics">Economics</option>
+    <option value="calculus">Calculus</option>
+    <option value="linearAlgebra">Linear Algebra</option>
+    <option value="collegeApps">College Apps</option>
+    <option value="whitelist">Whitelist</option>
+</select>`
+)
+    chrome.storage.sync.get(['schedule'], function(result){
+      for(i=0; i<14; i++){
+        document.querySelectorAll('.scheduleSubject')[i].value = result.schedule[i];
+      }
+    })
+
+
+
+
+  }
+
+}
+
+function msToTime(duration) {
+  var seconds = Math.floor((duration / 1000) % 60),
+    minutes = Math.floor((duration / (1000 * 60)) % 60),
+    hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+  hours = (hours < 10) ? "0" + hours : hours;
+  minutes = (minutes < 10) ? "0" + minutes : minutes;
+  seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+  return hours + ":" + minutes + ":" + seconds;
+}
+
+function startScheduledSession(time, subj){
+  chrome.runtime.sendMessage(chrome.runtime.id, {timer: time}, null);
+
+  timerElements.forEach(t => {
+    t.style.border = '1.5px inset';
+    t.setAttribute('disabled', true);
+
+  })
+
+  timerElements[0].value = time.split(':')[0];
+  timerElements[1].value = time.split(':')[1];
+  timerElements[2].value = time.split(':')[2];
+
+  chrome.storage.sync.set({subject: subj}, null);
+  scheduleStart();
+}
+
+
+function scheduleStart(){
+
+  chrome.runtime.sendMessage(chrome.runtime.id, {subject: "change subject"}, null);
+
+  var tabIds = [];
+  chrome.tabs.query({}, function (tabs) {
+    for (var i = 0; i < tabs.length; i++) {
+      tabIds.push(tabs[i].id);
+      chrome.tabs.executeScript(tabIds[i], {file: 'contentscript.js'});
+    }
+  });
+
+  countdown = setInterval(startTimer, 1000)
+  document.getElementById("timer_start").innerHTML = "Stop"
+  document.getElementById("timer_clear").style.display = "none"
+  document.getElementById("selection").innerHTML = "Study session in progress"
+  chrome.storage.sync.get(['subject'], function(result){
+    var currentSubject;
+      if(result.subject == "biology"){
+        currentSubject = "Biology";
+      } else if(result.subject == "history"){
+        currentSubject = "American History";
+      } else if(result.subject == "collegeApps"){
+        currentSubject = "College Apps"
+      } else if(result.subject == "whitelist"){
+        currentSubject = "Whitelist";
+      } else if(result.subject == "physics"){
+        currentSubject = "Physics"
+      } else if(result.subject == "chemistry") {
+        currentSubject = "Chemistry"
+      } else if(result.subject == "economics"){
+        currentSubject = "Economics"
+      } else if(result.subject == "calculus"){
+        currentSubject = "Calculus"
+      } else if(result.subject == "linearAlgebra") {
+        currentSubject = "Linear Algebra"
+      }
+      else {
+
+      }
+    document.querySelector(".container").innerHTML = `<h1 style="color: #736cdb; text-align: center; font-size: 20px;">${currentSubject}</h1>`
+  })
+
+  document.getElementsByName('enhanced').forEach(e => e.disabled = true);
+  document.querySelector('#enhancedWarning').style.display = 'none';
+  //Checks whether enhanced block is on
+  var enhancedMode;
+  chrome.storage.sync.get(['enhanced'], function(result){
+    enhancedMode = result.enhanced;
+    if(enhancedMode == "on"){
+      document.getElementById("timer_start").disabled = true;
+      document.getElementById("timer_start").style.visibility = 'hidden';
+
+    } else {
+      document.getElementById("timer_start").disabled = false;
+      document.getElementById("timer_start").style.visibility = 'visible';
+    }
+  })
+
+
+}
