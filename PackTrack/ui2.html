@@ -18,7 +18,7 @@
           <button id="go">Go</button>&nbsp&nbsp<button id="later">Later</button>
       </div>
   </div>
-  
+
   <img src="ontrackLogo.png" style="position: relative; transform: scale(0.27); right: 50%; margin-top: -40%;">
   <!--<svg id="options" style="position: absolute; top: 18px; right: 10px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>-->
   <svg id="openTutorial" style="position: absolute; top: 20px; left: 15px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12" y2="17"></line></svg>
@@ -38,9 +38,9 @@
       </div>
       <div id="subjectSelection">
         <p id="selection" style="font-size: 15px; text-align: center; position: relative; margin-top: -15px;">Select a subject to focus on</p>
-    
+
         <div class="container">
-         
+
             <div class = "dropdown">
               <select class = "dropdown-select">
                 <option value="none">None</option>
@@ -55,19 +55,19 @@
                 <option value="whitelist">Whitelist</option>
               </select>
             </div>
-          
+
           <p style="color: red; visibility: hidden;" id="subjectReq">No Subject Selected</p>
-          
+
         </div>
       </div>
       <div id="controlCenter">
           <button id="timer_start" class = "btn2">Start</button>&nbsp&nbsp<button id="timer_clear" class="btn2">Clear</button>
       </div>
-       
-       
-      
-     
-    
+
+
+
+
+
      </div>
 
 
@@ -77,7 +77,7 @@
 
 
 
-   
+
 
     <!--Settings Menu-->
     <div id="settings">
@@ -108,19 +108,19 @@
             <h3>Schedule</h3>
             <span>Break (per hour study session): </span><input id="break" style="width: 3em; outline: none;" type="number" min = "5" max = "15"><span>m</span>
           </div>
-        
-          
-          
-          
-          
+
+
+
+
+
       </div>
-      
+
       <button style="margin: auto; display: block;" id="saveSettings">Save</button>
-      
+
     </div>
 
 
-    
+
     <div id="schedulePanel">
       <div id="scheduleContent">
           <table>
@@ -351,7 +351,7 @@
               </tr>
           </table>
       </div>
-      
+
       <br><br>
       <center><button id="startSchedule" class ="btn2">Start</button>&nbsp&nbsp<button id="clearSchedule" class="btn2">Clear</button></center>
     </div>
@@ -359,7 +359,7 @@
 
 
     <div id="achievements">
-      <h2 style="text-align: center;">Achievements</h2> 
+      <h2 style="text-align: center;">Achievements</h2>
       <table>
         <tr><td>Study sessions: </td><td id="sessions"></td></tr>
         <tr><td>Time studied: </td><td id="studyTime"><span></span>h&nbsp<span></span>m&nbsp<span></span>s</td></tr>
@@ -415,7 +415,7 @@
       <h3>Any Feedback?</h3>
       <p>Fill out this form for a chance to win a $50 amazon giftcard: <a href="http://bit.ly/37hwNrS">http://bit.ly/37hwNrS</a>.</p>
     </div>
-  
+
   </div>
 
      <!-- Bottom menu bar-->
@@ -443,7 +443,8 @@
    <script src="ui2.js"></script>
    <script src="socketio.js"></script>
    <script src='https://cdn.socket.io/socket.io-1.0.6.js'></script>
-   
+
+
 
 
  </body>
