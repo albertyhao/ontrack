@@ -552,3 +552,29 @@ hr{
   margin-top: 20px;
 }
 
+#badgeCollection {
+  visibility: hidden;
+  z-index: 1000000000000;
+  background-color: white;
+  box-shadow: 0 0 1px 1px lightgray;
+  height: 95%;
+  width: 95%;
+  right: 2.5%;
+  top: 2.5%;
+  position: absolute;
+  padding: 0 1em;
+  box-sizing: border-box;
+}
+
+#badgeCarousel, #badgeDescription {
+  display: block;
+  margin: auto;
+}
+#badgeCarousel {
+  height: 80%;
+  display: grid;
+  grid-template-columns: 50px auto 50px;
+}
+#badgeDescription {
+  height: 15%;
+}

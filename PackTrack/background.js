@@ -287,7 +287,7 @@ function timeCountdown() {
     })
     chrome.tabs.query({}, function(tabs) {
       for(var i=0; i < tabs.length; i++){
-        chrome.tabs.sendMessage(tabs[i].id, {subject: "take away timer"}, null);
+        chrome.tabs.update(tabs[i].id, {url: tabs[i].url}, null);
       }
         
      });
@@ -465,6 +465,9 @@ chrome.runtime.onMessage.addListener(
     }
   }
 )
+
+
+
 
 
 

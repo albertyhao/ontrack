@@ -53,5 +53,5 @@
     "default_icon": "packtrack16.png",
     "default_popup": "ui2.html"
   },
-  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com  https://cdn.socket.io; object-src 'self'" 
 }
