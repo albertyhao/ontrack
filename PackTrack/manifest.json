@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "OnTrack: Smart Productivity Tool",
   "short_name": "OnTrack: Smart Productivity Tool",
-  "version": "2.5.4",
+  "version": "2.5.5",
 
   "web_accessible_resources": [
     "biology.txt",
@@ -53,5 +53,5 @@
     "default_icon": "packtrack16.png",
     "default_popup": "ui2.html"
   },
-  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com  https://cdn.socket.io; object-src 'self'" 
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com  https://cdn.socket.io; object-src 'self'"
 }
