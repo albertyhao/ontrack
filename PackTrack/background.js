@@ -127,12 +127,12 @@ chrome.runtime.onMessage.addListener(
       // console.log(sim)
       // console.log(simCutoff)
     
-    chrome.storage.sync.get(['customerid', 'subject', 'email', 'name'], function(result){
-      // console.log(result.subject);
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&sim=${sim}&subject=${result.subject}&loadsimtime=${req.loadsimtime}&name=${result.name}&email=${result.email}`);
-      xhr.send(); 
-    })
+//     chrome.storage.sync.get(['customerid', 'subject', 'email', 'name'], function(result){
+//       // console.log(result.subject);
+//       var xhr = new XMLHttpRequest();
+//       xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&sim=${sim}&subject=${result.subject}&loadsimtime=${req.loadsimtime}&name=${result.name}&email=${result.email}`);
+//       xhr.send(); 
+//     })
     if (newSubject == "collegeApps"){
       if (sender.tab.url.includes(".edu/") || sim > simCutoff || sender.tab.url.includes("college") || sender.tab.url.includes("university")){
         sendResponse({res: false, sim: sim})
@@ -172,26 +172,26 @@ chrome.runtime.onMessage.addListener(
 
 
 
-chrome.runtime.onMessage.addListener(
-  function(req, sender, sendResponse) {
-  	if (req.time) {
-  		// console.log('BOINK')
-		chrome.storage.sync.get(['customerid'], function(result){
-			// console.log(result)
-  			var xhr = new XMLHttpRequest();
-  			xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&time=${encodeURIComponent(req.time)}`);
- 			xhr.send();
-		})
-	}
-  	else if (req.site) {
-		chrome.storage.sync.get(['customerid'], function(result){
-			// console.log(result)
-  			var xhr = new XMLHttpRequest();
-  			xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}`);
- 			xhr.send();
-		})
-  	}
-})
+// chrome.runtime.onMessage.addListener(
+//   function(req, sender, sendResponse) {
+//   	if (req.time) {
+//   		// console.log('BOINK')
+// // 		chrome.storage.sync.get(['customerid'], function(result){
+// // 			// console.log(result)
+// //   			var xhr = new XMLHttpRequest();
+// //   			xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}&time=${encodeURIComponent(req.time)}`);
+// //  			xhr.send();
+// // 		})
+// 	}
+//   	else if (req.site) {
+// 		chrome.storage.sync.get(['customerid'], function(result){
+// 			// console.log(result)
+//   			var xhr = new XMLHttpRequest();
+//   			xhr.open("GET", `http://ontrackserver.herokuapp.com?id=${result.customerid}&site=${encodeURIComponent(req.site)}`);
+//  			xhr.send();
+// 		})
+//   	}
+// })
 
 
 //Timer Code
