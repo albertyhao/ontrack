@@ -19,7 +19,7 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "save": "^2.3.3",
-    "socket.io": "^2.1.1",
+    "socket.io": "^2.5.0",
     "stemmer": "^1.0.4",
     "twilio": "^3.29.1"
   },
